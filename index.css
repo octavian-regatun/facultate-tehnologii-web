@@ -1,0 +1,12 @@
+@import 'normalize.css';
+
+/* Global variables */
+
+* {
+    font-family: sans-serif;
+}
+
+/* Components */
+@import 'components/Button/Button.css';
+@import 'components/SignIn/SignIn.css';
+@import 'components/IndexPage/IndexPage.css';

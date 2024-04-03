@@ -1,0 +1,10 @@
+.signIn {
+  display: flex;
+  flex-direction: column;
+  width: 512px;
+  height: 384px;
+  border: lightgray solid 1px;
+  padding: 32px;
+  gap: 16px;
+  border-radius: 8px;
+}
