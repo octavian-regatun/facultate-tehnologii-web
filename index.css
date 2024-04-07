@@ -1,12 +1,8 @@
 @import 'normalize.css';
-
-/* Global variables */
-
-* {
-    font-family: sans-serif;
-}
+@import 'global.css';
 
 /* Components */
 @import 'components/Button/Button.css';
-@import 'components/SignIn/SignIn.css';
 @import 'components/IndexPage/IndexPage.css';
+@import 'components/SignIn/SignIn.css';
+@import 'components/MyInput/MyInput.css';
