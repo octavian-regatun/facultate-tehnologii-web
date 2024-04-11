@@ -1,0 +1,7 @@
+{
+    "watch": [
+        "src/"
+    ],
+    "ext": "js, css, html, ts",
+    "exec": "ts-node -r @swc/register src/index.ts"
+}
