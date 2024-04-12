@@ -1,16 +1,10 @@
-import http from 'http';
-import { PORT } from './constants';
-import { PageRouter } from './pageRouter';
+import { ComponentManager } from './componentManager';
 import { Page } from './page';
+import { PageManager } from './pageManager';
 
-const server = http.createServer(async (req, res) => {
-  const pageRouter = new PageRouter(res);
+await ComponentManager.registerComponents();
 
-  pageRouter.addPage(new Page('index', '/'));
+const pageManager = new PageManager();
+pageManager.addPage(new Page('index'));
 
-  await pageRouter.handle();
-});
-
-server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}/`);
-});
+await pageManager.compile();

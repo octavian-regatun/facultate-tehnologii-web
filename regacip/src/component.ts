@@ -1,24 +1,27 @@
 import path from 'path';
-import { FileHandler } from './fileHandler';
+import { FileManager } from './fileManager';
 import { SITE_PATH } from './constants';
 
 export class Component {
   name: string;
-  path: string;
+  dirPath: string;
 
   constructor(name: string) {
     this.name = name;
-    this.path = this.getComponentPath();
+    this.dirPath = path.join(SITE_PATH, this.name);
   }
 
-  getComponentPath = () => {
-    return path.join(SITE_PATH, this.name);
+  getCssContent = async () => {
+    const cssPath = path.join(this.dirPath, `${this.name}.css`);
+    const cssContent = await FileManager.getFileContent(cssPath);
+
+    return cssContent;
   };
 
-  getCssContent = async () => {
-    const cssPath = path.join(this.path, `${this.name}.css`);
-    const content = await FileHandler.getFileContent(cssPath);
+  getHtmlContent = async () => {
+    const htmlPath = path.join(this.dirPath, `${this.name}.css`);
+    const htmlContent = await FileManager.getFileContent(htmlPath);
 
-    return content;
+    return htmlContent;
   };
 }
