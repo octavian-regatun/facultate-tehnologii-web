@@ -32,13 +32,18 @@ export class Page {
 
     for (const component of components) {
       const componentHtml = await component.getHtmlContent();
-      console.log(componentHtml);
-      const componentElement = document.createElement('div');
-      componentElement.innerHTML = componentHtml;
 
       const targetElements = document.querySelectorAll(component.name);
       targetElements.forEach((targetElement) => {
-        targetElement.replaceWith(componentElement);
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = componentHtml;
+        while (tempDiv.firstChild) {
+          targetElement?.parentNode?.insertBefore(
+            tempDiv.firstChild,
+            targetElement
+          );
+        }
+        targetElement?.parentNode?.removeChild(targetElement);
       });
     }
 
