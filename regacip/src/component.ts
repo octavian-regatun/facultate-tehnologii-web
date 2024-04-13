@@ -8,19 +8,12 @@ export class Component {
 
   constructor(name: string) {
     this.name = name;
-    this.dirPath = path.join(SITE_PATH, this.name);
+    this.dirPath = path.join(SITE_PATH,'components', this.name);
   }
 
-  getCssContent = async () => {
-    const cssPath = path.join(this.dirPath, `${this.name}.css`);
-    const cssContent = await FileManager.getFileContent(cssPath);
-
-    return cssContent;
-  };
-
   getHtmlContent = async () => {
-    const htmlPath = path.join(this.dirPath, `${this.name}.css`);
-    const htmlContent = await FileManager.getFileContent(htmlPath);
+    const htmlPath = path.join(this.dirPath, `${this.name}.html`);
+    const htmlContent = (await FileManager.getFileContent(htmlPath)).trim();
 
     return htmlContent;
   };

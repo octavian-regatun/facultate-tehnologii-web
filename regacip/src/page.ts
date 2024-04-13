@@ -1,8 +1,9 @@
 import { JSDOM } from 'jsdom';
 import path from 'path';
 import { ComponentManager } from './componentManager';
-import { SITE_PATH } from './constants';
+import { COMPILED_SITE_PATH, SITE_PATH } from './constants';
 import { FileManager } from './fileManager';
+import fs from 'fs/promises';
 
 export class Page {
   public name: string;
@@ -13,81 +14,37 @@ export class Page {
     this.dirPath = path.join(SITE_PATH, 'pages', this.name);
   }
 
-  private injectComponentsCss = async () => {
-    const cssFiles = await FileManager.getFilesRecursivelyByFileName(
-      this.dirPath,
-      'css'
+  public compile = async () => {
+    let htmlContent = await this.getHtmlContent();
+    htmlContent = await this.injectComponentsHtml(htmlContent);
+
+    await fs.writeFile(
+      path.join(COMPILED_SITE_PATH, `${this.name}.html`),
+      htmlContent
     );
-
-    const htmlFilePath = path.join(this.dirPath, `${this.name}.html`);
-    const dom = await JSDOM.fromFile(htmlFilePath);
-    const document = dom.window.document;
-
-    for (const cssFile of cssFiles) {
-      const cssContent = await FileManager.getFileContent(cssFile);
-      const styleElement = document.createElement('style');
-      styleElement.textContent = cssContent;
-      document.head.append(styleElement);
-    }
-
-    const htmlWithCss = dom.serialize();
-
-    return htmlWithCss;
   };
 
-  private injectComponentsJs = async (html: string) => {
-    const jsFiles = await FileManager.getFilesRecursivelyByFileName(
-      this.dirPath,
-      'js'
-    );
-
-    const dom = new JSDOM(html);
-    const document = dom.window.document;
-
-    for (const jsFile of jsFiles) {
-      const scriptElement = document.createElement('script');
-      scriptElement.src = path.relative(this.dirPath, jsFile);
-      document.body.append(scriptElement);
-    }
-
-    const htmlWithJs = dom.serialize();
-
-    return htmlWithJs;
-  };
-
-  private injectComponentsHtml = async (html: string) => {
-    //     substitute tags with components names with actual components html
+  private injectComponentsHtml = async (htmlContent: string) => {
     const components = await this.getComponents();
-    const componentHtmls = await Promise.all(
-      components.map(async (component) => {
-        const componentHtml = await component.getHtmlContent();
-        return componentHtml;
-      })
-    );
 
-    const dom = new JSDOM(html);
+    const dom = new JSDOM(htmlContent);
     const document = dom.window.document;
 
-    components.forEach((component, index) => {
-      const componentHtml = componentHtmls[index];
-      const componentElements = document.querySelectorAll(component.name);
+    for (const component of components) {
+      const componentHtml = await component.getHtmlContent();
+      console.log(componentHtml);
+      const componentElement = document.createElement('div');
+      componentElement.innerHTML = componentHtml;
 
-      componentElements.forEach((element) => {
-        element.replaceWith(componentHtml);
+      const targetElements = document.querySelectorAll(component.name);
+      targetElements.forEach((targetElement) => {
+        targetElement.replaceWith(componentElement);
       });
-    });
+    }
 
     const htmlWithComponents = dom.serialize();
 
     return htmlWithComponents;
-  };
-
-  public getHtmlContent = async () => {
-    let html = await this.injectComponentsCss();
-    html = await this.injectComponentsJs(html);
-    html = await this.injectComponentsHtml(html);
-    
-    return html;
   };
 
   private getComponents = async () => {
@@ -99,5 +56,12 @@ export class Page {
     return components.filter(
       (component) => document.querySelectorAll(component.name).length > 0
     );
+  };
+
+  private getHtmlContent = async () => {
+    const htmlFilePath = path.join(this.dirPath, `${this.name}.html`);
+    const htmlContent = await FileManager.getFileContent(htmlFilePath);
+
+    return htmlContent;
   };
 }
