@@ -1,22 +1,28 @@
+import { FileManager } from './fileManager';
+import { Page } from './page';
 import fs from 'fs/promises';
-import path from 'path';
-import { COMPILED_SITE_PATH } from './constants';
-import type { Page } from './page';
 
 export class PageManager {
-  private pages: Page[] = [];
+  /**
+   * Stores all the registered pages
+   */
+  private static pages: Page[] = [];
 
   /**
-   * Register a page 
+   * Register a page
    */
-  public registerPage = (page: Page) => {
-    this.pages.push(page);
+  public static registerPages = async () => {
+    const pageNames = await fs.readdir(FileManager.pagesDir);
+
+    PageManager.pages = await Promise.all(
+      pageNames.map((name) => Page.create(name))
+    );
   };
 
   /**
-   * Compile all pages
+   * Compile all registered pages
    */
-  public compile = async () => {
-    await Promise.all(this.pages.map((page) => page.compile()));
+  public static compile = async () => {
+    await Promise.all(PageManager.pages.map((page) => page.compile()));
   };
 }

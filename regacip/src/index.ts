@@ -1,10 +1,6 @@
 import { ComponentManager } from './componentManager';
-import { Page } from './page';
 import { PageManager } from './pageManager';
 
 await ComponentManager.registerComponents();
-
-const pageManager = new PageManager();
-pageManager.registerPage(new Page('index'));
-
-await pageManager.compile();
+await PageManager.registerPages();
+await PageManager.compile();
