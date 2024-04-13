@@ -1,8 +1,26 @@
 @import 'normalize.css';
 @import 'global.css';
 
-/* Components */
-@import 'components/Button/Button.css';
-@import 'components/IndexPage/IndexPage.css';
-@import 'components/SignIn/SignIn.css';
-@import 'components/MyInput/MyInput.css';
+.input-textField {
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+.navbar {
+  padding-right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid black;
+}
+.navbar-leftSide {
+  display: flex;
+  align-items: center;
+}
+.navbar-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 64px;
+  width: 64px;
+} /*# sourceMappingURL=index.css.map */
