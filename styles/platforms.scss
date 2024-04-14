@@ -1,0 +1,45 @@
+@import 'normalize.scss';
+@import 'global.scss';
+@import 'navbar.scss';
+@import 'components.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  padding: 64px;
+
+  &-title {
+    margin-bottom: 128px;
+  }
+}
+
+.platforms {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 64px;
+  &-button {
+    height: 256px;
+    width: 256px;
+    background-color: white;
+    border: 1px solid darken($color: white, $amount: 25%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    transition: all 0.2s;
+    &:hover {
+      background-color: darken($color: white, $amount: 5%);
+      transition: all 0.2s;
+    }
+
+    img {
+      width: 100%;
+      object-fit: fill;
+    }
+  }
+}
