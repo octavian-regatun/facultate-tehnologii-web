@@ -1,0 +1,218 @@
+:root 
+{
+    --primary-dark: hsl(163, 100%, 39%);
+    --primary: hsl(163, 67%, 47%);
+    --primary-light: hsl(163, 50%, 60%);
+
+    --secondary-dark: hsl(317, 92%, 10%);
+    --secondary: hsl(317, 55%, 13%);
+    --secondary-light: hsl(316, 29%, 20%);
+}
+
+
+body {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.btn {
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0; 
+}
+
+.side-photo {
+    position: absolute;
+    width: 30%;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.side-photo:nth-child(1) {
+    left: 0;
+    background-image: url(../imgs/connect-page-phone-1.png);
+    background-position: left;
+}
+
+.side-photo:nth-child(2) {
+    right: 0;
+    background-image: url(../imgs/right.png);
+    background-position: right;
+}
+
+.container {
+    width: 30%;
+    height: 75%;
+    border-radius: 2em;
+    overflow: hidden;
+    position: absolute;
+    transition: all .7s;
+    transition-timing-function: cubic-bezier(.62,.51,.73,1.1);
+    border: 5px solid var(--primary-dark);
+}
+
+.connect-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--primary-light);
+    padding: 2em;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.connect-container::-webkit-scrollbar {
+    width: 3px;
+}
+.connect-container::-webkit-scrollbar-track {
+    background: var(--primary-dark);
+}
+
+.connect-container::-webkit-scrollbar-thumb {
+    background: var(--secondary-light);
+}
+
+.overflow {
+    overflow-y: hidden;
+}
+
+.connect-photo {
+    flex: 1;
+    height: 100%;
+    background-image: url(../imgs/connect-page-phone-1.png);
+    transform: scaleX(-1);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: none;
+}
+
+
+.connect-container .title {
+    margin-bottom: 1em;
+    font-size: 3em;
+    text-align: center;
+}
+
+.connect-container .subtitle {
+    text-align: center;
+}
+
+.connect-container form {
+    padding: 3em 0em;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    flex-grow: 1;
+}
+
+.connect-container > *:not(form) {
+    flex-grow: 0;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.25rem;
+    position: relative;
+}
+
+.input-container > * 
+{
+    width: 70%;
+}
+
+.pass-btn {
+    position: absolute;
+    right: 17%; /* input is 70% of total length. 100-70=30%. 30/2 (two sides)=15. +2 to ensure some gap*/
+    bottom: 5%;
+    width: auto;
+}
+
+.pass-icon {
+    width: 24px;
+    stroke: var(--primary);
+}
+
+.pass-icon:hover, .pass-icon:target {
+    stroke: aquamarine;
+}
+
+.connect-container form input, .form-btn {
+    border-radius: 7px;
+    padding: 8px 10px;
+    background-color: var(--secondary);
+    border: 2px inset var(--primary);
+    color: white;
+}
+
+.form-btn {
+    width: 30%;
+    cursor: pointer;
+    align-self: center;
+}
+
+
+.change-form-btn {
+    color: var(--secondary);
+    font-weight: 500;
+}
+
+
+/* Rules needed for the change animation */
+#log-in {
+    z-index: 2;
+}
+
+.contracted {
+    width: 0;
+    height: 0;
+}
+
+
+@media screen and (max-width: 1200px) {
+    .side-photo {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+        border-radius: 0;
+        border-width: 0;
+        transition: none;
+    }
+    .connect-photo {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 768px){
+    .container {
+        width: 90%;
+        height: 90%;
+        border-width: 2px;
+    }
+    .connect-container {
+        padding: 1.5em .5em;
+    }
+    .connect-container .title {
+        font-size: 2em;
+    }
+    .connect-photo {
+        display: none;
+    }
+}
+
