@@ -2,6 +2,7 @@ body {
   width: 100vw;
   height: 100vh;
   max-width: 100%;
+  overflow-x: hidden;
 }
 
 .a-tag-btn {
@@ -31,7 +32,7 @@ body {
 
 .container {
   width: 100%;
-  padding: 10em;
+  padding: 15%;
 
   display: flex;
   flex-direction: column;
@@ -186,13 +187,18 @@ FEATURES
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 64px;
+  gap: 4rem;
 }
 
 .container-features-card {
   display: flex;
   border-radius: 8px;
-  background-color: #e6e6e6;
+  background-color: var(--primary-light);
+  transition: 200ms;
+}
+
+.container-features-card:nth-child(2n+1) {
+  flex-direction: row-reverse;
 }
 
 .container-features-card-description {
@@ -213,4 +219,16 @@ FEATURES
 
 .container-features-card-image-container {
   flex: 0 0 50%;
+  max-height: 75vh;
+}
+
+
+
+@media screen and (max-width: 1200px) {
+  .background-image {
+    background-image: url(../imgs/index-tablet.webp);
+  }
+  .container-features-card {
+    display: block;
+  }
 }
