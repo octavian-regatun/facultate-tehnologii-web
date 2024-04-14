@@ -1,103 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles/index.css" />
-    <title>M-PIC</title>
-  </head>
-  <body>
-    <nav class="navbar">
-      <div class="navbar-left-side">
-        <p class="navbar-logo">Logo</p>
-        <p class="navbar-page">Landing Page</p>
-      </div>
-      <div class="navbar-right-side">
-        <input class="navbar-search input-text-field" placeholder="Search" />
-        <button class="navbar-profile button-icon">
-          <img
-            class="navbar-profile-image"
-            src="svgs/user-circle.svg"
-            alt="profile"
-          />
-        </button>
-      </div>
-    </nav>
 
-    <div class="container">
-      <div class="container-header">
-        <h1 class="container-title">
-          M-PIC Social Medie Aggregator
-          <br />
-          Welcome!
-        </h1>
-        <p class="container-description">
-          Using this website you can easily combine all your social media posts
-          into one place.
-        </p>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles/normalize.css">
+  <link rel="stylesheet" href="styles/global.css">
+  <link rel="stylesheet" href="styles/navbar.css">
+  <link rel="stylesheet" href="styles/index.css" />
+  <title>M-PIC</title>
+</head>
 
-      <div class="container-features">
-        <h2 class="container-features-title">Features</h2>
-        <div class="container-features-card">
-          <div class="container-features-card-description">
-            <p>
-              Collect photos and videos from supported platforms: Youtube and
-              Instagram
-            </p>
-          </div>
-          <div class="container-features-card-image-container">
-            <img
-              class="container-features-card-image"
-              src="imgs/landing-page.png"
-            />
-          </div>
+<body>
+  <nav class="navbar">
+    <div class="navbar-left-side">
+      <p class="navbar-logo">Logo</p>
+      <p class="navbar-page">Landing Page</p>
+    </div>
+    <div class="navbar-right-side">
+      <a href="pages/connect.html" class="a-tag-btn">Log In</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="background-image"></div>
+
+    <!--title-->
+    <div class="container-header">
+      <h1 class="container-title">
+        M-PIC Social Media Aggregator
+        <br />
+        Welcome!
+      </h1>
+      <p class="container-description">
+        Using this website you can easily combine all your social media posts
+        into one place.
+      </p>
+    </div>
+
+    <!--arrow-->
+    <section>
+      <ul id="downArrow">
+        <li style="--i:1"></li>
+        <li style="--i:2"></li>
+        <li style="--i:3"></li>
+      </ul>
+    </section>
+
+    <!--check scholarly-->
+    <div class="scholarly">
+      <p>Before using our site, you might want to check this out!</p><br>
+      <a href="pages/scholarly.html" class="a-tag-btn">Scholarly documentation</a>
+    </div>
+
+    <!--app features-->
+    <div class="container-features">
+      <h2 class="container-features-title">Features</h2>
+      <div class="container-features-card">
+        <div class="container-features-card-description">
+          <p>
+            Collect photos and videos from supported platforms: Youtube and
+            Instagram
+          </p>
         </div>
-        <div class="container-features-card">
-          <div class="container-features-card-image-container">
-            <img
-              class="container-features-card-image"
-              src="imgs/landing-page.png"
-            />
-          </div>
-          <div class="container-features-card-description">
-            <p>
-              Collect photos and videos from supported platforms: Youtube and
-              Instagram
-            </p>
-          </div>
+        <div class="container-features-card-image-container">
+          <img class="container-features-card-image" src="imgs/landing-page.png" />
         </div>
-        <div class="container-features-card">
-          <div class="container-features-card-description">
-            <p>
-              Collect photos and videos from supported platforms: Youtube and
-              Instagram
-            </p>
-          </div>
-          <div class="container-features-card-image-container">
-            <img
-              class="container-features-card-image"
-              src="imgs/landing-page.png"
-            />
-          </div>
+      </div>
+      <div class="container-features-card">
+        <div class="container-features-card-image-container">
+          <img class="container-features-card-image" src="imgs/landing-page.png" />
         </div>
-        <div class="container-features-card">
-          <div class="container-features-card-image-container">
-            <img
-              class="container-features-card-image"
-              src="imgs/landing-page.png"
-            />
-          </div>
-          <div class="container-features-card-description">
-            <p>
-              Collect photos and videos from supported platforms: Youtube and
-              Instagram
-            </p>
-          </div>
+        <div class="container-features-card-description">
+          <p>
+            Collect photos and videos from supported platforms: Youtube and
+            Instagram
+          </p>
+        </div>
+      </div>
+      <div class="container-features-card">
+        <div class="container-features-card-description">
+          <p>
+            Collect photos and videos from supported platforms: Youtube and
+            Instagram
+          </p>
+        </div>
+        <div class="container-features-card-image-container">
+          <img class="container-features-card-image" src="imgs/landing-page.png" />
+        </div>
+      </div>
+      <div class="container-features-card">
+        <div class="container-features-card-image-container">
+          <img class="container-features-card-image" src="imgs/landing-page.png" />
+        </div>
+        <div class="container-features-card-description">
+          <p>
+            Collect photos and videos from supported platforms: Youtube and
+            Instagram
+          </p>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Footer -->
-  </body>
+  <!-- Footer -->
+</body>
+
 </html>

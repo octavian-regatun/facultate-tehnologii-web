@@ -1,6 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 * {
   box-sizing: border-box;
-  font-family: sans-serif;
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+
+:root 
+{
+    --primary-dark: hsl(163, 100%, 39%);
+    --primary: hsl(163, 67%, 47%);
+    --primary-light: hsl(163, 50%, 60%);
+
+    --secondary-dark: hsl(317, 92%, 10%);
+    --secondary: hsl(317, 55%, 13%);
+    --secondary-light: hsl(316, 29%, 20%);
 }
 
 h1,
@@ -11,4 +27,4 @@ h5,
 h6,
 p {
   margin: 0;
-}/*# sourceMappingURL=global.css.map */
+}
