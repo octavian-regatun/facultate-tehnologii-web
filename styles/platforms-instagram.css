@@ -103,8 +103,6 @@
   pointer-events: none;
 }
 
-
-
 .modal .card:hover {
   filter: none;
 }
@@ -214,14 +212,26 @@
   flex-direction: column;
   gap: 8px;
   width: 100%;
-  overflow-x: auto;
-  max-height: 200px;
+  overflow-y: auto;
+  max-height: 100px;
+  
 
   img {
     width: 24px;
     height: 24px;
     border-radius: 50%;
   }
+}
+
+.card-content-comments::-webkit-scrollbar {
+  width: 3px;
+}
+.card-content-comments::-webkit-scrollbar-track {
+  background: var(--primary-dark);
+}
+
+.card-content-comments::-webkit-scrollbar-thumb {
+  background: var(--secondary-light);
 }
 
 .card-content-comment {
@@ -271,7 +281,20 @@
 
 .card-content-edit {
   width: 100%;
+  max-height: 100px;
+  overflow-y: auto;
   display: none;
+}
+
+.card-content-edit::-webkit-scrollbar {
+  width: 3px;
+}
+.card-content-edit::-webkit-scrollbar-track {
+  background: var(--primary-dark);
+}
+
+.card-content-edit::-webkit-scrollbar-thumb {
+  background: var(--secondary-light);
 }
 
 .card-content-edit-slider {

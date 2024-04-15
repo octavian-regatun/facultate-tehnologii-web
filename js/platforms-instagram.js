@@ -234,13 +234,12 @@ const handleSliders = (e) => {
     description.style.display === 'none' ||
     comments.style.display === 'none'
   ) {
-    document.querySelector('.modal .card:nth-of-type(2) .card-content-description').style.display = 'block';
     document.querySelector('.modal .card:nth-of-type(2) .card-content-comments').style.display = 'block';
     document.querySelector('.modal .card:nth-of-type(2) .card-content-edit').style.display = 'none';
+    editButton.style.backgroundColor = 'rgba(0, 0, 0, 0)';
   } else {
-    document.querySelector('.modal .card:nth-of-type(2) .card-content-description').style.display = 'none';
     document.querySelector('.modal .card:nth-of-type(2) .card-content-comments').style.display = 'none';
     document.querySelector('.modal .card:nth-of-type(2) .card-content-edit').style.display = 'block';
-
+    editButton.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
   }
 };
