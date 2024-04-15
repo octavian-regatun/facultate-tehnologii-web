@@ -1,19 +1,30 @@
+@import 'normalize.css';
+@import 'global.css';
+@import 'navbar.css';
+@import 'components.css';
+@import 'modal.css';
+@import 'sidebar.css';
+
 .container {
   padding: 96px 64px 64px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
   width: 100vw;
+  padding: 96px 32px 32px 96px;
   min-height: 100vh;
 }
 .container-title {
   margin-bottom: 128px;
+  text-align: center;
 }
 
 .platforms {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   align-items: center;
   flex-wrap: wrap;
   gap: 64px;
@@ -29,7 +40,25 @@
   transition: all 0.2s;
 }
 
-.platforms-button:hover, .platforms-button:target {
+@media (max-width: 768px) {
+  .container-title {
+  font-size: 24px;
+  }
+  .container-title {
+    margin-bottom: 64px;
+  }
+  .platforms {
+    gap: 32px;
+  }
+  .platforms-button {
+    height: 128px;
+    width: 128px;
+    padding: 16px;
+  }
+  
+}
+
+.platforms-button:hover {
   background-color: #f2f2f2;
   transition: all 0.2s;
   transform: scale(1.1);

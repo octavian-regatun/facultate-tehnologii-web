@@ -3,9 +3,10 @@
 @import 'navbar.css';
 @import 'components.css';
 @import 'modal.css';
+@import 'sidebar.css';
 
 .container {
-  padding: 96px 32px;
+  padding: 96px 32px 32px 96px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -17,6 +18,19 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 32px;
+}
+
+/* for tablets display 2 columns and for mobile display 1 column */
+@media (max-width: 768px) {
+  .container-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .container-grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
 }
 
 .card {
@@ -200,6 +214,8 @@
   flex-direction: column;
   gap: 8px;
   width: 100%;
+  overflow-x: auto;
+  max-height: 200px;
 
   img {
     width: 24px;
@@ -258,15 +274,15 @@
   display: none;
 }
 
-.card-content-edit-slider{
-  display:flex;
+.card-content-edit-slider {
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width:100%;
+  width: 100%;
 }
 
-.card-content-edit-save-button{
+.card-content-edit-save-button {
   background-color: #75d479;
   color: black;
   padding: 8px 16px;
@@ -274,14 +290,15 @@
   cursor: pointer;
   transition: all 0.2s;
   border: 0;
+  margin: 8px auto;
+  display: block;
 }
 
-.card-content-edit-save-button:hover{
+.card-content-edit-save-button:hover {
   background-color: #5cbf5a;
   transition: all 0.2s;
   border: 0;
 }
-
 
 @media screen and (max-width: 720px) {
   .modal .card:not(:nth-of-type(2)) {

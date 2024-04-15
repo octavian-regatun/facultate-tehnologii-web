@@ -12,12 +12,12 @@
   border-radius: 4px;
   border: 1px solid black;
   cursor: pointer;
-  background-color: white;
+  background-color: var(--primary);
   color: black;
   transition: all 0.2s;
 }
 .button:hover, .button-icon:hover {
-  background-color: #bfbfbf;
+  background-color: var(--primary-dark);
   color: white;
   transition: all 0.2s;
 }
