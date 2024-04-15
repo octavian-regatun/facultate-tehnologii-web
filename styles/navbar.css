@@ -3,15 +3,18 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1)) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.06));
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1))
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.06));
   background-color: var(--primary);
   position: fixed;
   width: 100%;
   z-index: 999;
 }
 
-.navbar-search{
-  display: none;
+@media (max-width: 768px) {
+  .navbar-page {
+    display: none;
+  }
 }
 
 .navbar-left-side {
@@ -43,16 +46,18 @@
   border: 2px solid black;
 }
 
-.button, .button-icon {
+.button,
+.button-icon {
   padding: 8px 16px;
   border-radius: 4px;
   border: 1px solid black;
   cursor: pointer;
-  background-color: var(--primary);;
+  background-color: var(--primary);
   color: black;
   transition: all 0.2s;
 }
-.button:hover, .button-icon:hover {
+.button:hover,
+.button-icon:hover {
   background-color: var(--primary-dark);
   color: white;
   transition: all 0.2s;
