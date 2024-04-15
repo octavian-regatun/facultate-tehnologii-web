@@ -56,7 +56,6 @@ function toggleContainers(event) {
 
 
 function toggleVisiblePassword(event) {
-    console.log("test");
     var passwordField;
     if(event.target.id == 'log-in-pass-btn') {
         passwordField = document.getElementById('log-in-pass-input');
@@ -79,4 +78,18 @@ document.addEventListener('click', function (event) {
     if (event.target.classList.contains('pass-icon')) {
         toggleVisiblePassword(event);
     }
+});
+
+
+
+// Temporary redirect
+document.addEventListener('DOMContentLoaded', function() {
+    const signUpButtons = document.querySelectorAll('.form-btn');
+
+    signUpButtons.forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = './platforms.html';
+        });
+    });
 });

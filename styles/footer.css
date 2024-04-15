@@ -3,6 +3,7 @@ footer {
     width: 100vw;
     position: relative;
     color: var(--secondary);
+    z-index: 999;
 }
 
 .wave {
