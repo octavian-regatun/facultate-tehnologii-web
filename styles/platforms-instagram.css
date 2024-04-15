@@ -280,6 +280,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+  margin-top: 3px;
 }
 
 .card-content-edit-save-button {
@@ -299,6 +300,78 @@
   transition: all 0.2s;
   border: 0;
 }
+
+
+/* 
+sliders custom colors
+*/
+
+input[type="range"] {
+  height: 15px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  background-color: var(--primary);
+  border-radius: 5px;
+  height: 15px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  background-color: var(--secondary-dark);
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb:active {
+  background-color: var(--secondary-light);
+}
+
+input[type="range"]::-moz-range-thumb:active {
+  background-color: var(--secondary-light);
+}
+
+input[type="range"]::-ms-thumb:active {
+  background-color: var(--secondary-light);
+}
+
+/* Firefox */
+input[type="range"]::-moz-range-track {
+  background-color: var(--primary);
+  border-radius: 5px;
+  height: 15px;
+}
+
+input[type="range"]::-moz-range-thumb {
+  background-color: var(--secondary);
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Edge */
+input[type="range"]::-ms-track {
+  background-color: var(--primary);
+  border-radius: 5px;
+  height: 15px;
+}
+
+input[type="range"]::-ms-thumb {
+  background-color: var(--secondary);
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+
+
 
 @media screen and (max-width: 720px) {
   .modal .card:not(:nth-of-type(2)) {

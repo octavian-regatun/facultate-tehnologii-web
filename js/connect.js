@@ -59,13 +59,17 @@ function toggleVisiblePassword(event) {
     var passwordField;
     if(event.target.id == 'log-in-pass-btn') {
         passwordField = document.getElementById('log-in-pass-input');
+        icon = document.getElementById('log-in-svg-path');
     } else {
         passwordField = document.getElementById('sign-up-pass-input');
+        icon = document.getElementById('sign-up-svg-path');
     }
     if (passwordField.type === 'password') {
         passwordField.type = 'text';
+        icon.style.display = 'block';
     } else {
         passwordField.type = 'password';
+        icon.style.display = 'none';
     }
 }
 

@@ -178,6 +178,8 @@
                 Specification
                 Template</a>.
         </p>
+        <p>It's <b>important</b> to note that this document offers some screenshots that ore only displayed as a proof
+            of concept. The final design should be checked in the product itself.</p>
     </section>
 
     <!--
@@ -353,10 +355,8 @@
                 This chapter describe the logical characteristics of each interface between the software product and the
                 users. Our website aims to use a minimalist style in order to make the user flow/navigation simpler. The
                 choosen design should enhance the user experience. Because the design is so simple, there should be a
-                minimal difference between the Web and Mobile versions. However, in the Mobile version the
-                <code>navbar</code> on the left shouldn't be permanently visible. It will be hidden and displayed when
-                the user swipes
-                right from the left margin of the screen.
+                minimal difference between the Web and Mobile versions. Even the <code>navbar</code> on the left can be
+                permanently visible, as it's width is negligible.
             </p>
             <section id="mainComponents">
                 <h4><span>4.1.1. </span>Main Components</h4>
@@ -369,8 +369,9 @@
                     <li>Home Page
                         <br>
                         <p>Starting from the Home Page, the user will be greeted by a small presentation about the
-                            website. It will contain the name of the application, its role and supported social media
-                            applications. If the user scrolls down, all of the application features will be visible.
+                            website. It will contain the name of the application, its role and a link to this
+                            documentation. If the user scrolls down, all of the application features will be visible.
+                            The footer of the page will contain relevant data about the website.
                         </p>
                         <figure typeof="sa:image">
                             <img src="../imgs/home.png" alt="Home Page">
@@ -379,10 +380,11 @@
                     </li>
                     <li>Connect Page
                         <br>
-                        <p>If the user wants to continue navigating the site, he need to log in. The same page will be
+                        <p>If the user wants to continue navigating the site, he needs to log in. The same page will be
                             used both for signing up and logging in, therefore the user will switch between these two
-                            options. These forms will be in a standard form, requiring the minimum information in order
-                            to be able to log in and proceed to the site.
+                            options. These forms will be in a standard one, requiring the minimum information in order
+                            to be able to log in and proceed to the site. There will be 3 versions of this form,
+                            depending on the screen size. A primitive concept can be found below.
                         </p>
                         <figure typeof="sa:image">
                             <img src="../imgs/connect.png" alt="Log in form">
@@ -391,7 +393,8 @@
                     </li>
                     <li>Link a platform
                         <br>
-                        <p>In order to be able to aggregate photos, the user has to connect to at least one social media
+                        <p>After logging to our platform, in order to be able to aggregate photos, the user has to
+                            connect to at least one social media
                             platform. There will be a page where the user has to select which platform to log into. From
                             there, he will be redirected to the official log in page of the choosen platform.
                         </p>
@@ -401,10 +404,8 @@
                         <p>This is the main page the user will work on after successfully logging in with an associated
                             platform. Aggregated photos will be displayed as a mosaic grid. In order to access the
                             comments from a specific post, the user will click the corresponding photo. To select a
-                            couple of photos to create a collage, the user has two choices: either hold <code>LMB</code>
-                            for a
-                            period of time, either use the following shortcut on each desired photo:
-                            <code>Ctrl+LMB</code>. These features will be presented in the next chapter.
+                            couple of photos to create a collage, the user has to use the following shortcut on each
+                            desired photo: <code>Ctrl+LMB</code>. These features will be presented in the next chapter.
                         </p>
                         <figure typeof="sa:image">
                             <img src="../imgs/aggregation.png" alt="Example of the aggregated photo arrangement">
@@ -495,17 +496,21 @@
         <section id="viewPost">
             <h3><span>5.2 </span>View post details</h3>
             <p>
-                Each photo or video from the grid can be clicked on. When selected, a carousel style pop-up with cards
-                will show up, bluring the rest of the screen. These cards will contain relevant info about the post
-                (like comments, number of likes, a share button etc). For the desktop version, there will also be two
+                Each photo or video from the grid can be clicked on. When selected, a caroussel style pop-up with cards
+                will show up, bluring the rest of the screen. Under the selected pop-up card, there will be two
+                neighbour cards - slightly rotated and blured. The buttons on these side cards won't work. These cards
+                will contain relevant info about the post
+                (like comments, number of likes, a share button etc). There will also be two
                 arrows (left and right) that will allow the user to iterate through his aggregated media files. This
-                action will move the cards to left or right, simulating a carousel. This feature will be available on
-                phones too, the only difference being that there won't be arrows, letting the user swipe to obtain the
-                same effect. To exit this cards interface the user can click on any part of the blurred website.
+                action will move the cards to left or right, simulating a caroussel. This feature will be available on
+                phones too, the only difference being that there won't be an animation, the two neighbour cards being
+                hidden. To exit this cards interface the user can click on any part of the blurred website or on the X
+                button of the current card.
             </p>
             <p>
-                The structure of the card is as follows (from top to bottom): photo, description (will have an invisible
-                scrollbar if there is too much text), number of likes & utility buttons (share, edit), comments.
+                The structure of the card is as follows (from top to bottom): photo, description, number of likes &
+                utility buttons (share, edit), comments (will have an invisible
+                scrollbar if there is too much text).
             </p>
             <figure typeof="sa:image">
                 <img src="../imgs/card.png" alt="Card pop-up">
@@ -518,7 +523,9 @@
                 The aggregated media will store more than the photo itself - there will also be the post date, number of
                 likes, comments, dimensions etc. Therefore, an user will have the ability to search between his
                 photos/videos using more than one keyword. Also, the results can be filtered based on the platform, a
-                data range etc.
+                data range etc. The search bar will be visible at all times on the Desktop version as well as on the
+                phone version. However, the top <code>navbar</code> will suffer a loss on the phone version - the
+                current page name won't be displayed anymore to let room for the search bar.
             </p>
             <figure typeof="sa:image">
                 <img src="../imgs/search.png" alt="Search input">
@@ -531,7 +538,9 @@
                 On the pop-up cards that appear when selecting a photo, next to the share button there will be an edit
                 icon. When clicked, a <code>div</code> will appear with some sliders. These sliders will control
                 different properties of the photo, such as brightness, blur, contrast etc. The user will also have the
-                option to save the edited image in his personal device.
+                option to save the edited image in his personal device. When this option is active, the edit icon will
+                have the color slightly changed to let the user know it is pressed. Hopefully, the design is intuitive
+                enough to let the user know to press again when he wants to exit the editor.
             </p>
             <figure typeof="sa:image">
                 <img src="../imgs/edit.png" alt="Photo edit concept">
@@ -542,10 +551,10 @@
             <h3><span>5.5 </span>Create collage</h3>
             <p>
                 As mentioned before, the user has the ability to create collages from his photos. In order to achieve
-                this, the desired photos must be selected holding down <code>LMB</code> or using the keyboard shortcut
-                <code>Ctrl+LMB</code>. When a photo is selected, it will be zoomed in, the card will increase its border
-                width and a green checkmark will apear on the top left corner of the card. The photo can be deselected
-                by clicking on the checkmark.
+                this, the desired photos must be selected using the keyboard shortcut <code>Ctrl+LMB</code>. When a
+                photo is selected, it will be zoomed in, a checkmark will apear on a top corner of the card. The photo
+                can be deselected by following the same shortcut. If the user accidentally clicks on a photo without
+                using the Control key, he can exit from the pop-up modal and continue from where he left.
             </p>
             <p>
                 Also, a button will appear at the bottom of the screen allowing the user to create a collage and save it
@@ -559,9 +568,9 @@
         <section id="upload">
             <h3><span>5.6 </span>Media upload</h3>
             <p>
-                On the left navbar, there will be a button that allows the user to upload a photo to a linked social
-                media account. The user needs to complete a form, uploading the desired photo, writing a description if
-                necessary and other relevant information.
+                On the left navbar, there will (eventually) be a button that allows the user to upload a photo to a
+                linked social media account. The user needs to complete a form, uploading the desired photo, writing a
+                description if necessary and other relevant information.
             </p>
         </section>
     </section>

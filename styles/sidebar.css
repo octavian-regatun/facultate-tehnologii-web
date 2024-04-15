@@ -32,3 +32,10 @@
     transition: all 0.2s;
   }
 }
+
+/* not needed */
+/* @media screen and (max-width: 768px) {
+  .sidebar {
+    width: 32px;
+  }
+} */
