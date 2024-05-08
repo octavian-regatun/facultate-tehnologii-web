@@ -1,7 +1,9 @@
 import http from "http";
 
-type Req = http.IncomingMessage;
-type Res = http.ServerResponse;
+export type Req = http.IncomingMessage;
+export type Res = http.ServerResponse;
+export type Next = () => void;
+export type Middleware = (req: Req, res: Res, next: Next) => void;
 
 export class Router {
   req: Req;
@@ -12,33 +14,27 @@ export class Router {
     this.res = res;
   }
 
-  get(path: string, handler: (req: Req, res: Res) => void) {
+  get(path: string, ...middlewares: Middleware[]) {
     if (this.req.url === path && this.req.method === "GET") {
-      handler(this.req, this.res);
+      const execute = (index: number) => {
+        if (index < middlewares.length) {
+          middlewares[index](this.req, this.res, () => execute(index + 1));
+        }
+      };
+
+      execute(0);
     }
   }
 
-  post(path: string, handler: (req: Req, res: Res) => void) {
+  post(path: string, ...middlewares: Middleware[]) {
     if (this.req.url === path && this.req.method === "POST") {
-      handler(this.req, this.res);
-    }
-  }
+      const execute = (index: number) => {
+        if (index < middlewares.length) {
+          middlewares[index](this.req, this.res, () => execute(index + 1));
+        }
+      };
 
-  put(path: string, handler: (req: Req, res: Res) => void) {
-    if (this.req.url === path && this.req.method === "PUT") {
-      handler(this.req, this.res);
-    }
-  }
-
-  delete(path: string, handler: (req: Req, res: Res) => void) {
-    if (this.req.url === path && this.req.method === "DELETE") {
-      handler(this.req, this.res);
-    }
-  }
-
-  patch(path: string, handler: (req: Req, res: Res) => void) {
-    if (this.req.url === path && this.req.method === "PATCH") {
-      handler(this.req, this.res);
+      execute(0);
     }
   }
 }

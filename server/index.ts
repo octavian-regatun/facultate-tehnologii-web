@@ -1,14 +1,22 @@
 import http from "http";
-import { Router } from "./router";
+import { Router, type Middleware } from "./router";
+import {
+  isAuthenticated,
+  signInMiddleware,
+  signUpMiddleware,
+} from "./routes/auth";
 
 const server = http.createServer((req, res) => {
   const router = new Router(req, res);
 
-  router.get("/", (req, res) => {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end("Hello, World!");
+  router.post("/auth/signup", signUpMiddleware);
+  router.post("/auth/signin", signInMiddleware);
+  router.get("/images", isAuthenticated, (req, res) => {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ images: [] }));
   });
-  
 });
 
-server.listen(8081);
+server.listen(8081).on("listening", () => {
+  console.log("Server listening on port 8081");
+});
