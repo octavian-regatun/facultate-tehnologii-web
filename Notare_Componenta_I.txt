@@ -1,0 +1,67 @@
+Ce mi-a placut:
+Am vazut cam toate paginile care ar trebui sa fie, ar mai trebui una in care sa pot face un colaj ceva cu obiectele dupa modificare....
+Scholarly este ok facut (mi-ar fi placut in romana)
+responsivenessul mrge super bine, bravo !
+
+Ce ar mai fi trebuit sa fie (sau ce nu mi-a placut):
+- vedeti si un forgot pass
+- nu pot face upload ?! (poate nu mi-am dat seama cum se face)
+- paginile au erori la validarea HTML (am verificat pagina aia cu multe poze de la youtube)
+- nu am vazut pagina de cautare multicriteriala...
+
+-----------
+Concluzii: Arata ingrijit pagina, mai este de lucrat, dar pare ca sunteti pe directia cea buna. 8
+
+
+
+
+
+
+
+
+
+La ce ma uit la evaluarea acestei componente:
+
+=================================================================================================
+Ce pagini ma astept sa gasesc intr-o astfel de aplicatie (M=PIC):
+
+- pagina de autentificare / create cont / recovery pass
+- pagina de conectare la alte servicii web ce ptermit stocarea de imagini
+- o pagina cu imaginile preluate (in care sa se vada comentarii sau ratings)
+- posibilitatea de cautare multicriteriala
+- pagina de upload
+- posibilitatea de editare in vreun fel (definire masti, aplicare filtre, etc.)
+- posibilitatea de a forma colaje sau de a folosi in alt mod imaginile editate mai sus
+=================================================================================================
+
+Ma astept, de asemenea, sa gasesc un document scholarly care sa descrie fiecare dintre 
+paginile de mai sus si felul de interactiune (cum se trece de la una la cealalta). Ce
+motivatie a existat in alegerile facute (font, culoare, flow-ul aplicatiei, etc.).
+Scholarly trebuie sa aiba adnotari semantice (a se citi felul in care trebuie construit
+aici: https://w3c.github.io/scholarly-html/ - link dat in descrierea proiectelor)
+
+
+Documentele sa fie neaparat asezate in foldere, pe categorii:
+IMG / CSS / JS / etc. 
+
+Paginile trebuie sa fie valide HTML (vor fi validate cu https://validator.w3.org)
+
+CSSul trebuie sa fie valide cu http://csslint.net/
+
+Paginile trebuie sa fie responsive.... le voi verifica prin micsorarea ferestrei dar
+si prin selectarea telefon / PC (ma astept ca diversele elemente grafice sa nu 
+se suprapuna in rezolutii mai mici, sa nu apara scrolluri orizontale (decat daca au
+fost gandite din design - fapt specificat in scholarly), textul sa fie citibil si pe
+telefon si pagina sa nu fie doar scalata de catre acesta intr-o incercare a acestuia
+a afisa ceva cat de cat corect.
+
+Siteul trebuie sa fie navigabil (dau click pe index.html si de acolo pot naviga apasand
+diverse linkuri sau butoane catre celelalte pagini).
+
+Sa nu fie erori de legatura intre diverse documente (de exemplu nu ma apuc sa vad eu pe
+unde este CSSul care nu se incarca in HTMLul vostru).
+
+Orice proiect trebuie sa aiba minim 5 pagini care respecta aceste conditii pentru
+a lua nota 5. Daca ai 10, vei lua 10.
+
+
