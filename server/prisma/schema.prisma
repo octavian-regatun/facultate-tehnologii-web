@@ -1,3 +1,11 @@
+// bunx prisma generate
+// bunx prisma db push
+
+// docker compose down
+// docker compose up -d
+
+// bun start
+
 generator client {
   provider = "prisma-client-js"
 }
