@@ -33,7 +33,10 @@ const createJwt = (user: User) => {
     throw new Error("JWT secret not found");
   }
 
-  return jwt.sign(user, secret, {
+  // Remove pass - too sensitive
+  const payload = { id: user.id, email: user.email, firstName: user.firstName, lastName: user.lastName };
+
+  return jwt.sign(payload, secret, {
     expiresIn: "1d",
   });
 };
@@ -43,16 +46,19 @@ export const signUp = async (user: User) => {
 
   const hashedPassword = bcrypt.hashSync(password, 10);
 
+  console.log(user);
   const newUser = await db.user.create({
     data: {
       ...user,
       password: hashedPassword,
     },
   });
+  console.log("aici");
+  console.log(user);
 
-  const jwt = createJwt(newUser);
+  const token = createJwt(newUser);
 
-  return jwt;
+  return { token };
 };
 
 export const signUpMiddleware: Middleware = (req, res) => {
@@ -67,7 +73,7 @@ export const signUpMiddleware: Middleware = (req, res) => {
 
     try {
       const newUser = await signUp(user);
-
+      console.log(newUser);
       res.writeHead(201, { "Content-Type": "application/json" });
       res.end(JSON.stringify(newUser));
     } catch (error) {
@@ -93,9 +99,9 @@ export const signIn = async (email: string, password: string) => {
     throw new Error("Invalid password");
   }
 
-  const jwt = createJwt(user);
+  const token = createJwt(user);
 
-  return jwt;
+  return { token };
 };
 
 export const signInMiddleware: Middleware = async (req, res) => {
