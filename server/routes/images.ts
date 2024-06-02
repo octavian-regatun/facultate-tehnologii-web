@@ -1,11 +1,9 @@
 import https from 'https';
 import { google } from "googleapis";
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { db } from "../db";
+import type { Middleware } from "../router";
 
 type photoData = {
-  id: number;
   userId: number;
   binaryString: string;
   source: SourceType;
@@ -75,15 +73,13 @@ const fetchPhotoData = async (url: string): Promise<Buffer> => {
   });
 };
 
+// Function to save photo data to the database
 export const savePhotoToDb = async (data: photoData) => {
   try {
-    const convertedUrl = await fetchPhotoData(data.binaryString);
-    const base64String = convertedUrl.toString('base64');
-
-    const newPhoto = await prisma.photo.create({
+    const newPhoto = await db.photo.create({
       data: {
         userId: data.userId,
-        binaryString: base64String,
+        binaryString: data.binaryString,
         source: data.source,
         description: data.description || null,
         likes: data.likes || null,
@@ -98,5 +94,76 @@ export const savePhotoToDb = async (data: photoData) => {
   } catch (error) {
     console.error('Failed to save photo to the database:', (error as Error).message);
     throw error;
+  }
+};
+
+// Middleware to handle image upload
+export const uploadImageMiddleware: Middleware = async (req, res) => {
+  let body = "";
+
+  req.on("data", (chunk) => {
+    body += chunk;
+  });
+
+  req.on("end", async () => {
+    try {
+      const data = JSON.parse(body) as photoData;
+
+      if (!data.binaryString || !data.userId || !data.source) {
+        res.writeHead(400, { "Content-Type": "text/plain" });
+        res.end("Missing required fields: binaryString, userId, source");
+        return;
+      }
+
+      const imageData = await fetchPhotoData(data.binaryString);
+
+      // Save to DB - change the binaryString to the newly obtained string ^^
+      const newPhoto = await savePhotoToDb({
+        ...data,
+        binaryString: imageData.toString('base64')
+      });
+
+      res.writeHead(201, { "Content-Type": "application/json" });
+      res.end(JSON.stringify(newPhoto));
+    } catch (error) {
+      console.error('Failed to upload image:', error);
+      res.writeHead(500, { "Content-Type": "text/plain" });
+      res.end("Internal Server Error");
+    }
+  });
+};
+
+
+
+
+export const getPhotosMiddleware: Middleware = async (req, res) => {
+  const urlParts = req.url?.split('/');
+  const userId = urlParts ? parseInt(urlParts[urlParts.length - 1], 10) : NaN;
+
+  if (isNaN(userId)) {
+    res.writeHead(400, { "Content-Type": "text/plain" });
+    res.end("Invalid user ID");
+    return;
+  }
+
+  try {
+    const photos = await db.photo.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+
+    if (photos.length === 0) {
+      res.writeHead(404, { "Content-Type": "text/plain" });
+      res.end("No photos found for this user");
+      return;
+    }
+
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify(photos));
+  } catch (error) {
+    console.error('Failed to retrieve photos:', error);
+    res.writeHead(500, { "Content-Type": "text/plain" });
+    res.end("Internal Server Error");
   }
 };

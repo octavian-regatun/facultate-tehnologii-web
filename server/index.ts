@@ -1,6 +1,7 @@
 import http from "http";
 import { Router } from "./router";
-import { signInMiddleware, signUpMiddleware } from "./routes/auth";
+import { isAuthenticated, signInMiddleware, signUpMiddleware } from "./routes/auth";
+import { uploadImageMiddleware, getPhotosMiddleware } from "./routes/images";
 import { getYoutubeThumbnail } from './routes/images';
 
 //console.log(await getYoutubeThumbnail("REt5yDh8eGg"));
@@ -12,6 +13,11 @@ const server = http.createServer((req, res) => {
   router.post("/auth/signup", signUpMiddleware);
   router.post("/auth/signin", signInMiddleware);
   // router.get("/images/youtube", isAuthenticated, fn);
+  
+  router.post("/photos", isAuthenticated, uploadImageMiddleware);
+  if (req.url?.startsWith("/photos/") && req.method === "GET") {
+    getPhotosMiddleware(req, res, () => {});
+  }
 });
 
 server.listen(8081).on("listening", () => {
