@@ -131,7 +131,7 @@ document.addEventListener('photosLoaded', () => {
     modalCards[0].querySelector('.card-image').src = previousCard.querySelector('img').src;
     modalCards[0].querySelector('.card-content-description').textContent = previousCard.querySelector('.card-content-description').textContent;
 
-    // Right card
+    // Right card - if it exists. Otherwise just hide the arrows
     if (modalCards.length > 2) {
       let nextCard = index == (siblings.length - 1) ? siblings[0] : siblings[index + 1];
       modalCards[2].querySelector('.card-image').src = nextCard.querySelector('img').src;

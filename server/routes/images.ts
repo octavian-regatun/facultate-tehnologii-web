@@ -153,12 +153,6 @@ export const getPhotosMiddleware: Middleware = async (req, res) => {
       },
     });
 
-    if (photos.length === 0) {
-      res.writeHead(404, { "Content-Type": "text/plain" });
-      res.end("No photos found for this user");
-      return;
-    }
-
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(photos));
   } catch (error) {

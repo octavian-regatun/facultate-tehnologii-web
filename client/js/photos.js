@@ -25,27 +25,38 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.dispatchEvent(new Event('photosLoaded'));
         } else {
             const error = await response.text();
-            //console.error("Failed to fetch photos:", error);
-
-            const container = document.querySelector('.container');
-            const div = document.createElement('div');
-            const p = document.createElement('p');
-            p.textContent = "Oops..Looks like you don't have any photos. Try fetching some first!";
-            const img = document.createElement('img');
-            img.src = '../svgs/no-imgs.svg';
-
-            div.appendChild(p);
-            div.appendChild(img);
-            container.appendChild(div);
+            console.error("Failed to fetch photos:", error);
+            displayNoPhotosMessage("Oops..Looks like you don't have any photos. Try fetching some first!");
         }
     } catch (error) {
         console.error("Error fetching photos:", error);
+        displayNoPhotosMessage("Oops..there were some problems in getting your photos. Try again using a page refresh!");
     }
 });
+
+
+// Self-explanatory
+function displayNoPhotosMessage(msg) {
+    const container = document.querySelector('.container');
+    const div = document.createElement('div');
+    const p = document.createElement('p');
+    p.textContent = msg;
+    const img = document.createElement('img');
+    img.src = '../svgs/no-imgs.svg';
+  
+    div.appendChild(p);
+    div.appendChild(img);
+    container.appendChild(div);
+  }
 
 function displayPhotos(photos) {
     const containerGrid = document.querySelector(".container-grid");
     containerGrid.innerHTML = ""; // I don't think there will be anything here, but just to be sure
+
+    if(photos.length === 0) {
+        displayNoPhotosMessage("Oops..Looks like you don't have any photos. Try fetching some first!");
+        return;
+    }
 
     photos.forEach(photo => {
         const card = document.createElement("div");
