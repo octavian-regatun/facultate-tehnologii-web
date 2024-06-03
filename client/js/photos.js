@@ -25,7 +25,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.dispatchEvent(new Event('photosLoaded'));
         } else {
             const error = await response.text();
-            console.error("Failed to fetch photos:", error);
+            //console.error("Failed to fetch photos:", error);
+
+            const container = document.querySelector('.container');
+            const div = document.createElement('div');
+            const p = document.createElement('p');
+            p.textContent = "Oops..Looks like you don't have any photos. Try fetching some first!";
+            const img = document.createElement('img');
+            img.src = '../svgs/no-imgs.svg';
+
+            div.appendChild(p);
+            div.appendChild(img);
+            container.appendChild(div);
         }
     } catch (error) {
         console.error("Error fetching photos:", error);

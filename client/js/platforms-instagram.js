@@ -13,7 +13,6 @@ document.addEventListener('photosLoaded', () => {
   const initializeModalElements = () => {
     modalCards = modal.querySelectorAll('.card');
     if (modalCards.length === 0) {
-      console.error('No modal cards found');
       return false;
     }
     if (modalCards.length >= 1) {
@@ -95,11 +94,16 @@ document.addEventListener('photosLoaded', () => {
       return;
     }
 
-    // Update the single card if there is only one card
+    // Special case: 1 card
+    // Override the properties in the CSS file for the 1st card
     if (modalCards.length === 1) {
-      const card = modalCards[0];
-      card.querySelector('.card-image').src = imageSrc;
-      card.querySelector('.card-content-description').textContent = description;
+      modalCards[0].style.transform = 'none';
+      modalCards[0].style.filter = 'blur(0px)';
+      modalCards[0].style.zIndex = '3';
+      modalCards[0].style.pointerEvents = 'auto';
+
+      modalPreviousButton.style.display = 'none';
+      modalNextButton.style.display = 'none';
       modal.showModal();
       return;
     }
@@ -113,55 +117,28 @@ document.addEventListener('photosLoaded', () => {
     const siblings = Array.from(clickedCard.parentElement.children);
     const index = siblings.indexOf(clickedCard);
 
-    // Remove the carousel feature if there are UNDER 3 cards
-    if (siblings.length < 3) {
-      if (modalCards.length > 1) {
-        modalCards[0].style.display = siblings.length === 2 ? '' : 'none';
-        modalCards[2].style.display = 'none';
-      }
-      modalPreviousButton.style.display = siblings.length === 2 ? '' : 'none';
-      modalNextButton.style.display = siblings.length === 2 ? '' : 'none';
-    } else {
-      modalCards[0].style.display = '';
-      modalCards[2].style.display = '';
-      modalPreviousButton.style.display = '';
-      modalNextButton.style.display = '';
-    }
+    modalCards[0].style.display = '';
+    modalPreviousButton.style.display = '';
+    modalNextButton.style.display = '';
 
-    // If there are two cards, set the other card based on the position
-    if (siblings.length === 2) {
-      const otherCard = siblings[index === 0 ? 1 : 0];
-      const targetCard = modalCards[index === 0 ? 2 : 0];
-      targetCard.querySelector('.card-image').src = otherCard.querySelector('img').src;
-      targetCard.querySelector('.card-content-description').textContent = otherCard.querySelector('.card-content-description').textContent;
-      modal.showModal();
-      return;
+    if (modalCards.length > 2) {
+      modalCards[2].style.display = '';
     }
 
     // Left card
-    let previousCard;
-    if (index) {
-      previousCard = siblings[index - 1];
-    } else {
-      previousCard = siblings[siblings.length - 1];
-    }
+    let previousCard = index ? siblings[index - 1] : siblings[siblings.length - 1];
 
-    if (modalCards.length > 1) {
-      modalCards[0].querySelector('.card-image').src = previousCard.querySelector('img').src;
-      modalCards[0].querySelector('.card-content-description').textContent = previousCard.querySelector('.card-content-description').textContent;
-    }
+    modalCards[0].querySelector('.card-image').src = previousCard.querySelector('img').src;
+    modalCards[0].querySelector('.card-content-description').textContent = previousCard.querySelector('.card-content-description').textContent;
 
     // Right card
-    let nextCard;
-    if (index == siblings.length - 1) {
-      nextCard = siblings[0];
-    } else {
-      nextCard = siblings[index + 1];
-    }
-
     if (modalCards.length > 2) {
+      let nextCard = index == (siblings.length - 1) ? siblings[0] : siblings[index + 1];
       modalCards[2].querySelector('.card-image').src = nextCard.querySelector('img').src;
       modalCards[2].querySelector('.card-content-description').textContent = nextCard.querySelector('.card-content-description').textContent;
+    } else {
+      modalPreviousButton.style.display = 'none';
+      modalNextButton.style.display = 'none';
     }
 
     modal.showModal();
