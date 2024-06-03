@@ -46,19 +46,17 @@ export const signUp = async (user: User) => {
 
   const hashedPassword = bcrypt.hashSync(password, 10);
 
-  console.log(user);
   const newUser = await db.user.create({
     data: {
       ...user,
       password: hashedPassword,
     },
   });
-  console.log("aici");
   console.log(user);
 
   const token = createJwt(newUser);
 
-  return { token };
+  return { token, uid: newUser.id };
 };
 
 export const signUpMiddleware: Middleware = (req, res) => {
@@ -101,7 +99,7 @@ export const signIn = async (email: string, password: string) => {
 
   const token = createJwt(user);
 
-  return { token };
+  return { token, uid: user.id };
 };
 
 export const signInMiddleware: Middleware = async (req, res) => {
