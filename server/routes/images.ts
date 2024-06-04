@@ -5,6 +5,7 @@ import type { Middleware } from "../router";
 
 type photoData = {
   userId: number;
+  url: string;
   binaryString: string;
   source: SourceType;
   description?: string;
@@ -109,9 +110,9 @@ export const uploadImageMiddleware: Middleware = async (req, res) => {
     try {
       const data = JSON.parse(body) as photoData;
 
-      if (!data.binaryString || !data.userId || !data.source) {
+      if (!data.url || !data.binaryString || !data.userId || !data.source) {
         res.writeHead(400, { "Content-Type": "text/plain" });
-        res.end("Missing required fields: binaryString, userId, source");
+        res.end("Missing required fields: url, binaryString, userId, source");
         return;
       }
 
