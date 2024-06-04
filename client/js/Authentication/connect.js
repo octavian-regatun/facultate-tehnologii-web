@@ -1,3 +1,5 @@
+// Animation
+
 function toggleContainers(event) {
     const animDuration = 500;
     const signUpContainer = document.getElementById('sign-up');
@@ -86,7 +88,8 @@ document.addEventListener('click', function (event) {
 
 
 
-// Temporary redirect
+// Interaction with BE logic
+
 document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.getElementById("login-form");
     if (loginForm) {
@@ -94,8 +97,6 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
         const email = document.getElementById("email-log-in").value;
         const password = document.getElementById("log-in-pass-input").value;
-  
-        console.log("Login attempt:", { email, password });
   
         try {
           const response = await fetch("http://localhost:8081/auth/signin", {
@@ -114,9 +115,11 @@ document.addEventListener("DOMContentLoaded", () => {
           } else {
             const error = await response.text();
             console.error("Login failed:", error);
+            handleError(error);
           }
         } catch (error) {
           console.error("Error during login:", error);
+          handleError(error, 1);
         }
       });
     }
@@ -149,11 +152,32 @@ document.addEventListener("DOMContentLoaded", () => {
           } else {
             const error = await response.text();
             console.error("Signup failed:", error);
+            handleError(error);
           }
         } catch (error) {
           console.error("Error during signup:", error);
+          handleError(error, 1);
         }
       });
     }
   });
+
+
+  const handleError = (error, serverError) => {
+    const container = document.querySelector('body');
   
+    const existingErrorDiv = document.querySelector('.error-message');
+    if (existingErrorDiv) {
+      existingErrorDiv.remove();
+    }
+    const errorDiv = document.createElement('div');
+    errorDiv.classList.add('error-message');
+    
+    if (serverError !== undefined) {
+      errorDiv.textContent = "Something went wrong, try again";
+    } else {
+      errorDiv.textContent = error;
+    }
+  
+    container.appendChild(errorDiv);
+  };

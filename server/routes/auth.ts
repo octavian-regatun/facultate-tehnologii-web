@@ -90,11 +90,11 @@ export const signIn = async (email: string, password: string) => {
   });
 
   if (!user) {
-    throw new Error("User not found");
+    throw new Error("Wrong e-mail");
   }
 
   if (!bcrypt.compareSync(password, user.password)) {
-    throw new Error("Invalid password");
+    throw new Error("Incorrect password");
   }
 
   const token = createJwt(user);
