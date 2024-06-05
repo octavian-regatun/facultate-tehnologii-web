@@ -21,6 +21,8 @@ model User {
   firstName String
   lastName  String
   password  String
+  resetPasswordToken  String?
+  resetPasswordExpires DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

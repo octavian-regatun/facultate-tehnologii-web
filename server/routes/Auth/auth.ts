@@ -1,7 +1,7 @@
 import type { User } from "@prisma/client";
 import bcrypt from "bcrypt";
-import { db } from "../db";
-import type { Middleware } from "../router";
+import { db } from "../../db";
+import type { Middleware } from "../../router";
 import jwt from "jsonwebtoken";
 
 export const isAuthenticated: Middleware = (req, res, next) => {

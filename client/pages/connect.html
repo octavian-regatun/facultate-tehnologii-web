@@ -24,20 +24,22 @@
             </p>
             <form id="login-form">
                 <div class="input-container">
-                    <label for="email">E-mail</label>
-                    <input type="email" name="email" id="email-log-in" placeholder="Enter your email">
+                    <label for="email-log-in">E-mail</label>
+                    <input type="email" name="email" id="email-log-in" placeholder="Enter your email"
+                        autocomplete="email">
                 </div>
                 <div class="input-container">
-                    <label for="password">Password</label>
+                    <label for="log-in-pass-input">Password</label>
                     <input type="password" name="password" placeholder="Enter your password" id="log-in-pass-input">
                     <button type="button" class="pass-btn btn">
                         <!-- <img src="../svgs/password-eye.svg" alt="Hide/Show" class="pass-icon"> -->
-                        <svg class="pass-icon" id="log-in-pass-btn" viewBox="0 0 24.00 24.00" fill="none"
+                        <svg class="pass-icon eye-icon" id="log-in-pass-btn" viewBox="0 0 24.00 24.00" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                             <g id="SVGRepo_iconCarrier">
-                                <path d="M2 2L22 22" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" id="log-in-svg-path" style="display: none;">
+                                <path d="M2 2L22 22" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"
+                                    id="log-in-svg-path" style="display: none;">
                                 </path>
                                 <path
                                     d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 
@@ -52,7 +54,8 @@
                         </svg>
                     </button>
                 </div>
-                <span class="forgot-pwd">Forgot password?<button class="btn">Reset it</button></span>
+                <span class="forgot-pwd">Forgot password?<button class="btn handle-forgot-pwd" type="button">Reset
+                        it</button></span>
                 <button class="form-btn">Log In</button>
             </form>
             <p class="change-form">Don't have an account? <button type="submit" class="change-form-btn btn"
@@ -73,28 +76,30 @@
             </p>
             <form action="" id="signup-form">
                 <div class="input-container">
-                    <label for="fname">First Name</label>
+                    <label for="firstName">First Name</label>
                     <input type="text" name="firstName" id="firstName" placeholder="Enter your first name">
                 </div>
                 <div class="input-container">
-                    <label for="lname">Last Name</label>
+                    <label for="lastName">Last Name</label>
                     <input type="text" name="lastName" id="lastName" placeholder="Enter your last name">
                 </div>
                 <div class="input-container">
-                    <label for="email">E-mail</label>
-                    <input type="email" name="email" id="email-sign-up" placeholder="Enter your email">
+                    <label for="email-sign-up">E-mail</label>
+                    <input type="email" name="email" id="email-sign-up" placeholder="Enter your email"
+                        autocomplete="email">
                 </div>
                 <div class="input-container">
-                    <label for="password">Password</label>
+                    <label for="sign-up-pass-input">Password</label>
                     <input type="password" name="password" placeholder="Enter your password" id="sign-up-pass-input">
                     <button type="button" class="pass-btn btn">
                         <!-- <img src="../svgs/password-eye.svg" alt="Hide/Show" class="pass-icon"> -->
-                        <svg class="pass-icon" id="sign-up-pass-btn" viewBox="0 0 24.00 24.00" fill="none"
+                        <svg class="pass-icon eye-icon" id="sign-up-pass-btn" viewBox="0 0 24.00 24.00" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                             <g id="SVGRepo_iconCarrier">
-                                <path d="M2 2L22 22" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" id="sign-up-svg-path" style="display: none;">
+                                <path d="M2 2L22 22" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"
+                                    id="sign-up-svg-path" style="display: none;">
                                 </path>
                                 <path
                                     d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 
@@ -118,6 +123,33 @@
         <div class="connect-photo"></div>
     </div>
 
+    <div class="container flex" id="forgot-pwd" style="display: none;">
+        <div class="connect-container">
+            <p class="title">
+                It's not over!
+            </p>
+            <p class="subtitle">
+                Please write below your email address
+            </p>
+            <form id="forgot-pwd-form">
+                <div class="input-container">
+                    <label for="email-forgot-pwd">E-mail</label>
+                    <input type="email" name="email" id="email-forgot-pwd" placeholder="Fill..." autocomplete="email">
+                </div>
+
+                <button class="form-btn">Send email</button>
+                <div id="email-sent-confirmation">
+                    An email has been sent. You can close this tab
+                </div>
+            </form>
+            <p>Remembered the password? <button type="submit" class="handle-forgot-pwd change-form-btn btn"
+                    id="hide-forgot-pwd">Go back</button></p>
+            
+        </div>
+
+        <div class="connect-photo"></div>
+    </div>
+    <script src="../js/Authentication/connectAnim.js"></script>
     <script src="../js/Authentication/connect.js"></script>
 </body>
 

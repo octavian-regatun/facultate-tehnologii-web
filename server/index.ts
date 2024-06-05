@@ -1,6 +1,8 @@
 import http from "http";
 import { Router } from "./router";
-import { isAuthenticated, signInMiddleware, signUpMiddleware } from "./routes/auth";
+import { isAuthenticated, signInMiddleware, signUpMiddleware } from "./routes/Auth/auth";
+import { emailOAuth2Middleware } from "./routes/Auth/emailOAuth2";
+import { forgotPasswordMiddleware, resetPasswordMiddleware } from "./routes/Auth/forgotPwd";
 import { uploadImageMiddleware, getPhotosMiddleware } from "./routes/images";
 import { getYoutubeThumbnail } from './routes/images';
 
@@ -22,12 +24,19 @@ const server = http.createServer((req, res) => {
 
   router.post("/auth/signup", signUpMiddleware);
   router.post("/auth/signin", signInMiddleware);
+  router.post("/auth/forgot-password", forgotPasswordMiddleware);
+  router.post("/auth/reset-password", resetPasswordMiddleware);
   // router.get("/images/youtube", isAuthenticated, fn);
 
   router.post("/photos", isAuthenticated, uploadImageMiddleware);
 
   if (req.url?.startsWith("/photos/") && req.method === "GET") {
     getPhotosMiddleware(req, res, () => { });
+  }
+
+  // Used only by getToken.js
+  if (req.url?.startsWith("/oauth2callback") && req.method === "GET") {
+    emailOAuth2Middleware(req, res, () => { });
   }
 });
 
