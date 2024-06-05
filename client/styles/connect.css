@@ -155,6 +155,14 @@ body {
     align-self: center;
 }
 
+.forgot-pwd {
+    align-self: center;
+}
+
+.forgot-pwd > * {
+    margin-left: 10px;
+}
+
 
 .change-form-btn {
     color: var(--secondary);
@@ -177,6 +185,7 @@ body {
     position: absolute;
     top: 5%;
     background-color: var(--secondary);
+    border: 1px solid var(--primary-light);
     color: white;
     border-radius: 5px;
     padding: 1em 2em;

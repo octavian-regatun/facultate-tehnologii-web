@@ -42,7 +42,21 @@ const createJwt = (user: User) => {
 };
 
 export const signUp = async (user: User) => {
-  const { password } = user;
+  const { firstName, lastName, password, email } = user;
+
+  if(!firstName || !lastName || !password || !email) {
+    throw new Error("Fill in all the fields!");
+  }
+
+  const existingUser = await db.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (existingUser) {
+    throw new Error("Email already in use");
+  }
 
   const hashedPassword = bcrypt.hashSync(password, 10);
 
@@ -52,7 +66,6 @@ export const signUp = async (user: User) => {
       password: hashedPassword,
     },
   });
-  console.log(user);
 
   const token = createJwt(newUser);
 
@@ -71,13 +84,12 @@ export const signUpMiddleware: Middleware = (req, res) => {
 
     try {
       const newUser = await signUp(user);
-      console.log(newUser);
       res.writeHead(201, { "Content-Type": "application/json" });
       res.end(JSON.stringify(newUser));
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      res.writeHead(500, { "Content-Type": "text/plain" });
-      res.end("Internal Server Error");
+      res.writeHead(401, { "Content-Type": "text/plain" });
+      res.end(error?.message);
     }
   });
 };
