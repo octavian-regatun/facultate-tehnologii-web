@@ -80,7 +80,7 @@ function displayPhotos(photos) {
 
 async function displayModalPhotos(photos, token) {
     const modalContent = document.querySelector(".modal");
-    modalContent.innerHTML = ""; // Same as above
+    modalContent.innerHTML = ""; // Clear existing content
 
     const previousButton = document.createElement("button");
     previousButton.classList.add("modal-previous-button");
@@ -164,9 +164,49 @@ async function displayModalPhotos(photos, token) {
             commentsSection.appendChild(commentDiv);
         }
 
+        const editSection = document.createElement("div");
+        editSection.classList.add("card-content-edit");
+
+        const createSlider = (labelText) => {
+            const sliderContainer = document.createElement("div");
+            sliderContainer.classList.add("card-content-edit-slider");
+
+            const label = document.createElement("label");
+            label.textContent = labelText;
+
+            const input = document.createElement("input");
+            input.type = "range";
+            input.min = "0";
+            input.max = "100";
+            input.value = "50";
+
+            sliderContainer.appendChild(label);
+            sliderContainer.appendChild(input);
+
+            return sliderContainer;
+        };
+
+        const opacitySlider = createSlider("Opacity");
+        const hueSlider = createSlider("Hue");
+        const saturationSlider = createSlider("Saturation");
+        const lightnessSlider = createSlider("Lightness");
+
+        editSection.appendChild(opacitySlider);
+        editSection.appendChild(hueSlider);
+        editSection.appendChild(saturationSlider);
+        editSection.appendChild(lightnessSlider);
+
+        const saveButton = document.createElement("button");
+        saveButton.classList.add("card-content-edit-save-button");
+        saveButton.textContent = "Save";
+
+        editSection.appendChild(saveButton);
+
         cardContent.appendChild(cardDescription);
         cardContent.appendChild(cardActions);
         cardContent.appendChild(commentsSection);
+        cardContent.appendChild(editSection);
+
         card.appendChild(closeButton);
         card.appendChild(cardImage);
         card.appendChild(cardContent);

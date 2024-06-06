@@ -8,7 +8,7 @@ document.addEventListener('photosLoaded', () => {
 	}
 
 	let modalClose, modalCards, editButton;
-	let currentIndex;
+	let currentIndex = 0;
 
 	// Initialize (needed if the modal is closed and reopened)
 	const initializeModalElements = () => {
@@ -16,8 +16,7 @@ document.addEventListener('photosLoaded', () => {
 		if (modalCards.length === 0) {
 			return false;
 		}
-		modalClose = modalCards[0].querySelector('.modal-close');
-		editButton = modalCards[0].querySelector('.card-content-edit-button');
+		modalClose = modalCards[currentIndex].querySelector('.modal-close');
 		modalCards.forEach(card => {
 			card.style.display = 'none';
 			card.style.transform = 'translateX(0%) rotateZ(0deg) scale(1)';
@@ -97,6 +96,8 @@ document.addEventListener('photosLoaded', () => {
 
 		// Special case: 1 card
 		if (modalCards.length === 1) {
+			modalCards[0].style.display = 'flex';
+			editButton = modalCards[0].querySelector('.card-content-edit-button');
 			modalPreviousButton.style.display = 'none';
 			modalNextButton.style.display = 'none';
 			modal.showModal();
@@ -109,8 +110,11 @@ document.addEventListener('photosLoaded', () => {
 		const index = siblings.indexOf(clickedCard);
 		currentIndex = index;
 
+		editButton = modalCards[currentIndex].querySelector('.card-content-edit-button');
+
 		// Display only the selected cards + neighbours
 		modalCards[index].style.display = 'flex';
+		modalCards[index].style.pointerEvents = 'auto';
 		let previousCard, nextCard;
 
 		// Special case: 2 cards
@@ -186,21 +190,26 @@ document.addEventListener('photosLoaded', () => {
 		const rightCard = modalCards[rightIndex];
 
 		currentIndex = (currentIndex - 1 + modalCards.length) % modalCards.length;
+		editButton = modalCards[currentIndex].querySelector('.card-content-edit-button');
 
 		newLeftCard.style.transform = 'translateX(-30%) rotateZ(-8deg) scale(0.7)';
 		newLeftCard.style.zIndex = '0';
 		newLeftCard.style.filter = 'blur(2px)';
+		newLeftCard.style.pointerEvents = 'none';
 
 		leftCard.style.transform = 'translateX(0) rotateZ(0deg) scale(1.0)';
 		leftCard.style.zIndex = '1';
 		leftCard.style.filter = 'blur(0px)';
+		leftCard.style.pointerEvents = 'auto';
 
 		centerCard.style.transform = 'translateX(30%) rotateZ(8deg) scale(0.7)';
 		centerCard.style.zIndex = '0';
 		centerCard.style.filter = 'blur(2px)';
+		centerCard.style.pointerEvents = 'none';
 
 		newLeftCard.style.display = 'flex';
 		rightCard.style.display = 'none';
+		rightCard.style.pointerEvents = 'none';
 	});
 
 
@@ -218,35 +227,40 @@ document.addEventListener('photosLoaded', () => {
 		const leftCard = modalCards[leftIndex];
 
 		currentIndex = (currentIndex + 1) % modalCards.length;
+		editButton = modalCards[currentIndex].querySelector('.card-content-edit-button');
 
 		newRightCard.style.transform = 'translateX(30%) rotateZ(8deg) scale(0.7)';
 		newRightCard.style.zIndex = '0';
 		newRightCard.style.filter = 'blur(2px)';
+		newRightCard.style.pointerEvents = 'none';
 
 		rightCard.style.transform = 'translateX(0) rotateZ(0deg) scale(1.0)';
 		rightCard.style.zIndex = '1';
 		rightCard.style.filter = 'blur(0px)';
+		rightCard.style.pointerEvents = 'auto';
 
 		centerCard.style.transform = 'translateX(-30%) rotateZ(-8deg) scale(0.7)';
 		centerCard.style.zIndex = '0';
 		centerCard.style.filter = 'blur(2px)';
+		centerCard.style.pointerEvents = 'none';
 
 		leftCard.style.display = 'none';
 		newRightCard.style.display = 'flex';
+		newRightCard.style.pointerEvents = 'none';
 	});
 
 
-	const handleSliders = (e) => {
-		const description = modal.querySelector('.card:nth-of-type(2) .card-content-description');
-		const comments = modal.querySelector('.card:nth-of-type(2) .card-content-comments');
+	const handleSliders = () => {
+		const description = modalCards[currentIndex].querySelector('.card-content-description');
+		const comments = modalCards[currentIndex].querySelector('.card-content-comments');
 
 		if (description.style.display === 'none' || comments.style.display === 'none') {
-			modal.querySelector('.card:nth-of-type(2) .card-content-comments').style.display = 'block';
-			modal.querySelector('.card:nth-of-type(2) .card-content-edit').style.display = 'none';
+			comments.style.display = 'block';
+			modalCards[currentIndex].querySelector('.card-content-edit').style.display = 'none';
 			editButton.style.backgroundColor = 'rgba(0, 0, 0, 0)';
 		} else {
-			modal.querySelector('.card:nth-of-type(2) .card-content-comments').style.display = 'none';
-			modal.querySelector('.card:nth-of-type(2) .card-content-edit').style.display = 'block';
+			comments.style.display = 'none';
+			modalCards[currentIndex].querySelector('.card-content-edit').style.display = 'block';
 			editButton.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
 		}
 	};
