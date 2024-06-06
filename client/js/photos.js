@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (response.ok) {
             const photos = await response.json();
             displayPhotos(photos);
-            displayModalPhotos(photos);
+            await displayModalPhotos(photos, token);
 
             // Dispatch custom event after photos are displayed
             document.dispatchEvent(new Event('photosLoaded'));
@@ -34,8 +34,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-
-// Self-explanatory
 function displayNoPhotosMessage(msg) {
     const container = document.querySelector('.container');
     const div = document.createElement('div');
@@ -43,17 +41,17 @@ function displayNoPhotosMessage(msg) {
     p.textContent = msg;
     const img = document.createElement('img');
     img.src = '../svgs/no-imgs.svg';
-  
+
     div.appendChild(p);
     div.appendChild(img);
     container.appendChild(div);
-  }
+}
 
 function displayPhotos(photos) {
     const containerGrid = document.querySelector(".container-grid");
     containerGrid.innerHTML = ""; // I don't think there will be anything here, but just to be sure
 
-    if(photos.length === 0) {
+    if (photos.length === 0) {
         displayNoPhotosMessage("Oops..Looks like you don't have any photos. Try fetching some first!");
         return;
     }
@@ -80,7 +78,7 @@ function displayPhotos(photos) {
     });
 }
 
-function displayModalPhotos(photos) {
+async function displayModalPhotos(photos, token) {
     const modalContent = document.querySelector(".modal");
     modalContent.innerHTML = ""; // Same as above
 
@@ -91,7 +89,11 @@ function displayModalPhotos(photos) {
     previousButton.appendChild(previousButtonIcon);
     modalContent.appendChild(previousButton);
 
-    photos.slice(0, 3).forEach(photo => {
+    // Fetch comments for all photos
+    const commentsPromises = photos.map(photo => getCommentsFromDB(photo.id, token));
+    const allComments = await Promise.all(commentsPromises);
+
+    photos.forEach((photo, index) => {
         const card = document.createElement("div");
         card.classList.add("card");
 
@@ -141,18 +143,25 @@ function displayModalPhotos(photos) {
         commentsTitle.textContent = "Comments";
         commentsSection.appendChild(commentsTitle);
 
-        if (photo.comments) {
-            photo.comments.forEach(comment => {
+        const comments = allComments[index];
+        if (comments && comments.length) {
+            comments.forEach(comment => {
                 const commentDiv = document.createElement("div");
                 commentDiv.classList.add("card-content-comment");
-                const commentIcon = document.createElement("img");
-                commentIcon.src = "../svgs/user-circle.svg";
+                const commentIcon = document.createElement("p");
+                commentIcon.textContent = comment.author;
                 const commentText = document.createElement("p");
-                commentText.textContent = comment;
+                commentText.textContent = comment.content;
                 commentDiv.appendChild(commentIcon);
                 commentDiv.appendChild(commentText);
                 commentsSection.appendChild(commentDiv);
             });
+        } else {
+            const commentDiv = document.createElement("div");
+            const commentText = document.createElement("p");
+            commentText.textContent = "There are no comments";
+            commentDiv.appendChild(commentText);
+            commentsSection.appendChild(commentDiv);
         }
 
         cardContent.appendChild(cardDescription);
@@ -171,3 +180,27 @@ function displayModalPhotos(photos) {
     nextButton.appendChild(nextButtonIcon);
     modalContent.appendChild(nextButton);
 }
+
+const getCommentsFromDB = async (id, token) => {
+    try {
+        const response = await fetch(`http://localhost:8081/comments/${id}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (response.ok) {
+            const comments = await response.json();
+            return comments;
+        } else {
+            const error = await response.text();
+            console.error("Failed to fetch comments:", error);
+            return [];
+        }
+    } catch (error) {
+        console.error("Error fetching comments:", error);
+        return [];
+    }
+};

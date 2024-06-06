@@ -4,6 +4,7 @@ import { isAuthenticated, signInMiddleware, signUpMiddleware } from "./routes/Au
 import { emailOAuth2Middleware } from "./routes/Auth/emailOAuth2";
 import { forgotPasswordMiddleware, resetPasswordMiddleware } from "./routes/Auth/forgotPwd";
 import { uploadImageMiddleware, getPhotosMiddleware } from "./routes/images";
+import { getCommentsMiddleware } from "./routes/comments";
 import { getYoutubeThumbnail } from './routes/images';
 
 //console.log(await getYoutubeThumbnail("REt5yDh8eGg"));
@@ -32,6 +33,9 @@ const server = http.createServer((req, res) => {
 
   if (req.url?.startsWith("/photos/") && req.method === "GET") {
     getPhotosMiddleware(req, res, () => { });
+  }
+  if (req.url?.startsWith("/comments/") && req.method === "GET") {
+    getCommentsMiddleware(req, res, () => { });
   }
 
   // Used only by getToken.js
