@@ -167,7 +167,7 @@ async function displayModalPhotos(photos, token) {
         const editSection = document.createElement("div");
         editSection.classList.add("card-content-edit");
 
-        const createSlider = (labelText) => {
+        const createSlider = (labelText, min, max, def) => {
             const sliderContainer = document.createElement("div");
             sliderContainer.classList.add("card-content-edit-slider");
 
@@ -176,9 +176,9 @@ async function displayModalPhotos(photos, token) {
 
             const input = document.createElement("input");
             input.type = "range";
-            input.min = "0";
-            input.max = "100";
-            input.value = "50";
+            input.min = min;
+            input.max = max;
+            input.value = def;
 
             sliderContainer.appendChild(label);
             sliderContainer.appendChild(input);
@@ -186,21 +186,30 @@ async function displayModalPhotos(photos, token) {
             return sliderContainer;
         };
 
-        const opacitySlider = createSlider("Opacity");
-        const hueSlider = createSlider("Hue");
-        const saturationSlider = createSlider("Saturation");
-        const lightnessSlider = createSlider("Lightness");
+        const opacitySlider = createSlider("Opacity", 0, 100, 100);
+        const hueSlider = createSlider("Hue", 0, 360, 0);
+        const saturationSlider = createSlider("Saturation", 0, 100, 100);
+        const lightnessSlider = createSlider("Lightness", 0, 100, 100);
 
         editSection.appendChild(opacitySlider);
         editSection.appendChild(hueSlider);
         editSection.appendChild(saturationSlider);
         editSection.appendChild(lightnessSlider);
 
+        const filterButtonsContainer = document.createElement("div");
+        filterButtonsContainer.classList.add("filter-btn-container");
+
+        const resetButton = document.createElement("button");
+        resetButton.classList.add("card-content-edit-reset-button");
+        resetButton.textContent = "Reset";
+
         const saveButton = document.createElement("button");
         saveButton.classList.add("card-content-edit-save-button");
         saveButton.textContent = "Save";
 
-        editSection.appendChild(saveButton);
+        filterButtonsContainer.appendChild(resetButton);
+        filterButtonsContainer.appendChild(saveButton);
+        editSection.appendChild(filterButtonsContainer);
 
         cardContent.appendChild(cardDescription);
         cardContent.appendChild(cardActions);

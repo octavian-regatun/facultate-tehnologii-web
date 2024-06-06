@@ -80,7 +80,8 @@ export const savePhotoToDb = async (data: photoData) => {
     const newPhoto = await db.photo.create({
       data: {
         userId: data.userId,
-        binaryString: data.binaryString,
+        url: data.url || null,
+        binaryString: data.binaryString || null,
         source: data.source,
         description: data.description || null,
         likes: data.likes || null,
@@ -110,19 +111,26 @@ export const uploadImageMiddleware: Middleware = async (req, res) => {
     try {
       const data = JSON.parse(body) as photoData;
 
-      if (!data.url || !data.binaryString || !data.userId || !data.source) {
+      if ((!data.binaryString && !data.url) || !data.userId || !data.source) {
         res.writeHead(400, { "Content-Type": "text/plain" });
-        res.end("Missing required fields: url, binaryString, userId, source");
+        res.end("Missing required fields: binaryString OR url, userId, source");
         return;
       }
 
-      const imageData = await fetchPhotoData(data.binaryString);
 
-      // Save to DB - change the binaryString to the newly obtained string ^^
-      const newPhoto = await savePhotoToDb({
-        ...data,
-        binaryString: imageData.toString('base64')
-      });
+      // There are two types of saving methods:
+      // - using an URL
+      // - using a base 64 string
+      let imageData, newPhoto;
+      if (data.url) {
+        imageData = await fetchPhotoData(data.url);
+        newPhoto = await savePhotoToDb({
+          ...data,
+          binaryString: imageData.toString('base64')
+        });
+      } else {
+        newPhoto = await savePhotoToDb(data);
+      }
 
       res.writeHead(201, { "Content-Type": "application/json" });
       res.end(JSON.stringify(newPhoto));

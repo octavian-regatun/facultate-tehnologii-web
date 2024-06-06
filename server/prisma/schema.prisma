@@ -31,7 +31,7 @@ model Photo {
   id           Int      @id @default(autoincrement())
   userId       Int
   url          String?  @unique
-  binaryString String
+  binaryString String?
   source       SourceType
   description  String?
   likes        Int?

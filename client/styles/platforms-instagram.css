@@ -50,7 +50,8 @@
 
 .card-image {
   max-height: 50vh;
-  max-width: 20vw;
+  /* max-width: 23vw; */
+  max-width: 100%;
   border-radius: 8px 8px 0 0;
 }
 
@@ -84,6 +85,10 @@
   position: absolute;
   z-index: 1;
   transform: all 200ms;
+}
+
+.modal .card img {
+  max-width: 20vw;
 }
 
 .modal .card:hover {
@@ -291,7 +296,11 @@
   margin-top: 3px;
 }
 
-.card-content-edit-save-button {
+.filter-btn-container {
+  display: flex;
+}
+
+.card-content-edit-save-button, .card-content-edit-reset-button {
   background-color: #75d479;
   color: black;
   padding: 8px 16px;
@@ -303,7 +312,7 @@
   display: block;
 }
 
-.card-content-edit-save-button:hover {
+.card-content-edit-save-button:hover, .card-content-edit-reset-button:hover {
   background-color: #5cbf5a;
   transition: all 0.2s;
   border: 0;
@@ -379,6 +388,11 @@ input[type="range"]::-ms-thumb {
 }
 
 
+@media screen and (max-width: 1200px) {
+  .modal .card img {
+    max-width: 50vw;
+  }
+}
 
 
 @media screen and (max-width: 720px) {
@@ -387,5 +401,9 @@ input[type="range"]::-ms-thumb {
   }
   .modal .card {
     transform: none !important;
+  }
+
+  .modal .card img {
+    max-width: 70vw;
   }
 }

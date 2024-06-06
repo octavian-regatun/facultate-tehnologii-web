@@ -1,54 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>M-PIC - Platforms - All</title>
-    <link rel="stylesheet" href="../styles/platforms-instagram.css" />
-    <link rel="stylesheet" href="../styles/global.css">
-  </head>
 
-  <body>
-    <nav class="navbar">
-        <div class="navbar-left-side">
-          <img class="navbar-logo" src="../imgs/logo.webp" />
-          <p class="navbar-page">Platforms / All</p>
-        </div>
-        <div class="navbar-right-side">
-          <input class="navbar-search input-text-field" placeholder="Search" />
-          <button
-            class="navbar-profile button-icon"
-            onclick="alert('Urmeaza sa adaugăm pagina de profil cu funcționalitățile aferente')"
-          >
-            <img
-              class="navbar-profile-image"
-              src="../svgs/user-circle.svg"
-              alt="profile"
-            />
-          </button>
-          <button class="btn log-out-btn">Log out</button>
-        </div>
-      </nav>
-  
-      <aside class="sidebar">
-        <a href="../pages/platforms-all.html"><img src="../svgs/home.svg" /></a>
-        <a href="../pages/platforms.html"><img src="../svgs/dashboard.svg" /></a>
-      </aside>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>M-PIC - Platforms - All</title>
+  <link rel="stylesheet" href="../styles/platforms-instagram.css" />
+  <link rel="stylesheet" href="../styles/global.css">
+</head>
 
-    <main class="container">
-      <div class="container-grid">
-        <!--Photos will be dynamically loaded here-->
-      </div>
+<body>
+  <nav class="navbar">
+    <div class="navbar-left-side">
+      <img class="navbar-logo" src="../imgs/logo.webp" />
+      <p class="navbar-page">Platforms / All</p>
+    </div>
+    <div class="navbar-right-side">
+      <input class="navbar-search input-text-field" placeholder="Search" />
+      <button class="navbar-profile button-icon"
+        onclick="alert('Urmeaza sa adaugăm pagina de profil cu funcționalitățile aferente')">
+        <img class="navbar-profile-image" src="../svgs/user-circle.svg" alt="profile" />
+      </button>
+      <button class="btn log-out-btn">Log out</button>
+    </div>
+  </nav>
 
-      <button class="collage-button">Create Collage</button>
-    </main>
+  <aside class="sidebar">
+    <a href="../pages/platforms-all.html"><img src="../svgs/home.svg" /></a>
+    <a href="../pages/platforms.html"><img src="../svgs/dashboard.svg" /></a>
+  </aside>
 
-    <dialog class="modal">
-        <!-- Dynamic content will be inserted here -->
-    </dialog>
-  </body>
-  <script src="../js/Authentication/redirect.js"></script>
-  <script src="../js/Authentication/logout.js"></script>
-  <script src="../js/photos.js"></script>
-  <script src="../js/carousel.js" defer></script>
+  <main class="container">
+    <div class="container-grid">
+      <!--Photos will be dynamically loaded here-->
+    </div>
+
+    <button class="collage-button">Create Collage</button>
+  </main>
+
+  <dialog class="modal">
+    <!-- Dynamic content will be inserted here -->
+  </dialog>
+</body>
+<script src="../js/Authentication/redirect.js"></script>
+<script src="../js/Authentication/logout.js"></script>
+<script src="../js/fetchPhotos.js" type="module"></script>
+<script src="../js/carousel.js" type="module"></script>
 </html>
