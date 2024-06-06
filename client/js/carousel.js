@@ -10,7 +10,7 @@ document.addEventListener('photosLoaded', () => {
 	let modalClose, modalCards, editButton;
 	let currentIndex;
 
-	// Ensure the modal and its cards are created before accessing them
+	// Initialize (needed if the modal is closed and reopened)
 	const initializeModalElements = () => {
 		modalCards = modal.querySelectorAll('.card');
 		if (modalCards.length === 0) {
@@ -172,7 +172,7 @@ document.addEventListener('photosLoaded', () => {
 		});
 	}
 
-	// Carousel logic
+	// < btn
 	modalPreviousButton.addEventListener('click', (e) => {
 		if (modalCards.length < 3) return;
 
@@ -204,7 +204,7 @@ document.addEventListener('photosLoaded', () => {
 	});
 
 
-	// Carousel logic for Next button
+	// > btn
 	modalNextButton.addEventListener('click', (e) => {
 		if (modalCards.length < 3) return;
 
