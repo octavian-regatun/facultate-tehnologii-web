@@ -40,8 +40,7 @@
   flex-direction: column;
   align-items: center;
   background-color: white;
-  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.1))
-    drop-shadow(0 1px 1px rgb(0 0 0 / 0.06));
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.1)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.06));
   border-radius: 8px;
   transition: all 0.2s;
   cursor: pointer;
@@ -57,8 +56,7 @@
 
 .card:hover {
   transition: all 0.2s;
-  filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04))
-    drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
+  filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
 }
 
 .card-content {
@@ -202,7 +200,7 @@
   width: 100%;
   overflow-y: auto;
   height: 20vh;
-  
+
 
   img {
     width: 24px;
@@ -214,6 +212,7 @@
 .card-content-comments::-webkit-scrollbar {
   width: 3px;
 }
+
 .card-content-comments::-webkit-scrollbar-track {
   background: var(--primary-dark);
 }
@@ -223,8 +222,7 @@
 }
 
 .card-content-comment {
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1))
-    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.06));
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1)) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.06));
   background-color: white;
   display: flex;
   gap: 8px;
@@ -250,10 +248,14 @@
   transition: all 0.2s;
 }
 
-.collage-button {
-  position: absolute;
+.collage-btn-container {
+  position: fixed;
   bottom: 5em;
+  gap: 2em;
   display: none;
+}
+
+.collage-btn {
   background-color: #75d479;
   color: black;
   padding: 8px 16px;
@@ -261,9 +263,12 @@
   cursor: pointer;
   transition: all 0.2s;
   border: 0;
+  -webkit-box-shadow: 0px 0px 5px 3px var(--secondary);
+  -moz-box-shadow: 0px 0px 5px 3px var(--secondary);
+  box-shadow: 0px 0px 5px 3px var(--secondary);
 }
 
-.collage-button:hover {
+.collage-btn:hover {
   background-color: #5cbf5a;
   transition: all 0.2s;
   border: 0;
@@ -279,6 +284,7 @@
 .card-content-edit::-webkit-scrollbar {
   width: 3px;
 }
+
 .card-content-edit::-webkit-scrollbar-track {
   background: var(--primary-dark);
 }
@@ -300,7 +306,8 @@
   display: flex;
 }
 
-.card-content-edit-save-button, .card-content-edit-reset-button {
+.card-content-edit-save-button,
+.card-content-edit-reset-button {
   background-color: #75d479;
   color: black;
   padding: 8px 16px;
@@ -312,7 +319,8 @@
   display: block;
 }
 
-.card-content-edit-save-button:hover, .card-content-edit-reset-button:hover {
+.card-content-edit-save-button:hover,
+.card-content-edit-reset-button:hover {
   background-color: #5cbf5a;
   transition: all 0.2s;
   border: 0;
@@ -399,6 +407,7 @@ input[type="range"]::-ms-thumb {
   .modal .card:not(:nth-of-type(2)) {
     display: none;
   }
+
   .modal .card {
     transform: none !important;
   }

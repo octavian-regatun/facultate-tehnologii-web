@@ -1,13 +1,29 @@
 import savePhoto from "./savePhoto.js";
 
 document.addEventListener('photosLoaded', () => {
-	const cards = document.querySelectorAll('.container-grid .card');
+	let cards = document.querySelectorAll('.container-grid .card');
 	const modal = document.querySelector('dialog');
 
 	if (!modal) {
 		console.error('Modal not found');
 		return;
 	}
+
+	// When a new photo is added, the AJAX will add eventListeners on every card
+	// But on the old photos, there are already event listeners
+	// Therefore, they will trigger twice. Work-around to remove this "bug"
+	// JS does not provide a way to add an event lister if there isn't already one
+	// ......
+	const removeAllEventListeners = (cards) => {
+		cards.forEach(card => {
+			const newCard = card.cloneNode(true);
+			card.parentNode.replaceChild(newCard, card);
+		});
+	};
+
+	removeAllEventListeners(cards);
+	cards = document.querySelectorAll('.container-grid .card');
+	// ^^^^^^
 
 	let modalClose, modalCards, editButton, image, opacitySlider, hueSlider, saturationSlider, lightnessSlider, resetButton, saveButton;
 	let currentIndex = 0;
@@ -90,6 +106,7 @@ document.addEventListener('photosLoaded', () => {
 			const lightness = lightnessSlider.value + '%';
 			const filters = `opacity(${opacity}) hue-rotate(${hue}deg) saturate(${saturation}) brightness(${lightness})`;
 			savePhoto(image, filters);
+			modal.close();
 		}
 	});
 
@@ -120,11 +137,11 @@ document.addEventListener('photosLoaded', () => {
 			clickedCard.prepend(checkmark);
 		}
 
-		const collageButton = document.querySelector('.collage-button');
+		const collageButtonContainer = document.querySelector('.collage-btn-container');
 		if (document.querySelectorAll('.card-checkmark').length >= 1) {
-			collageButton.style.display = 'block';
+			collageButtonContainer.style.display = 'flex';
 		} else {
-			collageButton.style.display = 'none';
+			collageButtonContainer.style.display = 'none';
 		}
 	};
 
@@ -207,8 +224,9 @@ document.addEventListener('photosLoaded', () => {
 		modal.showModal();
 	};
 
-	// Normal click on a card (modal opens up)
-	const handleClick = (e) => {
+	const collageButtons = document.querySelectorAll('.collage-btn-container button');
+
+	const removeSelectedCollage = () => {
 		const cards = document.querySelectorAll('.card');
 		cards.forEach(card => {
 			const hasCheckmark = !!card.querySelector('.card-checkmark');
@@ -216,8 +234,16 @@ document.addEventListener('photosLoaded', () => {
 				card.querySelector('.card-checkmark').remove();
 			}
 		});
-		const collageButton = document.querySelector('.collage-button');
-		collageButton.style.display = 'none';
+		const collageButtonContainer = document.querySelector('.collage-btn-container');
+		collageButtonContainer.style.display = 'none';
+	}
+
+	collageButtons[0].addEventListener('click', () => {alert("not ready")});
+	collageButtons[1].addEventListener('click', removeSelectedCollage);
+
+	// Normal click on a card (modal opens up)
+	const handleClick = (e) => {
+		removeSelectedCollage();
 		updateModal(e);
 	};
 
