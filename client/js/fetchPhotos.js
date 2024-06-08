@@ -97,6 +97,21 @@ async function displayModalPhotos(photos, token) {
         const card = document.createElement("div");
         card.classList.add("card");
 
+        const publishBtn = document.createElement("button");
+        publishBtn.classList.add("publish-btn", "publish-btn-general");
+        publishBtn.textContent = "Publish";
+        card.appendChild(publishBtn);
+
+        const publishBtnGoogle = document.createElement("button");
+        publishBtnGoogle.classList.add("publish-btn", "publish-btn-google", "publish-btn-platform");
+        publishBtnGoogle.textContent = "Google";
+        card.appendChild(publishBtnGoogle);
+
+        const publishBtnInstagram = document.createElement("button");
+        publishBtnInstagram.classList.add("publish-btn", "publish-btn-instagram", "publish-btn-platform");
+        publishBtnInstagram.textContent = "Instagram";
+        card.appendChild(publishBtnInstagram);
+
         const closeButton = document.createElement("button");
         closeButton.classList.add("modal-close");
         closeButton.textContent = "X";
@@ -124,7 +139,7 @@ async function displayModalPhotos(photos, token) {
         likeIcon.src = "../svgs/heart.svg";
         likeIcon.alt = "like";
         const likeCount = document.createElement("span");
-        likeCount.textContent = photo.likes;
+        likeCount.textContent = photo.likes || 0;
         likeSection.appendChild(likeIcon);
         likeSection.appendChild(likeCount);
 

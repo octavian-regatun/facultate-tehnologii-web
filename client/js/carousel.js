@@ -25,7 +25,7 @@ document.addEventListener('photosLoaded', () => {
 	cards = document.querySelectorAll('.container-grid .card');
 	// ^^^^^^
 
-	let modalClose, modalCards, editButton, image, opacitySlider, hueSlider, saturationSlider, lightnessSlider, resetButton, saveButton;
+	let modalClose, modalCards, editButton, image, opacitySlider, hueSlider, saturationSlider, lightnessSlider, resetButton, saveButton, publishButtons;
 	let currentIndex = 0;
 
 	// Initialize (needed if the modal is closed and reopened)
@@ -80,6 +80,9 @@ document.addEventListener('photosLoaded', () => {
 			saturationSlider.value = 100;
 			lightnessSlider.value = 100;
 			updateFilters();
+			publishButtons[0].style.display = 'block';
+			publishButtons[1].style.display = 'none';
+			publishButtons[2].style.display = 'none';
 			modal.close();
 			event.stopPropagation();
 		}
@@ -106,7 +109,16 @@ document.addEventListener('photosLoaded', () => {
 			const lightness = lightnessSlider.value + '%';
 			const filters = `opacity(${opacity}) hue-rotate(${hue}deg) saturate(${saturation}) brightness(${lightness})`;
 			savePhoto(image, filters);
+			publishButtons[0].style.display = 'block';
+			publishButtons[1].style.display = 'none';
+			publishButtons[2].style.display = 'none';
 			modal.close();
+		}
+
+		if(publishButtons && publishButtons[0].contains(event.target)) {
+			publishButtons[0].style.display = 'none';
+			publishButtons[1].style.display = 'block';
+			publishButtons[2].style.display = 'block';
 		}
 	});
 
@@ -153,16 +165,7 @@ document.addEventListener('photosLoaded', () => {
 		// Special case: 1 card
 		if (modalCards.length === 1) {
 			modalCards[0].style.display = 'flex';
-			editButton = modalCards[0].querySelector('.card-content-edit-button');
-			resetButton = modalCards[0].querySelector('.card-content-edit-reset-button');
-			saveButton = modalCards[0].querySelector('.card-content-edit-save-button');
-			image = modalCards[0].querySelector('img');
-			const inputs = modalCards[0].querySelectorAll('input');
-
-			opacitySlider = inputs[0];
-			hueSlider = inputs[1];
-			saturationSlider = inputs[2];
-			lightnessSlider = inputs[3];
+			updateCurrentButtons(currentIndex);
 			modalPreviousButton.style.display = 'none';
 			modalNextButton.style.display = 'none';
 			modal.showModal();
@@ -175,16 +178,7 @@ document.addEventListener('photosLoaded', () => {
 		const index = siblings.indexOf(clickedCard);
 		currentIndex = index;
 
-		editButton = modalCards[currentIndex].querySelector('.card-content-edit-button');
-		resetButton = modalCards[currentIndex].querySelector('.card-content-edit-reset-button');
-		saveButton = modalCards[currentIndex].querySelector('.card-content-edit-save-button');
-		image = modalCards[currentIndex].querySelector('img');
-		const inputs = modalCards[currentIndex].querySelectorAll('input');
-
-		opacitySlider = inputs[0];
-		hueSlider = inputs[1];
-		saturationSlider = inputs[2];
-		lightnessSlider = inputs[3];
+		updateCurrentButtons(currentIndex);
 
 		// Display only the selected cards + neighbours
 		modalCards[index].style.display = 'flex';
@@ -263,6 +257,10 @@ document.addEventListener('photosLoaded', () => {
 	modalPreviousButton.addEventListener('click', (e) => {
 		if (modalCards.length < 3) return;
 
+		publishButtons[0].style.display = 'block';
+		publishButtons[1].style.display = 'none';
+		publishButtons[2].style.display = 'none';
+
 		opacitySlider.value = 100;
 		hueSlider.value = 0;
 		saturationSlider.value = 100;
@@ -279,16 +277,7 @@ document.addEventListener('photosLoaded', () => {
 		const rightCard = modalCards[rightIndex];
 
 		currentIndex = (currentIndex - 1 + modalCards.length) % modalCards.length;
-		editButton = modalCards[currentIndex].querySelector('.card-content-edit-button');
-		resetButton = modalCards[currentIndex].querySelector('.card-content-edit-reset-button');
-		saveButton = modalCards[currentIndex].querySelector('.card-content-edit-save-button');
-		image = modalCards[currentIndex].querySelector('img');
-		const inputs = modalCards[currentIndex].querySelectorAll('input');
-
-		opacitySlider = inputs[0];
-		hueSlider = inputs[1];
-		saturationSlider = inputs[2];
-		lightnessSlider = inputs[3];
+		updateCurrentButtons(currentIndex);
 
 		newLeftCard.style.transform = 'translateX(-30%) rotateZ(-8deg) scale(0.7)';
 		newLeftCard.style.zIndex = '0';
@@ -315,6 +304,10 @@ document.addEventListener('photosLoaded', () => {
 	modalNextButton.addEventListener('click', (e) => {
 		if (modalCards.length < 3) return;
 
+		publishButtons[0].style.display = 'block';
+		publishButtons[1].style.display = 'none';
+		publishButtons[2].style.display = 'none';
+
 		opacitySlider.value = 100;
 		hueSlider.value = 0;
 		saturationSlider.value = 100;
@@ -331,16 +324,7 @@ document.addEventListener('photosLoaded', () => {
 		const leftCard = modalCards[leftIndex];
 
 		currentIndex = (currentIndex + 1) % modalCards.length;
-		editButton = modalCards[currentIndex].querySelector('.card-content-edit-button');
-		resetButton = modalCards[currentIndex].querySelector('.card-content-edit-reset-button');
-		saveButton = modalCards[currentIndex].querySelector('.card-content-edit-save-button');
-		image = modalCards[currentIndex].querySelector('img');
-		const inputs = modalCards[currentIndex].querySelectorAll('input');
-
-		opacitySlider = inputs[0];
-		hueSlider = inputs[1];
-		saturationSlider = inputs[2];
-		lightnessSlider = inputs[3];
+		updateCurrentButtons(currentIndex);
 
 		newRightCard.style.transform = 'translateX(30%) rotateZ(8deg) scale(0.7)';
 		newRightCard.style.zIndex = '0';
@@ -377,5 +361,19 @@ document.addEventListener('photosLoaded', () => {
 			editButton.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
 		}
 	};
+
+	const updateCurrentButtons = (index) => {
+		editButton = modalCards[index].querySelector('.card-content-edit-button');
+		resetButton = modalCards[index].querySelector('.card-content-edit-reset-button');
+		saveButton = modalCards[index].querySelector('.card-content-edit-save-button');
+		publishButtons = modalCards[index].querySelectorAll('.publish-btn');
+		image = modalCards[index].querySelector('img');
+		const inputs = modalCards[index].querySelectorAll('input');
+
+		opacitySlider = inputs[0];
+		hueSlider = inputs[1];
+		saturationSlider = inputs[2];
+		lightnessSlider = inputs[3];
+	}
 
 });

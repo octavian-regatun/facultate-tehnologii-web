@@ -47,6 +47,66 @@
   max-width: fit-content;
 }
 
+.publish-btn {
+  --br: 10px;
+  --size: calc(var(--br) * 2);
+  position: absolute;
+  top: -2.1em; /* padding + font-size - ik, hard coded*/
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--primary-light);
+  border: none;
+  border-radius: var(--br) var(--br) 0 0;
+  color: var(--secondary-dark);
+  padding: .5em 1em;
+  font-size: 1.1em;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.publish-btn::before,
+.publish-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+
+  width: var(--size);
+  aspect-ratio: 1;
+  background: radial-gradient(circle at bottom right, transparent 70%, var(--primary-light) 70%);
+  background-size: 100% 100%;
+  background-position: 0 0;
+}
+
+.publish-btn::before {
+  left: calc(-1 * var(--size));
+  rotate: -180deg;
+}
+
+.publish-btn::after {
+  right: calc(-1 * var(--size));
+  rotate: -90deg;
+}
+
+.publish-btn-google{
+  display: none;
+  left: 0;
+  transform: translateX(0);
+}
+
+.publish-btn-google::before {
+  display: none;
+}
+
+.publish-btn-instagram {
+  display: none;
+  right: 0;
+  transform: translateX(0);
+}
+
+.publish-btn-instagram::after {
+  display: none;
+}
+
 .card-image {
   max-height: 50vh;
   /* max-width: 23vw; */
@@ -79,6 +139,7 @@
 }
 
 .modal .card {
+  border-radius: 0 0 8px 8px;
   cursor: auto;
   position: absolute;
   z-index: 1;
@@ -86,6 +147,7 @@
 }
 
 .modal .card img {
+  border-radius: 0;
   max-width: 20vw;
 }
 
@@ -104,6 +166,7 @@
   height: 32px;
   width: 32px;
   border: 1px solid black;
+  z-index: 2;
 }
 
 .modal-previous-button {
