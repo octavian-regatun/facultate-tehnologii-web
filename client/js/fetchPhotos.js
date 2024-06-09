@@ -104,12 +104,16 @@ async function displayModalPhotos(photos, token) {
 
         const publishBtnGoogle = document.createElement("button");
         publishBtnGoogle.classList.add("publish-btn", "publish-btn-google", "publish-btn-platform");
-        publishBtnGoogle.textContent = "Google";
+        const publishBtnGoogleText = document.createElement("span");
+        publishBtnGoogleText.textContent="Google";
+        publishBtnGoogle.appendChild(publishBtnGoogleText);
         card.appendChild(publishBtnGoogle);
 
         const publishBtnInstagram = document.createElement("button");
         publishBtnInstagram.classList.add("publish-btn", "publish-btn-instagram", "publish-btn-platform");
-        publishBtnInstagram.textContent = "Instagram";
+        const publishBtnInstagramText = document.createElement("span");
+        publishBtnInstagramText.textContent="Instragram";
+        publishBtnInstagram.appendChild(publishBtnInstagramText);
         card.appendChild(publishBtnInstagram);
 
         const closeButton = document.createElement("button");

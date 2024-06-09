@@ -115,7 +115,7 @@ document.addEventListener('photosLoaded', () => {
 			modal.close();
 		}
 
-		if(publishButtons && publishButtons[0].contains(event.target)) {
+		if (publishButtons && publishButtons[0].contains(event.target)) {
 			publishButtons[0].style.display = 'none';
 			publishButtons[1].style.display = 'block';
 			publishButtons[2].style.display = 'block';
@@ -142,11 +142,13 @@ document.addEventListener('photosLoaded', () => {
 
 		if (hasCheckmark) {
 			clickedCard.querySelector('.card-checkmark').remove();
+			clickedCard.classList.remove('zoomed');
 		} else {
 			const checkmark = document.createElement('img');
 			checkmark.src = '../svgs/checkmark.svg';
 			checkmark.className = 'card-checkmark';
 			clickedCard.prepend(checkmark);
+			clickedCard.classList.add('zoomed');
 		}
 
 		const collageButtonContainer = document.querySelector('.collage-btn-container');
@@ -155,6 +157,9 @@ document.addEventListener('photosLoaded', () => {
 		} else {
 			collageButtonContainer.style.display = 'none';
 		}
+
+		e.preventDefault();
+		e.stopPropagation();
 	};
 
 	// Modal opens up settings
@@ -226,13 +231,14 @@ document.addEventListener('photosLoaded', () => {
 			const hasCheckmark = !!card.querySelector('.card-checkmark');
 			if (hasCheckmark) {
 				card.querySelector('.card-checkmark').remove();
+				card.classList.remove('zoomed');
 			}
 		});
 		const collageButtonContainer = document.querySelector('.collage-btn-container');
 		collageButtonContainer.style.display = 'none';
 	}
 
-	collageButtons[0].addEventListener('click', () => {alert("not ready")});
+	collageButtons[0].addEventListener('click', () => { alert("not ready") });
 	collageButtons[1].addEventListener('click', removeSelectedCollage);
 
 	// Normal click on a card (modal opens up)
@@ -242,7 +248,22 @@ document.addEventListener('photosLoaded', () => {
 	};
 
 
+
 	// Differentiate between Click and Ctrl+Click
+	let longPressTimer;
+
+	const handleLongPress = (e) => {
+		handleCtrlClick(e);
+	};
+
+	const startLongPressTimer = (e) => {
+		longPressTimer = setTimeout(() => handleLongPress(e), 500);
+	};
+
+	const cancelLongPressTimer = () => {
+		clearTimeout(longPressTimer);
+	};
+
 	for (const card of cards) {
 		card.addEventListener('click', (e) => {
 			if (e.ctrlKey) {
@@ -251,99 +272,76 @@ document.addEventListener('photosLoaded', () => {
 				handleClick(e);
 			}
 		});
+
+		// Phone version
+		card.addEventListener('touchstart', (e) => {
+			startLongPressTimer(e);
+		});
+
+		card.addEventListener('touchend', (e) => {
+			cancelLongPressTimer();
+			if (!longPressTimer) {
+				handleClick(e);
+			}
+		});
+
+		card.addEventListener('touchmove', cancelLongPressTimer);
+		card.addEventListener('touchcancel', cancelLongPressTimer);
+	}
+
+	function carousel(direction) {
+		if (modalCards.length < 3) return;
+
+		publishButtons[0].style.display = 'block';
+		publishButtons[1].style.display = 'none';
+		publishButtons[2].style.display = 'none';
+
+		opacitySlider.value = 100;
+		hueSlider.value = 0;
+		saturationSlider.value = 100;
+		lightnessSlider.value = 100;
+		updateFilters();
+
+		const nextIndex = (currentIndex + direction + modalCards.length) % modalCards.length;
+		const newNextIndex = (nextIndex + direction + modalCards.length) % modalCards.length;
+		const oppositeIndex = (currentIndex - direction + modalCards.length) % modalCards.length;
+
+		const newCard = modalCards[newNextIndex];
+		const nextCard = modalCards[nextIndex];
+		const centerCard = modalCards[currentIndex];
+		const oppositeCard = modalCards[oppositeIndex];
+
+		currentIndex = nextIndex;
+		updateCurrentButtons(currentIndex);
+
+		newCard.style.transform = `translateX(${direction * 30}%) rotateZ(${direction * 8}deg) scale(0.7)`;
+		newCard.style.zIndex = '0';
+		newCard.style.filter = 'blur(2px)';
+		newCard.style.pointerEvents = 'none';
+
+		nextCard.style.transform = 'translateX(0) rotateZ(0deg) scale(1.0)';
+		nextCard.style.zIndex = '1';
+		nextCard.style.filter = 'blur(0px)';
+		nextCard.style.pointerEvents = 'auto';
+
+		centerCard.style.transform = `translateX(${-direction * 30}%) rotateZ(${-direction * 8}deg) scale(0.7)`;
+		centerCard.style.zIndex = '0';
+		centerCard.style.filter = 'blur(2px)';
+		centerCard.style.pointerEvents = 'none';
+
+		newCard.style.display = 'flex';
+		oppositeCard.style.display = 'none';
+		oppositeCard.style.pointerEvents = 'none';
 	}
 
 	// < btn
 	modalPreviousButton.addEventListener('click', (e) => {
-		if (modalCards.length < 3) return;
-
-		publishButtons[0].style.display = 'block';
-		publishButtons[1].style.display = 'none';
-		publishButtons[2].style.display = 'none';
-
-		opacitySlider.value = 100;
-		hueSlider.value = 0;
-		saturationSlider.value = 100;
-		lightnessSlider.value = 100;
-		updateFilters();
-
-		const leftIndex = (currentIndex - 1 + modalCards.length) % modalCards.length;
-		const newLeftIndex = (leftIndex - 1 + modalCards.length) % modalCards.length;
-		const rightIndex = (currentIndex + 1) % modalCards.length;
-
-		const newLeftCard = modalCards[newLeftIndex];
-		const leftCard = modalCards[leftIndex];
-		const centerCard = modalCards[currentIndex];
-		const rightCard = modalCards[rightIndex];
-
-		currentIndex = (currentIndex - 1 + modalCards.length) % modalCards.length;
-		updateCurrentButtons(currentIndex);
-
-		newLeftCard.style.transform = 'translateX(-30%) rotateZ(-8deg) scale(0.7)';
-		newLeftCard.style.zIndex = '0';
-		newLeftCard.style.filter = 'blur(2px)';
-		newLeftCard.style.pointerEvents = 'none';
-
-		leftCard.style.transform = 'translateX(0) rotateZ(0deg) scale(1.0)';
-		leftCard.style.zIndex = '1';
-		leftCard.style.filter = 'blur(0px)';
-		leftCard.style.pointerEvents = 'auto';
-
-		centerCard.style.transform = 'translateX(30%) rotateZ(8deg) scale(0.7)';
-		centerCard.style.zIndex = '0';
-		centerCard.style.filter = 'blur(2px)';
-		centerCard.style.pointerEvents = 'none';
-
-		newLeftCard.style.display = 'flex';
-		rightCard.style.display = 'none';
-		rightCard.style.pointerEvents = 'none';
+		carousel(-1);
 	});
-
 
 	// > btn
 	modalNextButton.addEventListener('click', (e) => {
-		if (modalCards.length < 3) return;
-
-		publishButtons[0].style.display = 'block';
-		publishButtons[1].style.display = 'none';
-		publishButtons[2].style.display = 'none';
-
-		opacitySlider.value = 100;
-		hueSlider.value = 0;
-		saturationSlider.value = 100;
-		lightnessSlider.value = 100;
-		updateFilters();
-
-		const rightIndex = (currentIndex + 1) % modalCards.length;
-		const newRightIndex = (rightIndex + 1) % modalCards.length;
-		const leftIndex = (currentIndex - 1 + modalCards.length) % modalCards.length;
-
-		const newRightCard = modalCards[newRightIndex];
-		const rightCard = modalCards[rightIndex];
-		const centerCard = modalCards[currentIndex];
-		const leftCard = modalCards[leftIndex];
-
-		currentIndex = (currentIndex + 1) % modalCards.length;
-		updateCurrentButtons(currentIndex);
-
-		newRightCard.style.transform = 'translateX(30%) rotateZ(8deg) scale(0.7)';
-		newRightCard.style.zIndex = '0';
-		newRightCard.style.filter = 'blur(2px)';
-		newRightCard.style.pointerEvents = 'none';
-
-		rightCard.style.transform = 'translateX(0) rotateZ(0deg) scale(1.0)';
-		rightCard.style.zIndex = '1';
-		rightCard.style.filter = 'blur(0px)';
-		rightCard.style.pointerEvents = 'auto';
-
-		centerCard.style.transform = 'translateX(-30%) rotateZ(-8deg) scale(0.7)';
-		centerCard.style.zIndex = '0';
-		centerCard.style.filter = 'blur(2px)';
-		centerCard.style.pointerEvents = 'none';
-
-		leftCard.style.display = 'none';
-		newRightCard.style.display = 'flex';
-		newRightCard.style.pointerEvents = 'none';
+		carousel(1);
 	});
 
 

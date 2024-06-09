@@ -45,13 +45,20 @@
   transition: all 0.2s;
   cursor: pointer;
   max-width: fit-content;
+  transition: transform 0.5s ease;
+}
+
+.card.zoomed {
+  transform: scale(1.05);
 }
 
 .publish-btn {
   --br: 10px;
   --size: calc(var(--br) * 2);
   position: absolute;
-  top: -2.1em; /* padding + font-size - ik, hard coded*/
+  max-width: 50%;
+  top: calc(-2.4em + 1px);
+  /* padding + font-size - ik, hard coded*/
   left: 50%;
   transform: translateX(-50%);
   background-color: var(--primary-light);
@@ -62,6 +69,19 @@
   font-size: 1.1em;
   cursor: pointer;
   z-index: 1;
+  text-align: center;
+}
+
+.publish-btn:first-of-type {
+  top: calc(-2.2em + 1px);
+}
+
+.publish-btn > span {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .publish-btn::before,
@@ -87,7 +107,7 @@
   rotate: -90deg;
 }
 
-.publish-btn-google{
+.publish-btn-google {
   display: none;
   left: 0;
   transform: translateX(0);
