@@ -337,13 +337,11 @@ document.addEventListener('photosLoaded', () => {
 
 	// < btn
 	modalPreviousButton.addEventListener('click', (e) => {
-		console.log("a");
 		carousel(-1);
 	});
 
 	// > btn
 	modalNextButton.addEventListener('click', (e) => {
-		console.log("b");
 		carousel(1);
 	});
 
@@ -364,6 +362,7 @@ document.addEventListener('photosLoaded', () => {
 	};
 
 	const updateCurrentButtons = (index) => {
+		modalClose = modalCards[index].querySelector('.modal-close');
 		editButton = modalCards[index].querySelector('.card-content-edit-button');
 		resetButton = modalCards[index].querySelector('.card-content-edit-reset-button');
 		saveButton = modalCards[index].querySelector('.card-content-edit-save-button');
@@ -376,5 +375,4 @@ document.addEventListener('photosLoaded', () => {
 		saturationSlider = inputs[2];
 		lightnessSlider = inputs[3];
 	}
-
 });

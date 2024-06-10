@@ -34,14 +34,14 @@ const addNewPhotoToModal = (photo) => {
     const publishBtnGoogle = document.createElement("button");
     publishBtnGoogle.classList.add("publish-btn", "publish-btn-google", "publish-btn-platform");
     const publishBtnGoogleText = document.createElement("span");
-    publishBtnGoogleText.textContent="Google";
+    publishBtnGoogleText.textContent = "Google";
     publishBtnGoogle.appendChild(publishBtnGoogleText);
     card.appendChild(publishBtnGoogle);
 
     const publishBtnInstagram = document.createElement("button");
     publishBtnInstagram.classList.add("publish-btn", "publish-btn-instagram", "publish-btn-platform");
     const publishBtnInstagramText = document.createElement("span");
-    publishBtnInstagramText.textContent="Instragram";
+    publishBtnInstagramText.textContent = "Instragram";
     publishBtnInstagram.appendChild(publishBtnInstagramText);
     card.appendChild(publishBtnInstagram);
 
@@ -155,21 +155,23 @@ const addNewPhotoToModal = (photo) => {
     modalContent.appendChild(card);
 }
 
-// utility function used in savePhoto
+// Utility function used in savePhoto
 const getFilteredImageAsBase64 = (image, filters) => {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
     canvas.width = image.width;
     canvas.height = image.height;
 
-    context.filter = filters;
+    if (filters) {
+        context.filter = filters;
+    }
     context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
     // Get base64 string from the modified photo
     return canvas.toDataURL('image/png');
 };
 
-const savePhoto = async (imageElement, filters) => {
+const savePhoto = async (imageElement, filters = null) => {
     const base64Image = getFilteredImageAsBase64(imageElement, filters);
 
     const response = await fetch("http://localhost:8081/photos", {
@@ -201,3 +203,45 @@ const savePhoto = async (imageElement, filters) => {
 };
 
 export default savePhoto;
+
+
+//
+//
+//
+// Upload photo button
+//
+//
+//
+
+// In the .html file we use a btn, not an input type="file". Create it, but do not append to DOM
+const uploadBtn = document.querySelector('.upload-btn');
+const inputFile = document.createElement('input');
+inputFile.type = 'file';
+inputFile.accept = 'image/*';
+
+uploadBtn.addEventListener('click', () => {
+    inputFile.click();
+});
+
+inputFile.addEventListener('change', async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const image = await loadImage(file);
+    savePhoto(image);
+});
+
+// Transform the file to an URL to be able to convert to base64
+const loadImage = (file) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => resolve(img);
+            img.onerror = (err) => reject(err);
+            img.src = e.target.result;
+        };
+        reader.onerror = (err) => reject(err);
+        reader.readAsDataURL(file);
+    });
+};

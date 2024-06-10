@@ -10,6 +10,7 @@
 
 :root 
 {
+    --primary-darkest: hsl(163, 100%, 28%);
     --primary-dark: hsl(163, 100%, 39%);
     --primary: hsl(163, 67%, 47%);
     --primary-light: hsl(163, 50%, 60%);
