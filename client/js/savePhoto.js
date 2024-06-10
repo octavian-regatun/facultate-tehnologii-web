@@ -26,6 +26,25 @@ const addNewPhotoToModal = (photo) => {
     const card = document.createElement("div");
     card.classList.add("card");
 
+    const publishBtn = document.createElement("button");
+    publishBtn.classList.add("publish-btn", "publish-btn-general");
+    publishBtn.textContent = "Publish";
+    card.appendChild(publishBtn);
+
+    const publishBtnGoogle = document.createElement("button");
+    publishBtnGoogle.classList.add("publish-btn", "publish-btn-google", "publish-btn-platform");
+    const publishBtnGoogleText = document.createElement("span");
+    publishBtnGoogleText.textContent="Google";
+    publishBtnGoogle.appendChild(publishBtnGoogleText);
+    card.appendChild(publishBtnGoogle);
+
+    const publishBtnInstagram = document.createElement("button");
+    publishBtnInstagram.classList.add("publish-btn", "publish-btn-instagram", "publish-btn-platform");
+    const publishBtnInstagramText = document.createElement("span");
+    publishBtnInstagramText.textContent="Instragram";
+    publishBtnInstagram.appendChild(publishBtnInstagramText);
+    card.appendChild(publishBtnInstagram);
+
     const closeButton = document.createElement("button");
     closeButton.classList.add("modal-close");
     closeButton.textContent = "X";

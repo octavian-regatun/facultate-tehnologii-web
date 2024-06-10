@@ -1,29 +1,31 @@
 import savePhoto from "./savePhoto.js";
 
 document.addEventListener('photosLoaded', () => {
-	let cards = document.querySelectorAll('.container-grid .card');
+	// Remove all event listeners
+	// When a new photo is added, the AJAX will add eventListeners on every component
+	// But on the old components, there are already event listeners
+	// Therefore, they will trigger twice. Work-around to remove this "bug"
+	// JS does not provide a way to add an event lister if there isn't already one
+	// Neither does it provide a way to remove an arrow function w/ parameters
+	function removeAllEventListeners(element) {
+		const newElement = element.cloneNode(true);
+		element.parentNode.replaceChild(newElement, element);
+
+		Array.from(newElement.children).forEach(child => removeAllEventListeners(child));
+	}
+	removeAllEventListeners(document.querySelector('.container'));
+	removeAllEventListeners(document.querySelector('.modal'));
+
+
+	const cards = document.querySelectorAll('.container-grid .card');
 	const modal = document.querySelector('dialog');
+	const modalPreviousButton = document.querySelector('.modal-previous-button');
+	const modalNextButton = document.querySelector('.modal-next-button');
 
 	if (!modal) {
 		console.error('Modal not found');
 		return;
 	}
-
-	// When a new photo is added, the AJAX will add eventListeners on every card
-	// But on the old photos, there are already event listeners
-	// Therefore, they will trigger twice. Work-around to remove this "bug"
-	// JS does not provide a way to add an event lister if there isn't already one
-	// ......
-	const removeAllEventListeners = (cards) => {
-		cards.forEach(card => {
-			const newCard = card.cloneNode(true);
-			card.parentNode.replaceChild(newCard, card);
-		});
-	};
-
-	removeAllEventListeners(cards);
-	cards = document.querySelectorAll('.container-grid .card');
-	// ^^^^^^
 
 	let modalClose, modalCards, editButton, image, opacitySlider, hueSlider, saturationSlider, lightnessSlider, resetButton, saveButton, publishButtons;
 	let currentIndex = 0;
@@ -34,6 +36,7 @@ document.addEventListener('photosLoaded', () => {
 		if (modalCards.length === 0) {
 			return false;
 		}
+
 		modalClose = modalCards[currentIndex].querySelector('.modal-close');
 		modalCards.forEach(card => {
 			card.style.display = 'none';
@@ -49,8 +52,6 @@ document.addEventListener('photosLoaded', () => {
 		return;
 	}
 
-	const modalPreviousButton = document.querySelector('.modal-previous-button');
-	const modalNextButton = document.querySelector('.modal-next-button');
 
 	if (!modalPreviousButton || !modalNextButton) {
 		console.error('Modal navigation buttons not found');
@@ -170,7 +171,7 @@ document.addEventListener('photosLoaded', () => {
 		// Special case: 1 card
 		if (modalCards.length === 1) {
 			modalCards[0].style.display = 'flex';
-			updateCurrentButtons(currentIndex);
+			updateCurrentButtons(0);
 			modalPreviousButton.style.display = 'none';
 			modalNextButton.style.display = 'none';
 			modal.showModal();
@@ -336,11 +337,13 @@ document.addEventListener('photosLoaded', () => {
 
 	// < btn
 	modalPreviousButton.addEventListener('click', (e) => {
+		console.log("a");
 		carousel(-1);
 	});
 
 	// > btn
 	modalNextButton.addEventListener('click', (e) => {
+		console.log("b");
 		carousel(1);
 	});
 
