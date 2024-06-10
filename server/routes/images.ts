@@ -170,3 +170,32 @@ export const getPhotosMiddleware: Middleware = async (req, res) => {
     res.end("Internal Server Error");
   }
 };
+
+
+
+
+export const deletePhotosMiddleware: Middleware = async (req, res) => {
+  const urlParts = req.url?.split('/');
+  const imageId = urlParts ? parseInt(urlParts[urlParts.length - 1], 10) : NaN;
+
+  if (isNaN(imageId)) {
+    res.writeHead(400, { "Content-Type": "text/plain" });
+    res.end("Invalid image ID");
+    return;
+  }
+
+  try {
+    const photo = await db.photo.delete({
+      where: {
+        id: imageId,
+      },
+    });
+
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify(photo));
+  } catch (error) {
+    console.error('Failed to delete photo:', error);
+    res.writeHead(500, { "Content-Type": "text/plain" });
+    res.end("Internal Server Error");
+  }
+};

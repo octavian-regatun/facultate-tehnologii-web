@@ -3,7 +3,7 @@ import { Router } from "./router";
 import { isAuthenticated, signInMiddleware, signUpMiddleware } from "./routes/Auth/auth";
 import { emailOAuth2Middleware } from "./routes/Auth/emailOAuth2";
 import { forgotPasswordMiddleware, resetPasswordMiddleware } from "./routes/Auth/forgotPwd";
-import { uploadImageMiddleware, getPhotosMiddleware } from "./routes/images";
+import { uploadImageMiddleware, getPhotosMiddleware, deletePhotosMiddleware } from "./routes/images";
 import { getCommentsMiddleware } from "./routes/comments";
 import { getYoutubeThumbnail } from './routes/images';
 
@@ -33,6 +33,9 @@ const server = http.createServer((req, res) => {
 
   if (req.url?.startsWith("/photos/") && req.method === "GET") {
     getPhotosMiddleware(req, res, () => { });
+  }
+  if (req.url?.startsWith("/photos/") && req.method === "DELETE") {
+    deletePhotosMiddleware(req, res, () => { });
   }
   if (req.url?.startsWith("/comments/") && req.method === "GET") {
     getCommentsMiddleware(req, res, () => { });

@@ -63,6 +63,7 @@ function displayPhotos(photos) {
         const cardImage = document.createElement("img");
         cardImage.classList.add("card-image");
         cardImage.src = `data:image/png;base64,${photo.binaryString}`;
+        cardImage.setAttribute("photo-id", photo.id);
 
         const cardContent = document.createElement("div");
         cardContent.classList.add("card-content");
@@ -70,6 +71,16 @@ function displayPhotos(photos) {
         const cardDescription = document.createElement("p");
         cardDescription.classList.add("card-content-description");
         cardDescription.textContent = photo.description;
+
+        const deleteDiv = document.createElement("div");
+        deleteDiv.classList.add('delete-div');
+        const deleteIcon = document.createElement("img");
+        deleteIcon.classList.add('delete-img');
+        deleteIcon.src = "../svgs/delete.svg";
+        deleteIcon.alt = "Delete";
+
+        deleteDiv.appendChild(deleteIcon);
+        card.appendChild(deleteDiv);
 
         cardContent.appendChild(cardDescription);
         card.appendChild(cardImage);
@@ -105,14 +116,14 @@ async function displayModalPhotos(photos, token) {
         const publishBtnGoogle = document.createElement("button");
         publishBtnGoogle.classList.add("publish-btn", "publish-btn-google", "publish-btn-platform");
         const publishBtnGoogleText = document.createElement("span");
-        publishBtnGoogleText.textContent="Google";
+        publishBtnGoogleText.textContent = "Google";
         publishBtnGoogle.appendChild(publishBtnGoogleText);
         card.appendChild(publishBtnGoogle);
 
         const publishBtnInstagram = document.createElement("button");
         publishBtnInstagram.classList.add("publish-btn", "publish-btn-instagram", "publish-btn-platform");
         const publishBtnInstagramText = document.createElement("span");
-        publishBtnInstagramText.textContent="Instragram";
+        publishBtnInstagramText.textContent = "Instragram";
         publishBtnInstagram.appendChild(publishBtnInstagramText);
         card.appendChild(publishBtnInstagram);
 

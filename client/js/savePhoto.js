@@ -6,6 +6,7 @@ const addNewPhotoToGrid = (photo) => {
     const cardImage = document.createElement("img");
     cardImage.classList.add("card-image");
     cardImage.src = `data:image/png;base64,${photo.binaryString}`;
+    cardImage.setAttribute("photo-id", photo.id);
 
     const cardContent = document.createElement("div");
     cardContent.classList.add("card-content");
@@ -13,6 +14,16 @@ const addNewPhotoToGrid = (photo) => {
     const cardDescription = document.createElement("p");
     cardDescription.classList.add("card-content-description");
     cardDescription.textContent = photo.description;
+
+    const deleteDiv = document.createElement("div");
+    deleteDiv.classList.add('delete-div');
+    const deleteIcon = document.createElement("img");
+    deleteIcon.classList.add('delete-img');
+    deleteIcon.src = "../svgs/delete.svg";
+    deleteIcon.alt = "Delete";
+
+    deleteDiv.appendChild(deleteIcon);
+    card.appendChild(deleteDiv);
 
     cardContent.appendChild(cardDescription);
     card.appendChild(cardImage);

@@ -270,7 +270,12 @@ document.addEventListener('photosLoaded', () => {
 			if (e.ctrlKey) {
 				handleCtrlClick(e);
 			} else {
-				handleClick(e);
+				const clicked = e.target.closest('.card');
+				if (clicked.querySelector('.delete-div').contains(e.target)) {
+					openDeleteConfirmation(clicked);
+				} else {
+					handleClick(e);
+				}
 			}
 		});
 
