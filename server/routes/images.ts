@@ -2,26 +2,7 @@ import https from 'https';
 import { google } from "googleapis";
 import { db } from "../db";
 import type { Middleware } from "../router";
-
-type photoData = {
-  userId: number;
-  url: string;
-  binaryString: string;
-  source: SourceType;
-  description?: string;
-  likes?: number;
-  commentCount?: number;
-  createdAt: Date;
-  aspectRatio?: number;
-  size?: number;
-};
-
-enum SourceType {
-  GOOGLE_PHOTOS = "GOOGLE_PHOTOS",
-  INSTAGRAM = "INSTAGRAM",
-  NOT_POSTED = "NOT_POSTED"
-}
-
+import type { Photo } from '@prisma/client';
 
 export const getYoutubeThumbnail = async (videoId: string) => {
   try {
@@ -75,7 +56,7 @@ const fetchPhotoData = async (url: string): Promise<Buffer> => {
 };
 
 // Function to save photo data to the database
-export const savePhotoToDb = async (data: photoData) => {
+export const savePhotoToDb = async (data: Photo) => {
   try {
     const newPhoto = await db.photo.create({
       data: {
@@ -109,7 +90,7 @@ export const uploadImageMiddleware: Middleware = async (req, res) => {
 
   req.on("end", async () => {
     try {
-      const data = JSON.parse(body) as photoData;
+      const data = JSON.parse(body) as Photo;
 
       if ((!data.binaryString && !data.url) || !data.userId || !data.source) {
         res.writeHead(400, { "Content-Type": "text/plain" });

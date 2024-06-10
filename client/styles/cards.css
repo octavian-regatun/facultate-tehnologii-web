@@ -294,7 +294,12 @@
   }
 }
 
-.card-content-edit-button {
+.card-actions-btn-container {
+  display: flex;
+  gap: .5em;
+}
+
+.card-content-edit-button, .card-content-refresh-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -311,7 +316,7 @@
   }
 }
 
-.card-content-edit-button:hover {
+.card-content-edit-button:hover, .card-content-refresh-button:hover {
   background-color: lightgray;
   transition: all 0.2s;
 }

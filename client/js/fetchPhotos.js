@@ -158,14 +158,31 @@ async function displayModalPhotos(photos, token) {
         likeSection.appendChild(likeIcon);
         likeSection.appendChild(likeCount);
 
+        const actionsBtnContainer = document.createElement("div");
+        actionsBtnContainer.classList.add("card-actions-btn-container");
+
         const editButton = document.createElement("button");
         editButton.classList.add("card-content-edit-button");
         const editIcon = document.createElement("img");
         editIcon.src = "../svgs/edit-photo.svg";
         editButton.appendChild(editIcon);
 
+
+        // Refresh button appears only for posts uploaded on Instagram
+        if (photo.source == "INSTAGRAM") {
+            const refreshButton = document.createElement("button");
+            refreshButton.classList.add("card-content-refresh-button");
+            refreshButton.setAttribute("photo-id", photo.id);
+            const refreshIcon = document.createElement("img");
+            refreshIcon.src = "../svgs/refresh.svg";
+            refreshButton.appendChild(refreshIcon);
+
+            actionsBtnContainer.appendChild(refreshButton);
+        }
+        actionsBtnContainer.appendChild(editButton);
+
         cardActions.appendChild(likeSection);
-        cardActions.appendChild(editButton);
+        cardActions.appendChild(actionsBtnContainer);
 
         const commentsSection = document.createElement("div");
         commentsSection.classList.add("card-content-comments");

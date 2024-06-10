@@ -1,4 +1,5 @@
 import savePhoto from "./savePhoto.js";
+import updatePhotoData from './updatPhotoData.js';
 
 document.addEventListener('photosLoaded', () => {
 	// Remove all event listeners
@@ -27,7 +28,7 @@ document.addEventListener('photosLoaded', () => {
 		return;
 	}
 
-	let modalClose, modalCards, editButton, image, opacitySlider, hueSlider, saturationSlider, lightnessSlider, resetButton, saveButton, publishButtons;
+	let modalClose, modalCards, editButton, refreshButton, image, opacitySlider, hueSlider, saturationSlider, lightnessSlider, resetButton, saveButton, publishButtons;
 	let currentIndex = 0;
 
 	// Initialize (needed if the modal is closed and reopened)
@@ -91,6 +92,11 @@ document.addEventListener('photosLoaded', () => {
 		// sliders
 		if (editButton && editButton.contains(event.target)) {
 			handleSliders();
+		}
+
+		if (refreshButton && refreshButton.contains(event.target)) {
+			const id = refreshButton.getAttribute('photo-id');
+			updatePhotoData(modalCards[currentIndex], id);
 		}
 
 		// reset filters btn
@@ -369,6 +375,7 @@ document.addEventListener('photosLoaded', () => {
 	const updateCurrentButtons = (index) => {
 		modalClose = modalCards[index].querySelector('.modal-close');
 		editButton = modalCards[index].querySelector('.card-content-edit-button');
+		refreshButton = modalCards[index].querySelector('.card-content-refresh-button') || null;
 		resetButton = modalCards[index].querySelector('.card-content-edit-reset-button');
 		saveButton = modalCards[index].querySelector('.card-content-edit-save-button');
 		publishButtons = modalCards[index].querySelectorAll('.publish-btn');
