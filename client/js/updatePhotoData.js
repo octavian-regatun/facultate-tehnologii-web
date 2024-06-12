@@ -1,9 +1,6 @@
 const updatePhotoData = async (card, id) => {
-    const token = localStorage.getItem("token");
-
-    // TODO: Before this, update the comments & likes
-    const comments = await getCommentsFromDB(id, token);
-    //const likes = await getUpdatedLikes(id, token);
+    const comments = await getCommentsFromDB(id, 1);
+    //const likes = await getUpdatedLikes(id);
     const likes = 0;
 
 

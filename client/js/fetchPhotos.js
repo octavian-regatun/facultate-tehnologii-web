@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (response.ok) {
             const photos = await response.json();
             displayPhotos(photos);
-            await displayModalPhotos(photos, token);
+            await displayModalPhotos(photos);
 
             // Dispatch custom event after photos are displayed
             document.dispatchEvent(new Event('photosLoaded'));
@@ -89,7 +89,7 @@ function displayPhotos(photos) {
     });
 }
 
-async function displayModalPhotos(photos, token) {
+async function displayModalPhotos(photos) {
     const modalContent = document.querySelector(".modal");
     modalContent.innerHTML = ""; // Clear existing content
 
@@ -101,7 +101,7 @@ async function displayModalPhotos(photos, token) {
     modalContent.appendChild(previousButton);
 
     // Fetch comments for all photos
-    const commentsPromises = photos.map(photo => getCommentsFromDB(photo.id, token));
+    const commentsPromises = photos.map(photo => getCommentsFromDB(photo.id));
     const allComments = await Promise.all(commentsPromises);
 
     photos.forEach((photo, index) => {
@@ -277,9 +277,16 @@ async function displayModalPhotos(photos, token) {
     modalContent.appendChild(nextButton);
 }
 
-const getCommentsFromDB = async (id, token) => {
+const getCommentsFromDB = async (id, refresh = 0) => {
+    const token = localStorage.getItem("token");
+    const url = new URL(`http://localhost:8081/comments/${id}`);
+    
+    if (refresh === 1) {
+        url.searchParams.append('refresh', 'true');
+    }
+
     try {
-        const response = await fetch(`http://localhost:8081/comments/${id}`, {
+        const response = await fetch(url.toString(), {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,

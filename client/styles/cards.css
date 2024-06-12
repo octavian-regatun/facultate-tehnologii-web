@@ -62,24 +62,24 @@
   border-radius: 10px;
 }
 
-.blur-background{
+.blur-background {
   filter: blur(5px);
   pointer-events: none;
 }
 
 .confirmation-dialog {
   position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--primary);
-    padding: 1em;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    border-radius: 1em;
-    z-index: 1000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--primary);
+  padding: 1em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 1em;
+  z-index: 1000;
 }
 
-.confirmation-dialog > p {
+.confirmation-dialog>p {
   margin-bottom: 1em;
 }
 
@@ -88,7 +88,7 @@
   justify-content: space-around;
 }
 
-.card:hover > .delete-div {
+.card:hover>.delete-div {
   display: inline-block;
 }
 
@@ -116,7 +116,7 @@
   top: calc(-2.2em + 1px);
 }
 
-.publish-btn > span {
+.publish-btn>span {
   display: inline-block;
   max-width: 100%;
   overflow: hidden;
@@ -186,6 +186,8 @@
   align-items: flex-start;
   width: 100%;
   gap: 8px;
+  box-sizing: border-box;
+  word-break: break-word;
 }
 
 .card-content-title {
@@ -208,6 +210,9 @@
 
 .modal .card img {
   border-radius: 0;
+}
+
+.modal .card > * {
   max-width: 20vw;
 }
 
@@ -299,7 +304,8 @@
   gap: .5em;
 }
 
-.card-content-edit-button, .card-content-refresh-button {
+.card-content-edit-button,
+.card-content-refresh-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -316,7 +322,8 @@
   }
 }
 
-.card-content-edit-button:hover, .card-content-refresh-button:hover {
+.card-content-edit-button:hover,
+.card-content-refresh-button:hover {
   background-color: lightgray;
   transition: all 0.2s;
 }
@@ -326,8 +333,11 @@
   flex-direction: column;
   gap: 8px;
   width: 100%;
-  overflow-y: auto;
   height: 20vh;
+  
+  word-break: break-word;
+  overflow-wrap: break-word;
+  overflow-y: auto;
 
 
   img {
@@ -357,6 +367,19 @@
   align-items: center;
   width: 100%;
   padding: 8px;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+.card-content-description,
+.card-content-comment p {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.card-content-comment p:first-child {
+  min-width: 3em;
 }
 
 .card-checkmark {
@@ -525,22 +548,22 @@ input[type="range"]::-ms-thumb {
 
 
 @media screen and (max-width: 1200px) {
-  .modal .card img {
+  .modal .card > * {
     max-width: 50vw;
   }
 }
 
 
 @media screen and (max-width: 720px) {
-  .modal .card:not(:nth-of-type(2)) {
-    display: none;
+  .modal .card:not(.current) {
+    display: none !important;
   }
 
   .modal .card {
     transform: none !important;
   }
 
-  .modal .card img {
+  .modal .card > * {
     max-width: 70vw;
   }
 }

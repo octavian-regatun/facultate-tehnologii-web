@@ -1,5 +1,5 @@
 import savePhoto from "./savePhoto.js";
-import updatePhotoData from './updatPhotoData.js';
+import updatePhotoData from './updatePhotoData.js';
 
 document.addEventListener('photosLoaded', () => {
 	// Remove all event listeners
@@ -195,6 +195,7 @@ document.addEventListener('photosLoaded', () => {
 		// Display only the selected cards + neighbours
 		modalCards[index].style.display = 'flex';
 		modalCards[index].style.pointerEvents = 'auto';
+		modalCards[index].classList.add("current");
 		let previousCard, nextCard;
 
 		// Special case: 2 cards
@@ -344,6 +345,10 @@ document.addEventListener('photosLoaded', () => {
 		newCard.style.display = 'flex';
 		oppositeCard.style.display = 'none';
 		oppositeCard.style.pointerEvents = 'none';
+
+		const oldCurrent = document.querySelector('.current');
+		oldCurrent.classList.remove('current');
+		nextCard.classList.add("current");
 	}
 
 	// < btn

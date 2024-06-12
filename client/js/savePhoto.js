@@ -185,7 +185,7 @@ const getFilteredImageAsBase64 = (image, filters) => {
 const savePhoto = async (imageElement, filters = null) => {
     const base64Image = getFilteredImageAsBase64(imageElement, filters);
 
-    const response = await fetch("http://localhost:8081/photos", {
+    const response = await fetch(`http://localhost:8081/photos`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
