@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>M-PIC - Platforms - Search</title>
+  <link rel="stylesheet" href="../styles/cards.css" />
+  <link rel="stylesheet" href="../styles/global.css">
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="navbar-left-side">
+      <img class="navbar-logo" src="../imgs/logo.webp" />
+      <p class="navbar-page">Platforms / Search</p>
+    </div>
+    <div class="navbar-right-side">
+      <button class="navbar-profile button-icon"
+        onclick="alert('Urmeaza sa adaugăm pagina de profil cu funcționalitățile aferente')">
+        <img class="navbar-profile-image" src="../svgs/user-circle.svg" alt="profile" />
+      </button>
+      <button class="btn log-out-btn">Log out</button>
+    </div>
+  </nav>
+
+  <aside class="sidebar">
+    <a href="../pages/search.html"><img src="../svgs/search.svg" /></a>
+    <a href="../pages/platforms.html"><img src="../svgs/dashboard.svg" /></a>
+    <button class="upload-btn"><img src="../svgs/upload.svg" /></button>
+  </aside>
+
+  <main class="container">
+    <div class="container-grid">
+      <!--Photos will be dynamically loaded here-->
+    </div>
+
+    <div class="collage-btn-container">
+      <button class="collage-btn">Create Collage</button>
+      <button class="collage-btn">Cancel</button>
+    </div>
+  </main>
+
+  <dialog class="modal">
+    <!-- Dynamic content will be inserted here -->
+  </dialog>
+</body>
+<script src="../js/Authentication/redirect.js"></script>
+<script src="../js/Authentication/logout.js"></script>
+<script src="../js/fetchPhotos.js"></script>
+<script src="../js/deletePhoto.js"></script>
+<script src="../js/savePhoto.js" type="module" defer></script>
+<script src="../js/carousel.js" type="module" defer></script>
+<script src="../js/updatPhotoData.js" type="module" defer></script>
+</html>

@@ -9,10 +9,6 @@ function toggleContainers(event) {
         button.disabled = true;
     });
 
-    // const buttonRect = button.getBoundingClientRect();
-    // signUpContainer.style.left = `${buttonRect.left}px`;
-    // signUpContainer.style.top = `${buttonRect.top}px`;
-
     if (signUpContainer.classList.contains('contracted')) {
         signUpContainer.style.zIndex = '2';
         logInContainer.style.zIndex = '1';
@@ -57,7 +53,7 @@ function toggleContainers(event) {
 
 function toggleVisiblePassword(event) {
     var passwordField;
-    if(event.target.id == 'log-in-pass-btn') {
+    if (event.target.id == 'log-in-pass-btn') {
         passwordField = document.getElementById('log-in-pass-input');
         icon = document.getElementById('log-in-svg-path');
     } else {
@@ -86,14 +82,34 @@ document.addEventListener('click', function (event) {
 
 
 
-// Temporary redirect
-document.addEventListener('DOMContentLoaded', function() {
-    const signUpButtons = document.querySelectorAll('.form-btn');
 
-    signUpButtons.forEach(function(button) {
-        button.addEventListener('click', function(event) {
-            event.preventDefault();
-            window.location.href = './platforms.html';
-        });
+// Forgot pwd
+
+document.querySelectorAll('.handle-forgot-pwd').forEach(button => {
+    button.addEventListener('click', () => {
+        const forgotPwdContainer = document.getElementById('forgot-pwd');
+        forgotPwdContainer.style.display = forgotPwdContainer.style.display == 'none' ? 'flex' : 'none';
     });
 });
+
+
+// Reset pwd
+const togglePass = document.getElementById('reset-pwd-btn')
+if (togglePass) {
+    togglePass.addEventListener('click', () => {
+        let passwordField = document.getElementById('password-reset-pwd');
+        let passwordField2 = document.getElementById('password-reset-pwd-2');
+
+        let icon = document.getElementById('reset-pwd-svg-path');
+
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            passwordField2.type = 'text'
+            icon.style.display = 'block';
+        } else {
+            passwordField.type = 'password';
+            passwordField2.type = 'password';
+            icon.style.display = 'none';
+        }
+    })
+};

@@ -216,7 +216,7 @@ FEATURES
 
 .container-features-card-image-container {
   flex: 0 0 50%;
-  max-height: 75vh;
+  max-height: 75dvh;
 }
 
 

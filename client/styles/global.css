@@ -10,6 +10,7 @@
 
 :root 
 {
+    --primary-darkest: hsl(163, 100%, 28%);
     --primary-dark: hsl(163, 100%, 39%);
     --primary: hsl(163, 67%, 47%);
     --primary-light: hsl(163, 50%, 60%);
@@ -34,4 +35,15 @@ body {
   height: 100vh;
   max-width: 100%;
   overflow-x: hidden;
+}
+
+.btn {
+  padding: 0.75em 1.5em;
+  border-radius: 10px;
+  border: 2px inset var(--secondary-light);
+  background-color: var(--secondary);
+  color: white;
+  text-decoration: none;
+  text-transform: none;
+  cursor: pointer;
 }

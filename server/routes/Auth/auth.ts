@@ -1,7 +1,7 @@
 import type { User } from "@prisma/client";
 import bcrypt from "bcrypt";
-import { db } from "../db";
-import type { Middleware } from "../router";
+import { db } from "../../db";
+import type { Middleware } from "../../router";
 import jwt from "jsonwebtoken";
 
 export const isAuthenticated: Middleware = (req, res, next) => {
@@ -33,13 +33,30 @@ const createJwt = (user: User) => {
     throw new Error("JWT secret not found");
   }
 
-  return jwt.sign(user, secret, {
+  // Remove pass - too sensitive
+  const payload = { id: user.id, email: user.email, firstName: user.firstName, lastName: user.lastName };
+
+  return jwt.sign(payload, secret, {
     expiresIn: "1d",
   });
 };
 
 export const signUp = async (user: User) => {
-  const { password } = user;
+  const { firstName, lastName, password, email } = user;
+
+  if(!firstName || !lastName || !password || !email) {
+    throw new Error("Fill in all the fields!");
+  }
+
+  const existingUser = await db.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (existingUser) {
+    throw new Error("Email already in use");
+  }
 
   const hashedPassword = bcrypt.hashSync(password, 10);
 
@@ -50,9 +67,9 @@ export const signUp = async (user: User) => {
     },
   });
 
-  const jwt = createJwt(newUser);
+  const token = createJwt(newUser);
 
-  return jwt;
+  return { token, uid: newUser.id };
 };
 
 export const signUpMiddleware: Middleware = (req, res) => {
@@ -67,13 +84,12 @@ export const signUpMiddleware: Middleware = (req, res) => {
 
     try {
       const newUser = await signUp(user);
-
       res.writeHead(201, { "Content-Type": "application/json" });
       res.end(JSON.stringify(newUser));
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      res.writeHead(500, { "Content-Type": "text/plain" });
-      res.end("Internal Server Error");
+      res.writeHead(401, { "Content-Type": "text/plain" });
+      res.end(error?.message);
     }
   });
 };
@@ -86,16 +102,16 @@ export const signIn = async (email: string, password: string) => {
   });
 
   if (!user) {
-    throw new Error("User not found");
+    throw new Error("Wrong e-mail");
   }
 
   if (!bcrypt.compareSync(password, user.password)) {
-    throw new Error("Invalid password");
+    throw new Error("Incorrect password");
   }
 
-  const jwt = createJwt(user);
+  const token = createJwt(user);
 
-  return jwt;
+  return { token, uid: user.id };
 };
 
 export const signInMiddleware: Middleware = async (req, res) => {

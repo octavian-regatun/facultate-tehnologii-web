@@ -40,22 +40,143 @@
   flex-direction: column;
   align-items: center;
   background-color: white;
-  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.1))
-    drop-shadow(0 1px 1px rgb(0 0 0 / 0.06));
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.1)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.06));
   border-radius: 8px;
   transition: all 0.2s;
   cursor: pointer;
+  max-width: fit-content;
+  transition: transform 0.5s ease;
+}
+
+.card.zoomed {
+  transform: scale(1.05);
+}
+
+.delete-div {
+  display: none;
+  position: absolute;
+  left: 1em;
+  top: 1em;
+  background-color: var(--primary-light);
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.blur-background{
+  filter: blur(5px);
+  pointer-events: none;
+}
+
+.confirmation-dialog {
+  position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--primary);
+    padding: 1em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 1em;
+    z-index: 1000;
+}
+
+.confirmation-dialog > p {
+  margin-bottom: 1em;
+}
+
+.confirmation-btn-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.card:hover > .delete-div {
+  display: inline-block;
+}
+
+.publish-btn {
+  --br: 10px;
+  --size: calc(var(--br) * 2);
+  position: absolute;
+  max-width: 50%;
+  top: calc(-2.4em + 1px);
+  /* padding + font-size - ik, hard coded*/
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--primary-light);
+  border: none;
+  border-radius: var(--br) var(--br) 0 0;
+  color: var(--secondary-dark);
+  padding: .5em 1em;
+  font-size: 1.1em;
+  cursor: pointer;
+  z-index: 1;
+  text-align: center;
+}
+
+.publish-btn:first-of-type {
+  top: calc(-2.2em + 1px);
+}
+
+.publish-btn > span {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.publish-btn::before,
+.publish-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+
+  width: var(--size);
+  aspect-ratio: 1;
+  background: radial-gradient(circle at bottom right, transparent 70%, var(--primary-light) 70%);
+  background-size: 100% 100%;
+  background-position: 0 0;
+}
+
+.publish-btn::before {
+  left: calc(-1 * var(--size));
+  rotate: -180deg;
+}
+
+.publish-btn::after {
+  right: calc(-1 * var(--size));
+  rotate: -90deg;
+}
+
+.publish-btn-google {
+  display: none;
+  left: 0;
+  transform: translateX(0);
+}
+
+.publish-btn-google::before {
+  display: none;
+}
+
+.publish-btn-instagram {
+  display: none;
+  right: 0;
+  transform: translateX(0);
+}
+
+.publish-btn-instagram::after {
+  display: none;
 }
 
 .card-image {
-  width: 100%;
+  max-height: 50dvh;
+  /* max-width: 23vw; */
+  max-width: 100%;
   border-radius: 8px 8px 0 0;
 }
 
 .card:hover {
   transition: all 0.2s;
-  filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04))
-    drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
+  filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
 }
 
 .card-content {
@@ -78,29 +199,16 @@
 }
 
 .modal .card {
-  max-width: 384px;
+  border-radius: 0 0 8px 8px;
   cursor: auto;
   position: absolute;
   z-index: 1;
   transform: all 200ms;
 }
 
-/* .modal .card:not(:nth-child(3)) {
-  position: absolute;
-} */
-
-.modal .card:nth-of-type(1) {
-  transform: translateX(-30%) rotateZ(-8deg) scale(0.7);
-  filter: blur(2px);
-  z-index: 0;
-  pointer-events: none;
-}
-
-.modal .card:nth-of-type(3) {
-  transform: translateX(30%) rotateZ(8deg) scale(0.7);
-  filter: blur(2px);
-  z-index: 0;
-  pointer-events: none;
+.modal .card img {
+  border-radius: 0;
+  max-width: 20vw;
 }
 
 .modal .card:hover {
@@ -118,6 +226,7 @@
   height: 32px;
   width: 32px;
   border: 1px solid black;
+  z-index: 2;
 }
 
 .modal-previous-button {
@@ -185,7 +294,12 @@
   }
 }
 
-.card-content-edit-button {
+.card-actions-btn-container {
+  display: flex;
+  gap: .5em;
+}
+
+.card-content-edit-button, .card-content-refresh-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -202,7 +316,7 @@
   }
 }
 
-.card-content-edit-button:hover {
+.card-content-edit-button:hover, .card-content-refresh-button:hover {
   background-color: lightgray;
   transition: all 0.2s;
 }
@@ -213,8 +327,8 @@
   gap: 8px;
   width: 100%;
   overflow-y: auto;
-  max-height: 100px;
-  
+  height: 20vh;
+
 
   img {
     width: 24px;
@@ -226,6 +340,7 @@
 .card-content-comments::-webkit-scrollbar {
   width: 3px;
 }
+
 .card-content-comments::-webkit-scrollbar-track {
   background: var(--primary-dark);
 }
@@ -235,8 +350,7 @@
 }
 
 .card-content-comment {
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1))
-    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.06));
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1)) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.06));
   background-color: white;
   display: flex;
   gap: 8px;
@@ -262,8 +376,14 @@
   transition: all 0.2s;
 }
 
-.collage-button {
+.collage-btn-container {
+  position: fixed;
+  bottom: 5em;
+  gap: 2em;
   display: none;
+}
+
+.collage-btn {
   background-color: #75d479;
   color: black;
   padding: 8px 16px;
@@ -271,9 +391,12 @@
   cursor: pointer;
   transition: all 0.2s;
   border: 0;
+  -webkit-box-shadow: 0px 0px 5px 3px var(--secondary);
+  -moz-box-shadow: 0px 0px 5px 3px var(--secondary);
+  box-shadow: 0px 0px 5px 3px var(--secondary);
 }
 
-.collage-button:hover {
+.collage-btn:hover {
   background-color: #5cbf5a;
   transition: all 0.2s;
   border: 0;
@@ -281,7 +404,7 @@
 
 .card-content-edit {
   width: 100%;
-  max-height: 100px;
+  height: 20vh;
   overflow-y: auto;
   display: none;
 }
@@ -289,6 +412,7 @@
 .card-content-edit::-webkit-scrollbar {
   width: 3px;
 }
+
 .card-content-edit::-webkit-scrollbar-track {
   background: var(--primary-dark);
 }
@@ -306,7 +430,12 @@
   margin-top: 3px;
 }
 
-.card-content-edit-save-button {
+.filter-btn-container {
+  display: flex;
+}
+
+.card-content-edit-save-button,
+.card-content-edit-reset-button {
   background-color: #75d479;
   color: black;
   padding: 8px 16px;
@@ -318,7 +447,8 @@
   display: block;
 }
 
-.card-content-edit-save-button:hover {
+.card-content-edit-save-button:hover,
+.card-content-edit-reset-button:hover {
   background-color: #5cbf5a;
   transition: all 0.2s;
   border: 0;
@@ -394,13 +524,23 @@ input[type="range"]::-ms-thumb {
 }
 
 
+@media screen and (max-width: 1200px) {
+  .modal .card img {
+    max-width: 50vw;
+  }
+}
 
 
 @media screen and (max-width: 720px) {
   .modal .card:not(:nth-of-type(2)) {
     display: none;
   }
+
   .modal .card {
     transform: none !important;
+  }
+
+  .modal .card img {
+    max-width: 70vw;
   }
 }

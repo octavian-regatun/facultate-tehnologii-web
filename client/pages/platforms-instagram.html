@@ -4,15 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>M-PIC - Platforms - Instagram</title>
-    <link rel="stylesheet" href="../styles/platforms-instagram.css" />
-    <script src="../js/platforms-instagram.js" defer></script>
+    <link rel="stylesheet" href="../styles/cards.css" />
+    <script src="../js/carousel.js" defer></script>
   </head>
 
   <body>
     <nav class="navbar">
       <div class="navbar-left-side">
         <img class="navbar-logo" src="../imgs/logo.webp" />
-        <p class="navbar-page">Platforms / Instagram</p>
+        <p class="navbar-page">Platforms / Google Photos</p>
       </div>
       <div class="navbar-right-side">
         <input class="navbar-search input-text-field" placeholder="Search" />
@@ -26,11 +26,12 @@
             alt="profile"
           />
         </button>
+        <button class="btn log-out-btn">Log out</button>
       </div>
     </nav>
 
     <aside class="sidebar">
-      <a href="../index.html"><img src="../svgs/home.svg" /></a>
+      <a href="../pages/platforms-all.html"><img src="../svgs/home.svg" /></a>
       <a href="../pages/platforms.html"><img src="../svgs/dashboard.svg" /></a>
     </aside>
 
@@ -231,4 +232,6 @@
       </button>
     </dialog>
   </body>
+  <script src="../js/Authentication/redirect.js"></script>
+  <script src="../js/Authentication/logout.js"></script>
 </html>

@@ -37,4 +37,16 @@ export class Router {
       execute(0);
     }
   }
+
+  delete(path: string, ...middlewares: Middleware[]) {
+    if (this.req.url === path && this.req.method === "DELETE") {
+      const execute = (index: number) => {
+        if (index < middlewares.length) {
+          middlewares[index](this.req, this.res, () => execute(index + 1));
+        }
+      };
+
+      execute(0);
+    }
+  }
 }
