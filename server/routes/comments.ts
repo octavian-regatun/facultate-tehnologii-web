@@ -68,20 +68,28 @@ export const uploadCommentMiddleware: Middleware = async (req, res) => {
 
   req.on("end", async () => {
     try {
-      const data = JSON.parse(body) as Comment;
+      const comments = JSON.parse(body) as Comment[];
 
-      if (!data.photoId || !data.author || !data.content) {
+      if (!Array.isArray(comments)) {
         res.writeHead(400, { "Content-Type": "text/plain" });
-        res.end("Missing required fields: photoId, author, content");
+        res.end("Invalid input: expected an array of comments");
         return;
       }
 
-      const newComment = await saveCommentToDB(data);
+      for (const comment of comments) {
+        if (!comment.photoId || !comment.author || !comment.content) {
+          res.writeHead(400, { "Content-Type": "text/plain" });
+          res.end("Missing required fields in one of the comments: photoId, author, content");
+          return;
+        }
+      }
+
+      const savedComments = await Promise.all(comments.map(saveCommentToDB));
 
       res.writeHead(201, { "Content-Type": "application/json" });
-      res.end(JSON.stringify(newComment));
+      res.end(JSON.stringify(savedComments));
     } catch (error) {
-      console.error('Failed to upload image:', error);
+      console.error('Failed to upload comments:', error);
       res.writeHead(500, { "Content-Type": "text/plain" });
       res.end("Internal Server Error");
     }

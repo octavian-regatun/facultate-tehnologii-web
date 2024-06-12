@@ -134,9 +134,18 @@ async function displayModalPhotos(photos) {
             document.querySelector(".modal").close();
         });
 
+        const imageContainer = document.createElement("div");
+        imageContainer.classList.add("photo-editor");
+
         const cardImage = document.createElement("img");
         cardImage.classList.add("card-image");
         cardImage.src = `data:image/png;base64,${photo.binaryString}`;
+        cardImage.setAttribute("photo-id", photo.id);
+
+        const canvas = document.createElement("canvas");
+
+        imageContainer.appendChild(cardImage);
+        imageContainer.appendChild(canvas);
 
         const cardContent = document.createElement("div");
         cardContent.classList.add("card-content");
@@ -211,6 +220,21 @@ async function displayModalPhotos(photos) {
             commentsSection.appendChild(commentDiv);
         }
 
+        const importExportContainer = document.createElement("div");
+        importExportContainer.classList.add("filter-btn-container");
+
+        const importButton = document.createElement("button");
+        importButton.classList.add("import-button");
+        importButton.textContent = "Import";
+
+        const exportButton = document.createElement("button");
+        exportButton.classList.add("export-button");
+        exportButton.textContent = "Export";
+
+        importExportContainer.appendChild(importButton);
+        importExportContainer.appendChild(exportButton);
+        commentsSection.appendChild(importExportContainer);
+
         const editSection = document.createElement("div");
         editSection.classList.add("card-content-edit");
 
@@ -264,7 +288,7 @@ async function displayModalPhotos(photos) {
         cardContent.appendChild(editSection);
 
         card.appendChild(closeButton);
-        card.appendChild(cardImage);
+        card.appendChild(imageContainer);
         card.appendChild(cardContent);
         modalContent.appendChild(card);
     });

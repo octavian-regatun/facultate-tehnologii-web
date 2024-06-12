@@ -63,9 +63,18 @@ const addNewPhotoToModal = (photo) => {
         document.querySelector(".modal").close();
     });
 
+    const imageContainer = document.createElement("div");
+    imageContainer.classList.add("photo-editor");
+
     const cardImage = document.createElement("img");
     cardImage.classList.add("card-image");
     cardImage.src = `data:image/png;base64,${photo.binaryString}`;
+    cardImage.setAttribute("photo-id", photo.id);
+
+    const canvas = document.createElement("canvas");
+
+    imageContainer.appendChild(cardImage);
+    imageContainer.appendChild(canvas);
 
     const cardContent = document.createElement("div");
     cardContent.classList.add("card-content");
@@ -108,8 +117,25 @@ const addNewPhotoToModal = (photo) => {
     commentDiv.appendChild(commentText);
     commentsSection.appendChild(commentDiv);
 
+    const importExportContainer = document.createElement("div");
+    importExportContainer.classList.add("filter-btn-container");
+
+    const importButton = document.createElement("button");
+    importButton.classList.add("import-button");
+    importButton.textContent = "Import";
+
+    const exportButton = document.createElement("button");
+    exportButton.classList.add("export-button");
+    exportButton.textContent = "Export";
+
+    importExportContainer.appendChild(importButton);
+    importExportContainer.appendChild(exportButton);
+    commentsSection.appendChild(importExportContainer);
+
     const editSection = document.createElement("div");
     editSection.classList.add("card-content-edit");
+
+
 
     const createSlider = (labelText, min, max, def) => {
         const sliderContainer = document.createElement("div");
@@ -161,25 +187,30 @@ const addNewPhotoToModal = (photo) => {
     cardContent.appendChild(editSection);
 
     card.appendChild(closeButton);
-    card.appendChild(cardImage);
+    card.appendChild(imageContainer);
     card.appendChild(cardContent);
     modalContent.appendChild(card);
 }
 
 // Utility function used in savePhoto
 const getFilteredImageAsBase64 = (image, filters) => {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    canvas.width = image.width;
-    canvas.height = image.height;
+
+    const canvas = image.nextElementSibling;
+
+    // new canvas for draw & filters
+    const filteredCanvas = document.createElement('canvas');
+    const context = filteredCanvas.getContext('2d');
+    filteredCanvas.width = image.width;
+    filteredCanvas.height = image.height;
 
     if (filters) {
         context.filter = filters;
     }
-    context.drawImage(image, 0, 0, canvas.width, canvas.height);
+    context.drawImage(image, 0, 0, filteredCanvas.width, filteredCanvas.height);
+    context.drawImage(canvas, 0, 0, filteredCanvas.width, filteredCanvas.height);
 
-    // Get base64 string from the modified photo
-    return canvas.toDataURL('image/png');
+    // base64
+    return filteredCanvas.toDataURL('image/png');
 };
 
 const savePhoto = async (imageElement, filters = null) => {

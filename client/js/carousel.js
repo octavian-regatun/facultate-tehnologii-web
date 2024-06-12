@@ -1,5 +1,7 @@
 import savePhoto from "./savePhoto.js";
-import updatePhotoData from './updatePhotoData.js';
+import updatePhotoData from "./updatePhotoData.js";
+import exportComments from "./export.js";
+import importComments from "./import.js";
 
 document.addEventListener('photosLoaded', () => {
 	// Remove all event listeners
@@ -28,8 +30,9 @@ document.addEventListener('photosLoaded', () => {
 		return;
 	}
 
-	let modalClose, modalCards, editButton, refreshButton, image, opacitySlider, hueSlider, saturationSlider, lightnessSlider, resetButton, saveButton, publishButtons;
+	let modalClose, modalCards, editButton, refreshButton, image, opacitySlider, hueSlider, saturationSlider, lightnessSlider, resetButton, saveButton, importButton, exportButton, publishButtons;
 	let currentIndex = 0;
+	let drawing = false, canvas = null, ctx = null;
 
 	// Initialize (needed if the modal is closed and reopened)
 	const initializeModalElements = () => {
@@ -61,7 +64,7 @@ document.addEventListener('photosLoaded', () => {
 
 	let clickedCard;
 
-	// Close modal
+	// Modal event listeners
 	modal.addEventListener('click', (event) => {
 		let isCard = false;
 		modalCards.forEach((card) => {
@@ -122,6 +125,26 @@ document.addEventListener('photosLoaded', () => {
 			modal.close();
 		}
 
+		// import comments
+		if (importButton && importButton.contains(event.target)) {
+			const card = event.target.closest('.card');
+			const id = card.querySelector('.card-image').getAttribute("photo-id");
+			importComments(card, id);
+
+			// These buttons are deleted, so reinitialize them
+			// importButton = modalCards[currentIndex].querySelector('.import-button');
+			// exportButton = modalCards[currentIndex].querySelector('.export-button');
+			// console.log(importButton);
+		}
+
+		// export comments in a .zip with .json & .csv
+		if (exportButton && exportButton.contains(event.target)) {
+			const card = event.target.closest('.card');
+			const id = card.querySelector('.card-image').getAttribute("photo-id");
+			exportComments(id);
+		}
+
+		// top buttons
 		if (publishButtons && publishButtons[0].contains(event.target)) {
 			publishButtons[0].style.display = 'none';
 			publishButtons[1].style.display = 'block';
@@ -367,13 +390,36 @@ document.addEventListener('photosLoaded', () => {
 		const comments = modalCards[currentIndex].querySelector('.card-content-comments');
 
 		if (description.style.display === 'none' || comments.style.display === 'none') {
+			console.log("aici");
 			comments.style.display = 'block';
 			modalCards[currentIndex].querySelector('.card-content-edit').style.display = 'none';
 			editButton.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+			const canvas = modalCards[currentIndex].querySelector('canvas');
+			canvas.removeEventListener('mousedown', startDrawing, true);
+			canvas.removeEventListener('mousemove', draw, true);
+			canvas.removeEventListener('mouseup', stopDrawing, true);
+			canvas.removeEventListener('mouseout', stopDrawing, true);
+
+			drawing = false;
+			ctx = null;
 		} else {
 			comments.style.display = 'none';
 			modalCards[currentIndex].querySelector('.card-content-edit').style.display = 'block';
 			editButton.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+
+			canvas = modalCards[currentIndex].querySelector('canvas');
+			const photo = modalCards[currentIndex].querySelector('img');
+			ctx = canvas.getContext('2d');
+
+			canvas.width = photo.width;
+			canvas.height = photo.height;
+
+			drawing = false;
+
+			canvas.addEventListener('mousedown', startDrawing);
+			canvas.addEventListener('mousemove', draw);
+			canvas.addEventListener('mouseup', stopDrawing);
+			canvas.addEventListener('mouseout', stopDrawing);
 		}
 	};
 
@@ -383,6 +429,8 @@ document.addEventListener('photosLoaded', () => {
 		refreshButton = modalCards[index].querySelector('.card-content-refresh-button') || null;
 		resetButton = modalCards[index].querySelector('.card-content-edit-reset-button');
 		saveButton = modalCards[index].querySelector('.card-content-edit-save-button');
+		importButton = modalCards[index].querySelector('.import-button');
+		exportButton = modalCards[index].querySelector('.export-button');
 		publishButtons = modalCards[index].querySelectorAll('.publish-btn');
 		image = modalCards[index].querySelector('img');
 		const inputs = modalCards[index].querySelectorAll('input');
@@ -392,4 +440,27 @@ document.addEventListener('photosLoaded', () => {
 		saturationSlider = inputs[2];
 		lightnessSlider = inputs[3];
 	}
+
+	const startDrawing = (e) => {
+		drawing = true;
+		draw(e);
+	};
+
+	const draw = (e) => {
+		if (!drawing) return;
+		ctx.lineWidth = 5;
+		ctx.lineCap = 'round';
+		ctx.strokeStyle = 'black';
+
+		const rect = canvas.getBoundingClientRect();
+		ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+		ctx.stroke();
+		ctx.beginPath();
+		ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+	};
+
+	const stopDrawing = () => {
+		drawing = false;
+		ctx.beginPath();
+	};
 });
