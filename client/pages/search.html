@@ -7,6 +7,7 @@
   <title>M-PIC - Platforms - Search</title>
   <link rel="stylesheet" href="../styles/cards.css" />
   <link rel="stylesheet" href="../styles/global.css">
+  <link rel="stylesheet" href="../styles/collage.css">
 </head>
 
 <body>
@@ -33,11 +34,15 @@
   <main class="container">
     <div class="container-grid">
       <!--Photos will be dynamically loaded here-->
+      <img src="../imgs/loading.png" alt="Loading" class="loading">
     </div>
 
     <div class="collage-btn-container">
-      <button class="collage-btn">Create Collage</button>
-      <button class="collage-btn">Cancel</button>
+      <button class="btn">Create Collage</button>
+      <button class="btn">Cancel</button>
+    </div>
+    <div class="collage-limit">
+      The maximum number of photos is 6. Please deselect a photo first!
     </div>
   </main>
 
@@ -53,5 +58,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <script src="../js/updateComments.js"></script>
 <script src="../js/savePhoto.js" type="module" defer></script>
+<script src="../js/collage.js" type="module" defer></script>
 <script src="../js/carousel.js" type="module" defer></script>
 </html>

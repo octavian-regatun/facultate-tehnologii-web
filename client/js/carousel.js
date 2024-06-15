@@ -2,6 +2,7 @@ import savePhoto from "./savePhoto.js";
 import updatePhotoData from "./updatePhotoData.js";
 import exportComments from "./export.js";
 import importComments from "./import.js";
+import createCollage from "./collage.js";
 
 document.addEventListener('photosLoaded', () => {
 	// Remove all event listeners
@@ -25,6 +26,13 @@ document.addEventListener('photosLoaded', () => {
 	const modalPreviousButton = document.querySelector('.modal-previous-button');
 	const modalNextButton = document.querySelector('.modal-next-button');
 
+	if (cards.length) {
+		const noImages = document.querySelector('.no-images');
+		if (noImages) {
+			noImages.remove();
+		}
+	}
+
 	if (!modal) {
 		console.error('Modal not found');
 		return;
@@ -38,6 +46,7 @@ document.addEventListener('photosLoaded', () => {
 	const initializeModalElements = () => {
 		modalCards = modal.querySelectorAll('.card');
 		if (modalCards.length === 0) {
+			displayNoPhotosMessage("Oops..Looks like you don't have any photos. Try fetching some first!");
 			return false;
 		}
 
@@ -118,7 +127,7 @@ document.addEventListener('photosLoaded', () => {
 			const saturation = saturationSlider.value + '%';
 			const lightness = lightnessSlider.value + '%';
 			const filters = `opacity(${opacity}) hue-rotate(${hue}deg) saturate(${saturation}) brightness(${lightness})`;
-			savePhoto(image, filters);
+			savePhoto(image, undefined, undefined, undefined, true, filters);
 			publishButtons[0].style.display = 'block';
 			publishButtons[1].style.display = 'none';
 			publishButtons[2].style.display = 'none';
@@ -174,15 +183,24 @@ document.addEventListener('photosLoaded', () => {
 			clickedCard.querySelector('.card-checkmark').remove();
 			clickedCard.classList.remove('zoomed');
 		} else {
-			const checkmark = document.createElement('img');
-			checkmark.src = '../svgs/checkmark.svg';
-			checkmark.className = 'card-checkmark';
-			clickedCard.prepend(checkmark);
-			clickedCard.classList.add('zoomed');
+			// A new card is being selected. Check if there are already 6
+			if (document.querySelectorAll('.card-checkmark').length >= 6) {
+				const collageLimit = document.querySelector('.collage-limit');
+				collageLimit.style.display = 'block';
+				setTimeout(function () {
+					collageLimit.style.display = 'none';
+				}, 3000);
+			} else {
+				const checkmark = document.createElement('img');
+				checkmark.src = '../svgs/checkmark.svg';
+				checkmark.className = 'card-checkmark';
+				clickedCard.prepend(checkmark);
+				clickedCard.classList.add('zoomed');
+			}
 		}
 
 		const collageButtonContainer = document.querySelector('.collage-btn-container');
-		if (document.querySelectorAll('.card-checkmark').length >= 1) {
+		if (document.querySelectorAll('.card-checkmark').length >= 2) {
 			collageButtonContainer.style.display = 'flex';
 		} else {
 			collageButtonContainer.style.display = 'none';
@@ -269,7 +287,16 @@ document.addEventListener('photosLoaded', () => {
 		collageButtonContainer.style.display = 'none';
 	}
 
-	collageButtons[0].addEventListener('click', () => { alert("not ready") });
+	collageButtons[0].addEventListener('click', () => {
+		const navbar = document.querySelector('.navbar');
+		const sidebar = document.querySelector('.sidebar');
+		const container = document.querySelector('.container');
+		navbar.classList.add("blur-background");
+		sidebar.classList.add("blur-background");
+		container.classList.add("blur-background");
+		createCollage();
+		removeSelectedCollage();
+	});
 	collageButtons[1].addEventListener('click', removeSelectedCollage);
 
 	// Normal click on a card (modal opens up)
@@ -390,7 +417,6 @@ document.addEventListener('photosLoaded', () => {
 		const comments = modalCards[currentIndex].querySelector('.card-content-comments');
 
 		if (description.style.display === 'none' || comments.style.display === 'none') {
-			console.log("aici");
 			comments.style.display = 'block';
 			modalCards[currentIndex].querySelector('.card-content-edit').style.display = 'none';
 			editButton.style.backgroundColor = 'rgba(0, 0, 0, 0)';
@@ -443,7 +469,9 @@ document.addEventListener('photosLoaded', () => {
 
 	const startDrawing = (e) => {
 		drawing = true;
-		draw(e);
+		if (ctx) {
+			draw(e);
+		}
 	};
 
 	const draw = (e) => {

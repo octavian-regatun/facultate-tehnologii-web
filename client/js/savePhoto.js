@@ -1,4 +1,4 @@
-const addNewPhotoToGrid = (photo) => {
+export const addNewPhotoToGrid = (photo) => {
     const containerGrid = document.querySelector(".container-grid");
     const card = document.createElement("div");
     card.classList.add("card");
@@ -32,7 +32,7 @@ const addNewPhotoToGrid = (photo) => {
 }
 
 
-const addNewPhotoToModal = (photo) => {
+export const addNewPhotoToModal = (photo) => {
     const modalContent = document.querySelector(".modal");
     const card = document.createElement("div");
     card.classList.add("card");
@@ -193,9 +193,12 @@ const addNewPhotoToModal = (photo) => {
 }
 
 // Utility function used in savePhoto
-const getFilteredImageAsBase64 = (image, filters) => {
+const getFilteredImageAsBase64 = (image, hasCanvas, filters) => {
+    let canvas;
+    if (hasCanvas) {
+        canvas = image.nextElementSibling;
+    }
 
-    const canvas = image.nextElementSibling;
 
     // new canvas for draw & filters
     const filteredCanvas = document.createElement('canvas');
@@ -207,14 +210,26 @@ const getFilteredImageAsBase64 = (image, filters) => {
         context.filter = filters;
     }
     context.drawImage(image, 0, 0, filteredCanvas.width, filteredCanvas.height);
-    context.drawImage(canvas, 0, 0, filteredCanvas.width, filteredCanvas.height);
+
+    if (hasCanvas) {
+        context.drawImage(canvas, 0, 0, filteredCanvas.width, filteredCanvas.height);
+    }
 
     // base64
     return filteredCanvas.toDataURL('image/png');
 };
 
-const savePhoto = async (imageElement, filters = null) => {
-    const base64Image = getFilteredImageAsBase64(imageElement, filters);
+const savePhoto = async (imageElement, collage = false, width = null, height = null, hasCanvas = true, filters = null) => {
+    let base64Image;
+
+    if (collage) {
+        base64Image = imageElement;
+    } else {
+        base64Image = getFilteredImageAsBase64(imageElement, hasCanvas, filters);
+    }
+
+    const aspectRatio = collage ? width / height : imageElement.width / imageElement.height;
+    const size = collage ? `${width}x${height}` : `${imageElement.width}x${imageElement.height}`;
 
     const response = await fetch(`http://localhost:8081/photos`, {
         method: "POST",
@@ -229,8 +244,8 @@ const savePhoto = async (imageElement, filters = null) => {
             description: "Image saved on M-PIC",
             likes: 0,
             commentCount: 0,
-            aspectRatio: imageElement.width / imageElement.height,
-            size: parseInt(`${imageElement.width}x${imageElement.height}`)
+            aspectRatio: aspectRatio,
+            size: parseInt(size)
         }),
     });
 
@@ -270,7 +285,7 @@ inputFile.addEventListener('change', async (event) => {
     if (!file) return;
 
     const image = await loadImage(file);
-    savePhoto(image);
+    savePhoto(image, undefined, undefined, undefined, false);
 });
 
 // Transform the file to an URL to be able to convert to base64

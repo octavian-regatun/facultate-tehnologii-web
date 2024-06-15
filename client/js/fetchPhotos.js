@@ -34,9 +34,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-function displayNoPhotosMessage(msg) {
-    const container = document.querySelector('.container');
+const displayNoPhotosMessage = (msg) => {
+    const container = document.querySelector('.container-grid');
     const div = document.createElement('div');
+    div.classList.add("no-images");
     const p = document.createElement('p');
     p.textContent = msg;
     const img = document.createElement('img');
