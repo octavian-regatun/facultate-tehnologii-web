@@ -1,8 +1,8 @@
 import savePhoto from "./savePhoto.js";
 
-const createCollage = () => {
+const createCollage = (cards) => {
     const body = document.querySelector('body');
-    const cards = document.querySelectorAll('.card-checkmark');
+    // const cards = document.querySelectorAll('.card-checkmark');
 
     const container = document.createElement("div");
     container.classList.add("collage-container");

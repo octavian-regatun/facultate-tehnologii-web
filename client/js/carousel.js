@@ -41,6 +41,7 @@ document.addEventListener('photosLoaded', () => {
 	let modalClose, modalCards, editButton, refreshButton, image, opacitySlider, hueSlider, saturationSlider, lightnessSlider, resetButton, saveButton, importButton, exportButton, publishButtons;
 	let currentIndex = 0;
 	let drawing = false, canvas = null, ctx = null;
+	let clickedCards = [];
 
 	// Initialize (needed if the modal is closed and reopened)
 	const initializeModalElements = () => {
@@ -182,6 +183,7 @@ document.addEventListener('photosLoaded', () => {
 		if (hasCheckmark) {
 			clickedCard.querySelector('.card-checkmark').remove();
 			clickedCard.classList.remove('zoomed');
+			clickedCards = clickedCards.filter(card => card !== clickedCard);
 		} else {
 			// A new card is being selected. Check if there are already 6
 			if (document.querySelectorAll('.card-checkmark').length >= 6) {
@@ -196,6 +198,7 @@ document.addEventListener('photosLoaded', () => {
 				checkmark.className = 'card-checkmark';
 				clickedCard.prepend(checkmark);
 				clickedCard.classList.add('zoomed');
+				clickedCards.push(clickedCard);
 			}
 		}
 
@@ -283,6 +286,7 @@ document.addEventListener('photosLoaded', () => {
 				card.classList.remove('zoomed');
 			}
 		});
+		clickedCards = [];
 		const collageButtonContainer = document.querySelector('.collage-btn-container');
 		collageButtonContainer.style.display = 'none';
 	}
@@ -294,7 +298,7 @@ document.addEventListener('photosLoaded', () => {
 		navbar.classList.add("blur-background");
 		sidebar.classList.add("blur-background");
 		container.classList.add("blur-background");
-		createCollage();
+		createCollage(clickedCards);
 		removeSelectedCollage();
 	});
 	collageButtons[1].addEventListener('click', removeSelectedCollage);

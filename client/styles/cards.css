@@ -65,7 +65,7 @@
   transition: transform 0.5s ease;
 }
 
-.card > img {
+.card > img:not(.card-checkmark) {
   min-height: 10dvh;
 }
 
