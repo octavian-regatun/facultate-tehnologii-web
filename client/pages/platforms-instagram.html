@@ -1,237 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>M-PIC - Platforms - Instagram</title>
-    <link rel="stylesheet" href="../styles/cards.css" />
-    <script src="../js/carousel.js" defer></script>
-  </head>
 
-  <body>
-    <nav class="navbar">
-      <div class="navbar-left-side">
-        <img class="navbar-logo" src="../imgs/logo.webp" />
-        <p class="navbar-page">Platforms / Google Photos</p>
-      </div>
-      <div class="navbar-right-side">
-        <input class="navbar-search input-text-field" placeholder="Search" />
-        <button
-          class="navbar-profile button-icon"
-          onclick="alert('Urmeaza sa adaugăm pagina de profil cu funcționalitățile aferente')"
-        >
-          <img
-            class="navbar-profile-image"
-            src="../svgs/user-circle.svg"
-            alt="profile"
-          />
-        </button>
-        <button class="btn log-out-btn">Log out</button>
-      </div>
-    </nav>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>M-PIC - Platforms - Instagram</title>
+  <link rel="stylesheet" href="../styles/filter.css">
+  <link rel="stylesheet" href="../styles/cards.css" />
+  <link rel="stylesheet" href="../styles/global.css">
+  <link rel="stylesheet" href="../styles/collage.css">
+</head>
 
-    <aside class="sidebar">
-      <a href="../pages/platforms-all.html"><img src="../svgs/home.svg" /></a>
-      <a href="../pages/platforms.html"><img src="../svgs/dashboard.svg" /></a>
-    </aside>
-
-    <main class="container">
-      <div class="container-grid">
-        <div class="card">
-          <img class="card-image" src="../imgs/card-placeholder-1.png" />
-          <div class="card-content">
-            <p class="card-content-description">Descriere 1</p>
-          </div>
-        </div>
-        <div class="card">
-          <img class="card-image" src="../imgs/card-placeholder-2.png" />
-          <div class="card-content">
-            <p class="card-content-description">Descriere 2</p>
-          </div>
-        </div>
-        <div class="card">
-          <img class="card-image" src="../imgs/card-placeholder-1.png" />
-          <div card-image class="card-content">
-            <p class="card-content-description">Descriere 3</p>
-          </div>
-        </div>
-        <div class="card">
-          <img class="card-image" src="../imgs/card-placeholder-2.png" />
-          <div card-image class="card-content">
-            <p class="card-content-description">Descriere 4</p>
-          </div>
-        </div>
-      </div>
-
-      <button class="collage-button">Create Collage</button>
-    </main>
-
-    <dialog class="modal">
-      <button class="modal-previous-button">
-        <img src="../svgs/left-arrow.svg" />
+<body>
+  <nav class="navbar">
+    <div class="navbar-left-side">
+      <img class="navbar-logo" src="../imgs/logo.webp" />
+      <p class="navbar-page">Platforms / Instagram</p>
+    </div>
+    <div class="navbar-right-side">
+      <button class="navbar-profile button-icon"
+        onclick="alert('Urmeaza sa adaugăm pagina de profil cu funcționalitățile aferente')">
+        <img class="navbar-profile-image" src="../svgs/user-circle.svg" alt="profile" />
       </button>
+      <button class="btn log-out-btn">Log out</button>
+    </div>
+  </nav>
 
-      <!--LEFT CARD-->
-      <div class="card">
-        <button class="modal-close">X</button>
-        <img class="card-image" src="../imgs/youtube-logo.png" />
-        <div class="card-content">
-          <p class="card-content-description">Veniti la Stagii Pe Bune!</p>
-          <div class="card-content-actions">
-            <div class="card-content-like">
-              <img src="../svgs/heart.svg" alt="like" />
-              <span>102</span>
-            </div>
-            <button class="card-content-edit-button">
-              <img src="../svgs/edit-photo.svg" />
-            </button>
-          </div>
-          <div class="card-content-comments">
-            <p>Comments</p>
-            <div class="card-content-comment">
-              <img src="../svgs/user-circle.svg" />
-              <p>Esti cel mai tare!</p>
-            </div>
-            <div class="card-content-comment">
-              <img src="../svgs/user-circle.svg" />
-              <p>Vin si eu!</p>
-            </div>
-            <div class="card-content-comment">
-              <img src="../svgs/user-circle.svg" />
-              <p>Wohoooo!</p>
-            </div>
-          </div>
-          <div class="card-content-edit">
-            <div class="card-content-edit-slider">
-              <label>Opacity</label>
-              <input type="range" min="0" max="100" value="50" />
-            </div>
-            <div class="card-content-edit-slider">
-              <label>Hue</label>
-              <input type="range" min="0" max="100" value="50" />
-            </div>
-            <div class="card-content-edit-slider">
-              <label>Saturation</label>
-              <input type="range" min="0" max="100" value="50" />
-            </div>
-            <div class="card-content-edit-slider">
-              <label>Lightness</label>
-              <input type="range" min="0" max="100" value="50" />
-            </div>
-            <button class="card-content-edit-save-button">Save</button>
-          </div>
-        </div>
-      </div>
+  <aside class="sidebar">
+    <a href="../pages/search.html"><img src="../svgs/search.svg" /></a>
+    <a href="../pages/platforms.html"><img src="../svgs/dashboard.svg" /></a>
+    <button class="upload-btn"><img src="../svgs/upload.svg" /></button>
+  </aside>
 
-      <!--CENTER CARD-->
-      <div class="card">
-        <button class="modal-close">X</button>
-        <img class="card-image" src="../imgs/card-placeholder-2.png" />
-        <div class="card-content">
-          <p class="card-content-description">Veniti la Stagii Pe Bune!</p>
-          <div class="card-content-actions">
-            <div class="card-content-like">
-              <img src="../svgs/heart.svg" alt="like" />
-              <span>102</span>
-            </div>
-            <button class="card-content-edit-button">
-              <img src="../svgs/edit-photo.svg" />
-            </button>
-          </div>
-          <div class="card-content-comments">
-            <p>Comments</p>
-            <div class="card-content-comment">
-              <img src="../svgs/user-circle.svg" />
-              <p>Esti cel mai tare!</p>
-            </div>
-            <div class="card-content-comment">
-              <img src="../svgs/user-circle.svg" />
-              <p>Vin si eu!</p>
-            </div>
-            <div class="card-content-comment">
-              <img src="../svgs/user-circle.svg" />
-              <p>Wohoooo!</p>
-            </div>
-          </div>
-          <div class="card-content-edit">
-            <div class="card-content-edit-slider">
-              <label>Opacity</label>
-              <input type="range" min="0" max="100" value="50" />
-            </div>
-            <div class="card-content-edit-slider">
-              <label>Hue</label>
-              <input type="range" min="0" max="100" value="50" />
-            </div>
-            <div class="card-content-edit-slider">
-              <label>Saturation</label>
-              <input type="range" min="0" max="100" value="50" />
-            </div>
-            <div class="card-content-edit-slider">
-              <label>Lightness</label>
-              <input type="range" min="0" max="100" value="50" />
-            </div>
-            <button class="card-content-edit-save-button">Save</button>
-          </div>
-        </div>
-      </div>
+  <section class="card-header">
+    
+  </section>
 
-      <!--RIGHT CARD-->
-      <div class="card">
-        <button class="modal-close">X</button>
-        <img class="card-image" src="../imgs/instagram-logo.png" />
-        <div class="card-content">
-          <p class="card-content-description">Veniti la Stagii Pe Bune!</p>
-          <div class="card-content-actions">
-            <div class="card-content-like">
-              <img src="../svgs/heart.svg" alt="like" />
-              <span>102</span>
-            </div>
-            <button class="card-content-edit-button">
-              <img src="../svgs/edit-photo.svg" />
-            </button>
-          </div>
-          <div class="card-content-comments">
-            <p>Comments</p>
-            <div class="card-content-comment">
-              <img src="../svgs/user-circle.svg" />
-              <p>Esti cel mai tare!</p>
-            </div>
-            <div class="card-content-comment">
-              <img src="../svgs/user-circle.svg" />
-              <p>Vin si eu!</p>
-            </div>
-            <div class="card-content-comment">
-              <img src="../svgs/user-circle.svg" />
-              <p>Wohoooo!</p>
-            </div>
-          </div>
-          <div class="card-content-edit">
-            <div class="card-content-edit-slider">
-              <label>Opacity</label>
-              <input type="range" min="0" max="100" value="50" />
-            </div>
-            <div class="card-content-edit-slider">
-              <label>Hue</label>
-              <input type="range" min="0" max="100" value="50" />
-            </div>
-            <div class="card-content-edit-slider">
-              <label>Saturation</label>
-              <input type="range" min="0" max="100" value="50" />
-            </div>
-            <div class="card-content-edit-slider">
-              <label>Lightness</label>
-              <input type="range" min="0" max="100" value="50" />
-            </div>
-            <button class="card-content-edit-save-button">Save</button>
-          </div>
-        </div>
-      </div>
+  <main class="container">
+    <div class="container-grid">
+      <!--Photos will be dynamically loaded here-->
+      <img src="../imgs/loading.png" alt="Loading" class="loading">
+    </div>
 
-      <button class="modal-next-button">
-        <img src="../svgs/right-arrow.svg" />
-      </button>
-    </dialog>
-  </body>
-  <script src="../js/Authentication/redirect.js"></script>
-  <script src="../js/Authentication/logout.js"></script>
+    <div class="collage-btn-container">
+      <button class="btn">Create Collage</button>
+      <button class="btn">Cancel</button>
+    </div>
+    <div class="collage-limit">
+      The maximum number of photos is 6. Please deselect a photo first!
+    </div>
+  </main>
+
+  <dialog class="modal">
+    <!-- Dynamic content will be inserted here -->
+  </dialog>
+</body>
+<script src="../js/Authentication/redirect.js"></script>
+<script src="../js/Authentication/logout.js"></script>
+<script src="../js/filter.js" defer></script>
+<script src="../js/fetchPhotos.js"></script>
+<script src="../js/deletePhoto.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<script src="../js/updateComments.js"></script>
+<script src="../js/savePhoto.js" type="module" defer></script>
+<script src="../js/collage.js" type="module" defer></script>
+<script src="../js/carousel.js" type="module" defer></script>
+
 </html>

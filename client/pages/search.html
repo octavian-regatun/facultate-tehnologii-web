@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>M-PIC - Platforms - Search</title>
+  <link rel="stylesheet" href="../styles/filter.css">
   <link rel="stylesheet" href="../styles/cards.css" />
   <link rel="stylesheet" href="../styles/global.css">
   <link rel="stylesheet" href="../styles/collage.css">
@@ -31,6 +32,60 @@
     <button class="upload-btn"><img src="../svgs/upload.svg" /></button>
   </aside>
 
+  <section class="card-header">
+    <form>
+      <div class="form-container">
+      <label for="search">Search</label>
+      <input type="text" name="search" id="form-search-field" placeholder="Description keyword...">
+    </div>
+
+      <div class="form-container">
+        <label for="platform">Platform</label>
+        <select name="platform" id="form-platform">
+          <option value="All">All</option>
+          <option value="GOOGLE PHOTOS">Google Photos</option>
+          <option value="INSTAGRAM">Instagram</option>
+          <option value="M-PIC">M-PIC</option>
+        </select>
+      </div>
+
+      <div class="form-container">
+        <label for="aspect-ratio">Aspect ratio</label>
+        <select name="aspect-ratio" id="form-aspect-ratio">
+          <option value="Any">Any</option>
+          <option value="16/9">16/9</option>
+          <option value="4/3">4/3</option>
+          <option value="1/1">1/1</option>
+          <option value="9/16">9/16</option>
+          <option value="3/4">3/4</option>
+        </select>
+      </div>
+
+      <div class="form-container">
+        <label for="size">Size</label>
+        <select name="size" id="form-size">
+          <option value="Any">Any</option>
+          <option value="&lt;500">&lt;500</option>
+          <option value="500-1000">500-1000</option>
+          <option value="&gt;1000">&gt;1000</option>
+        </select>
+      </div>
+      <div class="form-container">
+        <label for="order">Order by</label>
+        <select name="order" id="form-order">
+          <option value="Date ascending">Date ascending</option>
+          <option value="Date descending">Date descending</option>
+          <option value="Likes ascending">Likes ascending</option>
+          <option value="Likes descending">Likes descending</option>
+          <option value="Comments ascending">Comments ascending</option>
+          <option value="Comments descending">Comments descending</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn">Search</button>
+    </form>
+  </section>
+
   <main class="container">
     <div class="container-grid">
       <!--Photos will be dynamically loaded here-->
@@ -52,6 +107,7 @@
 </body>
 <script src="../js/Authentication/redirect.js"></script>
 <script src="../js/Authentication/logout.js"></script>
+<script src="../js/filter.js" defer></script>
 <script src="../js/fetchPhotos.js"></script>
 <script src="../js/deletePhoto.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
@@ -60,4 +116,5 @@
 <script src="../js/savePhoto.js" type="module" defer></script>
 <script src="../js/collage.js" type="module" defer></script>
 <script src="../js/carousel.js" type="module" defer></script>
+
 </html>

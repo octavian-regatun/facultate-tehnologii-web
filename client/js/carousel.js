@@ -295,9 +295,11 @@ document.addEventListener('photosLoaded', () => {
 		const navbar = document.querySelector('.navbar');
 		const sidebar = document.querySelector('.sidebar');
 		const container = document.querySelector('.container');
+		const header = document.querySelector('.card-header');
 		navbar.classList.add("blur-background");
 		sidebar.classList.add("blur-background");
 		container.classList.add("blur-background");
+		header.classList.add("blur-background");
 		createCollage(clickedCards);
 		removeSelectedCollage();
 	});

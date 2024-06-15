@@ -41,9 +41,11 @@ const openDeleteConfirmation = (card) => {
     yesButton.addEventListener("click", () => {
         deletePhoto(card);
         document.body.removeChild(confirmationDiv);
+        const header = document.querySelector('.card-header');
         navbar.classList.remove("blur-background");
         sidebar.classList.remove("blur-background");
         container.classList.remove("blur-background");
+        header.classList.remove("blur-background");
     });
 
     const noButton = document.createElement("button");
@@ -51,9 +53,11 @@ const openDeleteConfirmation = (card) => {
     noButton.classList.add("btn");
     noButton.addEventListener("click", () => {
         document.body.removeChild(confirmationDiv);
+        const header = document.querySelector('.card-header');
         navbar.classList.remove("blur-background");
         sidebar.classList.remove("blur-background");
         container.classList.remove("blur-background");
+        header.classList.remove("blur-background");
     });
 
     const buttonContainer = document.createElement("div");
@@ -65,7 +69,9 @@ const openDeleteConfirmation = (card) => {
     confirmationDiv.appendChild(buttonContainer);
 
     document.body.appendChild(confirmationDiv);
+    const header = document.querySelector('.card-header');
     navbar.classList.add("blur-background");
     sidebar.classList.add("blur-background");
     container.classList.add("blur-background");
+    header.classList.add("blur-background");
 };

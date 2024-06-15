@@ -7,8 +7,39 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
+    const currentUrl = new URL(window.location.href);
+    const searchParams = currentUrl.searchParams;
+
+    // Using default values for the query
+    let search = searchParams.get('search') || '';
+    let platform = 'All';
+    let aspectRatio = 'Any';
+    let size = 'Any';
+    let order = 'Date ascending';
+
+    // platform to fetch from
+    if (currentUrl.href.includes("platforms-google")) {
+        platform = 'GOOGLE PHOTOS';
+    } else if (currentUrl.href.includes("instagram")) {
+        platform = 'INSTAGRAM';
+    } else {
+        // if on search, use the query
+        platform = searchParams.get('platform') || platform;
+        aspectRatio = searchParams.get('aspect-ratio') || aspectRatio;
+        size = searchParams.get('size') || size;
+        order = searchParams.get('order') || order;
+    }
+
+    // create the req
+    const url = new URL(`http://localhost:8081/photos/${userId}`, window.location.origin);
+    url.searchParams.append('search', search);
+    url.searchParams.append('platform', platform);
+    url.searchParams.append('aspect-ratio', aspectRatio);
+    url.searchParams.append('size', size);
+    url.searchParams.append('order', order);
+
     try {
-        const response = await fetch(`http://localhost:8081/photos/${userId}`, {
+        const response = await fetch(url.toString(), {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -21,7 +52,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             displayPhotos(photos);
             await displayModalPhotos(photos);
 
-            // Dispatch custom event after photos are displayed
             document.dispatchEvent(new Event('photosLoaded'));
         } else {
             const error = await response.text();
@@ -33,6 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         displayNoPhotosMessage("Oops..there were some problems in getting your photos. Try again using a page refresh!");
     }
 });
+
 
 const displayNoPhotosMessage = (msg) => {
     const container = document.querySelector('.container-grid');
@@ -51,6 +82,7 @@ const displayNoPhotosMessage = (msg) => {
 function displayPhotos(photos) {
     const containerGrid = document.querySelector(".container-grid");
     containerGrid.innerHTML = ""; // I don't think there will be anything here, but just to be sure
+    // LE: There is: loading photo
 
     if (photos.length === 0) {
         displayNoPhotosMessage("Oops..Looks like you don't have any photos. Try fetching some first!");
@@ -305,7 +337,7 @@ async function displayModalPhotos(photos) {
 const getCommentsFromDB = async (id, refresh = 0) => {
     const token = localStorage.getItem("token");
     const url = new URL(`http://localhost:8081/comments/${id}`);
-    
+
     if (refresh === 1) {
         url.searchParams.append('refresh', 'true');
     }

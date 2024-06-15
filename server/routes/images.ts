@@ -124,6 +124,85 @@ export const uploadImageMiddleware: Middleware = async (req, res) => {
 };
 
 
+const applyFilters = (req: any, userId: number) => {
+  const urlString = req.url ? `http://${req.headers.host}${req.url}` : '';
+  const url = new URL(urlString);
+  const search = url.searchParams.get('search') || '';
+  const platform = url.searchParams.get('platform') || 'All';
+  const aspectRatio = url.searchParams.get('aspect-ratio') || 'Any';
+  const size = url.searchParams.get('size') || 'Any';
+  const order = url.searchParams.get('order') || 'Date ascending';
+
+  const filterConditions: any = {
+    userId: userId,
+  };
+
+  if (search) {
+    filterConditions.description = {
+      contains: search,
+    };
+  }
+
+  if (platform !== 'All') {
+    const enumPlatform = platform.toUpperCase().replace(' ', '_');
+    filterConditions.source = enumPlatform;
+  }
+
+  if (aspectRatio !== 'Any') {
+    const [width, height] = aspectRatio.split('/').map(Number);
+    // in case someone manually edits the link, let's not crash the server
+    if (!isNaN(width) && !isNaN(height) && height !== 0) {
+      const aspectRatioValue = width / height;
+      const tolerance = 0.2; // will see later if it needs to be changed
+      filterConditions.aspectRatio = {
+        gte: aspectRatioValue - tolerance,
+        lte: aspectRatioValue + tolerance,
+      };
+    }
+  }
+
+  // Long list of applying the filters one by one
+  if (size !== 'Any') {
+    switch (size) {
+      case '<500':
+        filterConditions.size = {
+          lt: 500,
+        };
+        break;
+      case '500-1000':
+        filterConditions.size = {
+          gte: 500,
+          lte: 1000,
+        };
+        break;
+      case '>1000':
+        filterConditions.size = {
+          gt: 1000,
+        };
+        break;
+      default:
+        break;
+    }
+  }
+
+  let orderBy: any = {};
+  if (order.includes('Date')) {
+    orderBy = {
+      createdAt: order.includes('ascending') ? 'asc' : 'desc',
+    };
+  } else if (order.includes('Likes')) {
+    orderBy = {
+      likes: order.includes('ascending') ? 'asc' : 'desc',
+    };
+  } else if (order.includes('Comments')) {
+    orderBy = {
+      commentCount: order.includes('ascending') ? 'asc' : 'desc',
+    };
+  }
+
+  return { filterConditions, orderBy };
+};
+
 
 
 export const getPhotosMiddleware: Middleware = async (req, res) => {
@@ -136,11 +215,12 @@ export const getPhotosMiddleware: Middleware = async (req, res) => {
     return;
   }
 
+  const { filterConditions, orderBy } = applyFilters(req, userId);
+
   try {
     const photos = await db.photo.findMany({
-      where: {
-        userId: userId,
-      },
+      where: filterConditions,
+      orderBy: orderBy,
     });
 
     res.writeHead(200, { "Content-Type": "application/json" });
@@ -151,6 +231,7 @@ export const getPhotosMiddleware: Middleware = async (req, res) => {
     res.end("Internal Server Error");
   }
 };
+
 
 
 

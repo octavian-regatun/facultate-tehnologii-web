@@ -1,0 +1,59 @@
+.card-header {
+    padding: 96px 32px 32px 96px;
+}
+
+.card-header form {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1em;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    color: var(--secondary);
+}
+
+.form-container label {
+    margin-bottom: 5px;
+}
+
+form input[type="text"],
+form select {
+    background-color: var(--primary);
+    border: 3px outset var(--secondary);
+    padding: 3px;
+    color: white;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+form select option {
+    background-color: var(--primary-dark);
+}
+
+form select option:checked {
+    background-color: var(--secondary-light);
+}
+
+form select option:checked,
+form select option[selected] {
+    background-color: var(--secondary-light) !important;
+}
+
+@media (max-width: 768px) {
+    .card-header form {
+        gap: 0.5em;
+    }
+
+    .form-container label {
+        margin-bottom: 2px;
+    }
+
+    form input[type="text"],
+    form select {
+        border: 1px outset var(--secondary);
+    }
+}

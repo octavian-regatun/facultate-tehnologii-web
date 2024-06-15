@@ -140,9 +140,11 @@ const removeBackgroundBlur = () => {
     const navbar = document.querySelector('.navbar');
     const sidebar = document.querySelector('.sidebar');
     const container = document.querySelector('.container');
+    const header = document.querySelector('.card-header');
     navbar.classList.remove("blur-background");
     sidebar.classList.remove("blur-background");
     container.classList.remove("blur-background");
+    header.classList.remove("blur-background");
 };
 
 
