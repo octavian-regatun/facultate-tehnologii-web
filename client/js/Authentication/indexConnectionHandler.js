@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('log-out-btn').addEventListener('click', () => {
             localStorage.removeItem('token');
             localStorage.removeItem('uid');
+            localStorage.removeItem('admin');
             location.reload();
         });
     }

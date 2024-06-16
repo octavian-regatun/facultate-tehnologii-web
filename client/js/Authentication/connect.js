@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const data = await response.json();
           localStorage.setItem("token", data.token);
           localStorage.setItem("uid", data.uid);
+          localStorage.setItem("admin", data.admin);
           window.location.href = "../pages/platforms.html";
         } else {
           const error = await response.text();
@@ -58,6 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const data = await response.json();
           localStorage.setItem("token", data.token);
           localStorage.setItem("uid", data.uid);
+          localStorage.setItem("admin", data.admin);
           window.location.href = "../pages/platforms.html";
         } else {
           const error = await response.text();
@@ -125,6 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const data = await response.json();
           localStorage.setItem("token", data.token);
           localStorage.setItem("uid", data.uid);
+          localStorage.setItem("admin", data.admin);
           window.location.href = "../pages/platforms.html";
         } else {
           const error = await response.text();

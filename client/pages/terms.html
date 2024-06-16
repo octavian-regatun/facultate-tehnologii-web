@@ -1,14 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms of use</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../styles/normalize.css">
+  <link rel="stylesheet" href="../styles/global.css">
+  <link rel="stylesheet" href="../styles/navbar.css">
+  <link rel="stylesheet" href="../styles/platforms.css" />
+  <link rel="stylesheet" href="../styles/footer.css">
+  <link rel="stylesheet" href="../styles/terms.css">
+  <link rel="icon" type="image/png" href="../imgs/favicon.png">
+  <title>Terms of Use</title>
 </head>
+
 <body>
-    Will be made if needed
-    <br>
-    Limits: 150 photos/hour on Instagram
-    Unknown on Youtube
+  <nav class="navbar">
+    <div class="navbar-left-side">
+      <img class="navbar-logo" src="../imgs/logo.webp" alt="Logo" />
+      <p class="navbar-page">Terms of Use</p>
+    </div>
+    <div class="navbar-right-side">
+      <a href="../pages/account.html"><img src="../svgs/user-circle.svg" alt="Account" /></a>
+      <button class="btn log-out-btn">Log out</button>
+    </div>
+  </nav>
+
+  <aside class="sidebar">
+    <a href="../pages/search.html"><img src="../svgs/search.svg" alt="Search" /></a>
+    <a href="../pages/platforms.html"><img src="../svgs/dashboard.svg" alt="Platforms" /></a>
+    <button class="upload-btn"><img src="../svgs/upload.svg" alt="Upload" /></button>
+  </aside>
+
+  <main class="container">
+    <section class="terms-section">
+      <h2>Introduction</h2>
+      <ul>
+        <li>Welcome to our website. By accessing and using this website, you agree to comply with the terms and
+          conditions outlined below.</li>
+        <li>If you do not agree with these terms, please do not use this website.</li>
+      </ul>
+    </section>
+
+    <section class="terms-section">
+      <h2>User Accounts</h2>
+      <ul>
+        <li>Users must log in using their Google or Instagram accounts to fetch or upload photos.</li>
+        <li>Your account information will be used solely for authentication purposes and to personalize your experience.
+        </li>
+      </ul>
+    </section>
+
+    <section class="terms-section">
+      <h2>Photo Uploads and Fetching</h2>
+      <ul>
+        <li>Users can upload and fetch photos from their Google Photos or Instagram accounts.</li>
+        <li>Each user has a limit of 100 photo uploads per day.</li>
+        <li>Fetching photos is limited to 500 requests per day.</li>
+      </ul>
+    </section>
+
+    <section class="terms-section">
+      <h2>Content Usage</h2>
+      <ul>
+        <li>All content uploaded must comply with our content guidelines and must not infringe on the rights of others.
+        </li>
+        <li>We reserve the right to remove any content that violates these guidelines without prior notice.</li>
+      </ul>
+    </section>
+
+    <section class="terms-section">
+      <h2>Privacy Policy</h2>
+      <ul>
+        <li>We are committed to protecting your privacy and ensuring the security of your personal information.</li>
+        <li>Please review our Privacy Policy (which unfortunately doesn't exist) for detailed information on how we
+          collect, use, and protect your data.
+        </li>
+      </ul>
+    </section>
+
+    <section class="terms-section">
+      <h2>Changes to Terms</h2>
+      <ul>
+        <li>We may update these terms from time to time. Any changes will be posted on this page.</li>
+        <li>It is your responsibility to review these terms periodically for any updates or changes.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wave"></div>
+    <div class="footer-container">
+      <div class="footer-child">
+        <p>Relevant links</p>
+        <a href="./scholarly.html">Documentation</a>
+        <a href="./terms.html">Terms of use</a>
+        <a href="https://en.wikipedia.org/wiki/Security">Security</a>
+        <a href="https://edu.info.uaic.ro/web-technologies/web-projects.html">Project</a>
+      </div>
+      <div class="footer-child">
+        <p>Get in touch</p>
+        <a href="#">Regatun</a>
+        <a href="#">Ciprian</a>
+        <a href="#">Regacip</a>
+      </div>
+      <div class="footer-child">
+        <p>Platforms</p>
+        <a href="https://photos.google.com/?pli=1"><img src="../svgs/google-photos.svg" alt="Google Photos"></a>
+        <a href="https://www.instagram.com/"><img src="../svgs/instagram.svg" alt="Instragram"></a>
+      </div>
+      <div class="footer-child">
+        <p>Important</p>
+        <a href="https://fii-itist.asii.ro/">Check this: FII IT-ist</a>
+      </div>
+    </div>
+  </footer>
 </body>
+<script src="../js/Authentication/redirect.js"></script>
+<script src="../js/Authentication/logout.js"></script>
+<script src="../js/savePhoto.js" type="module" defer></script>
+
 </html>

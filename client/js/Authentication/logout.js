@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         logoutButton.addEventListener('click', () => {
             localStorage.removeItem('uid');
             localStorage.removeItem('token');
+            localStorage.removeItem('admin');
             window.location.href = '../index.html';
         });
     }

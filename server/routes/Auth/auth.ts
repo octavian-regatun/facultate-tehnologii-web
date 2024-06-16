@@ -69,7 +69,7 @@ export const signUp = async (user: User) => {
 
   const token = createJwt(newUser);
 
-  return { token, uid: newUser.id };
+  return { token, uid: newUser.id, admin: newUser.admin };
 };
 
 export const signUpMiddleware: Middleware = (req, res) => {
@@ -111,7 +111,7 @@ export const signIn = async (email: string, password: string) => {
 
   const token = createJwt(user);
 
-  return { token, uid: user.id };
+  return { token, uid: user.id, admin: user.admin };
 };
 
 export const signInMiddleware: Middleware = async (req, res) => {

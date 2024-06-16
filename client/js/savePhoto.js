@@ -251,7 +251,9 @@ const savePhoto = async (imageElement, collage = false, width = null, height = n
 
     if (response.ok) {
         const currentUrl = new URL(window.location.href);
-        if (!currentUrl.pathname.includes("platforms.html")) {
+        if (!currentUrl.pathname.includes("platforms.html") &&
+            !currentUrl.pathname.includes("account.html") && 
+            !currentUrl.pathname.includes("terms.html")) {
             const newPhoto = await response.json();
             addNewPhotoToGrid(newPhoto);
             addNewPhotoToModal(newPhoto);

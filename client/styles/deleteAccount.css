@@ -1,0 +1,17 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-family: "Montserrat", sans-serif;
+    gap: 2em;
+}
+
+body img {
+    width: 50vw;
+    height: 50vh;
+}
+
+p {
+    font-size: 2em;
+}
