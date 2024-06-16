@@ -54,12 +54,15 @@
 }
 
 .error-message {
-    z-index: 10;
-    position: absolute;
-    top: 5%;
+    position: fixed;
+    bottom: 3em;
+    padding: .5em 1em;
     background-color: var(--secondary);
-    border: 1px solid var(--primary-light);
     color: white;
-    border-radius: 5px;
-    padding: 1em 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 1em;
 }

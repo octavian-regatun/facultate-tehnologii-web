@@ -112,6 +112,7 @@ export const addNewPhotoToModal = (photo) => {
     commentsSection.appendChild(commentsTitle);
 
     const commentDiv = document.createElement("div");
+    commentDiv.classList.add("no-comms-msg");
     const commentText = document.createElement("p");
     commentText.textContent = "There are no comments";
     commentDiv.appendChild(commentText);
