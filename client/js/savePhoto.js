@@ -250,10 +250,13 @@ const savePhoto = async (imageElement, collage = false, width = null, height = n
     });
 
     if (response.ok) {
-        const newPhoto = await response.json();
-        addNewPhotoToGrid(newPhoto);
-        addNewPhotoToModal(newPhoto);
-        document.dispatchEvent(new Event('photosLoaded'));
+        const currentUrl = new URL(window.location.href);
+        if (!currentUrl.pathname.includes("platforms.html")) {
+            const newPhoto = await response.json();
+            addNewPhotoToGrid(newPhoto);
+            addNewPhotoToModal(newPhoto);
+            document.dispatchEvent(new Event('photosLoaded'));
+        }
     } else {
         console.error("Failed to save photo:", await response.text());
     }
