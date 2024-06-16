@@ -5,7 +5,7 @@ import { emailOAuth2Middleware } from "./routes/Auth/emailOAuth2";
 import { forgotPasswordMiddleware, resetPasswordMiddleware } from "./routes/Auth/forgotPwd";
 import { uploadImageMiddleware, getPhotosMiddleware, deletePhotosMiddleware } from "./routes/images";
 import { getCommentsMiddleware, uploadCommentMiddleware } from "./routes/comments";
-import { getStatsMiddleware } from "./routes/stats";
+import { isAdmin, getStatsMiddleware, getAllStatsMiddleware } from "./routes/stats";
 import { getYoutubeThumbnail } from './routes/images';
 import { deleteConfirmationMiddleware, deleteAccountMiddleware } from "./routes/deleteAccount";
 
@@ -49,6 +49,7 @@ const server = http.createServer((req, res) => {
   if (req.url?.startsWith("/stats/") && req.method === "GET") {
     getStatsMiddleware(req, res, () => { });
   }
+  router.get("/stats", isAuthenticated, isAdmin, getAllStatsMiddleware);
 
   // Used only by getToken.js
   if (req.url?.startsWith("/oauth2callback") && req.method === "GET") {

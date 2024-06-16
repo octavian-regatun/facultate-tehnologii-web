@@ -12,6 +12,35 @@ interface UserStats {
     totalCommentCount: number;
 }
 
+
+export const isAdmin: Middleware = async (req, res, next) => {
+    const userId = (req as any).userId;
+
+    if (!userId) {
+        res.writeHead(401, { "Content-Type": "text/plain" });
+        res.end("userId not found");
+        return;
+    }
+
+    try {
+        const user = await db.user.findUnique({
+            where: { id: userId },
+            select: { admin: true },
+        });
+
+        if (!user || !user.admin) {
+            res.writeHead(403, { "Content-Type": "text/plain" });
+            res.end("Forbidden");
+            return;
+        }
+
+        next();
+    } catch (error) {
+        res.writeHead(500, { "Content-Type": "text/plain" });
+        res.end("Internal Server Error");
+    }
+};
+
 const getUserStats = async (uid: number): Promise<UserStats> => {
     const user = await db.user.findUnique({
         where: { id: uid },
@@ -79,6 +108,48 @@ export const getStatsMiddleware: Middleware = async (req, res) => {
 
     try {
         const stats = await getUserStats(uid);
+
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify(stats));
+    } catch (error) {
+        console.error('Failed to retrieve stats:', error);
+        res.writeHead(500, { "Content-Type": "text/plain" });
+        res.end("Internal Server Error");
+    }
+};
+
+export const getAllStatsMiddleware: Middleware = async (req, res) => {
+    try {
+        const totalUsers = await db.user.count();
+        const totalPhotos = await db.photo.count();
+        const totalComments = await db.comment.count();
+
+        const totalPhotosGoogle = await db.photo.count({
+            where: { source: 'GOOGLE_PHOTOS' },
+        });
+
+        const totalPhotosInstagram = await db.photo.count({
+            where: { source: 'INSTAGRAM' },
+        });
+
+        // aggregate used to not iterate through all the users
+        const totalLikes = await db.photo.aggregate({
+            _sum: { likes: true },
+        });
+
+        const totalCommentCount = await db.photo.aggregate({
+            _sum: { commentCount: true },
+        });
+
+        const stats = {
+            totalUsers,
+            totalPhotos,
+            totalComments,
+            totalPhotosGoogle,
+            totalPhotosInstagram,
+            totalLikes: totalLikes._sum.likes || 0,
+            totalCommentCount: totalCommentCount._sum.commentCount || 0,
+        };
 
         res.writeHead(200, { "Content-Type": "application/json" });
         res.end(JSON.stringify(stats));

@@ -17,7 +17,8 @@ export const isAuthenticated: Middleware = (req, res, next) => {
   const token = authorization.split(" ")[1];
 
   try {
-    jwt.verify(token, process.env.JWT_SECRET as string);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { id: string };
+    (req as any).userId = decoded.id;
     next();
   } catch (error) {
     console.error(error);

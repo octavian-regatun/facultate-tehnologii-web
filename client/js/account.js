@@ -1,3 +1,7 @@
+const showAllUserStats = (stats) => {
+    console.log(stats);
+}
+
 const fetchUserStats = async () => {
     const userId = localStorage.getItem("uid");
     if (!userId) {
@@ -32,7 +36,37 @@ const fetchUserStats = async () => {
     }
 };
 
-document.addEventListener("DOMContentLoaded", fetchUserStats);
+const fetchAllUserStats = async () => {
+    try {
+        const response = await fetch(`http://localhost:8081/stats`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (response.ok) {
+            const stats = await response.json();
+            showAllUserStats(stats);
+        } else {
+            const error = await response.text();
+            console.error("Failed to fetch user stats:", error);
+        }
+    } catch (error) {
+        console.error("Error fetching user stats:", error);
+    }
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+    const admin = localStorage.getItem("admin");
+
+    if (admin === "true") {
+        fetchAllUserStats();
+    }
+
+    fetchUserStats();
+});
 
 
 const deleteAccount = async () => {
