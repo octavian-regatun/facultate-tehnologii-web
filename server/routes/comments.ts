@@ -98,12 +98,24 @@ export const uploadCommentMiddleware: Middleware = async (req, res) => {
 
 export const saveCommentToDB = async (data: Comment) => {
   try {
+    // Step 1: get the userID (needed for cascade delete methods)
+    const photo = await db.photo.findUnique({
+      where: { id: data.photoId },
+      select: { userId: true },
+    });
+
+    if (!photo) {
+      throw new Error('Photo not found');
+    }
+
+    // Step 2: Save the comment
     const newComment = await db.comment.create({
       data: {
         photoId: data.photoId,
         author: data.author,
         content: data.content,
         timestamp: data.timestamp || null,
+        userId: photo.userId,
       },
     });
 
