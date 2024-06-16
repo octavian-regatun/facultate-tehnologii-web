@@ -86,6 +86,19 @@ export const uploadCommentMiddleware: Middleware = async (req, res) => {
 
       const savedComments = await Promise.all(comments.map(saveCommentToDB));
 
+      // comment count
+      // can't be done in saveCommentToDB because concurrent threads
+      const photoIds = [...new Set(comments.map(comment => comment.photoId))];
+      for (const photoId of photoIds) {
+        const count = await db.comment.count({
+          where: { photoId },
+        });
+        await db.photo.update({
+          where: { id: photoId },
+          data: { commentCount: count },
+        });
+      }
+
       res.writeHead(201, { "Content-Type": "application/json" });
       res.end(JSON.stringify(savedComments));
     } catch (error) {
@@ -96,12 +109,13 @@ export const uploadCommentMiddleware: Middleware = async (req, res) => {
   });
 };
 
+
 export const saveCommentToDB = async (data: Comment) => {
   try {
     // Step 1: get the userID (needed for cascade delete methods)
     const photo = await db.photo.findUnique({
       where: { id: data.photoId },
-      select: { userId: true },
+      select: { userId: true, commentCount: true },
     });
 
     if (!photo) {

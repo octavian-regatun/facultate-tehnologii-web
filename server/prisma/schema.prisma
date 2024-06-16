@@ -38,9 +38,9 @@ model Photo {
   url          String?    @unique
   binaryString String?
   source       SourceType
-  description  String?
-  likes        Int?
-  commentCount Int?
+  description  String     @default("No description provided")
+  likes        Int        @default(0)
+  commentCount Int        @default(0)
   createdAt    DateTime   @default(now())
   aspectRatio  Float?
   size         Int?
