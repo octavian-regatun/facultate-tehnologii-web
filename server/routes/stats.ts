@@ -137,10 +137,6 @@ export const getAllStatsMiddleware: Middleware = async (req, res) => {
             _sum: { likes: true },
         });
 
-        const totalCommentCount = await db.photo.aggregate({
-            _sum: { commentCount: true },
-        });
-
         const stats = {
             totalUsers,
             totalPhotos,
@@ -148,7 +144,6 @@ export const getAllStatsMiddleware: Middleware = async (req, res) => {
             totalPhotosGoogle,
             totalPhotosInstagram,
             totalLikes: totalLikes._sum.likes || 0,
-            totalCommentCount: totalCommentCount._sum.commentCount || 0,
         };
 
         res.writeHead(200, { "Content-Type": "application/json" });

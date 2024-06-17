@@ -1,6 +1,76 @@
 const showAllUserStats = (stats) => {
-    console.log(stats);
-}
+
+    const adminContainer = document.createElement('div');
+    adminContainer.classList.add('admin-container');
+
+    const chartContainer = document.createElement('div');
+    chartContainer.classList.add('chart-container');
+
+    adminContainer.appendChild(chartContainer);
+    
+    const mainContainer = document.querySelector('main.container');
+    const accountStats = mainContainer.querySelector('.account-stats');
+
+    mainContainer.insertBefore(adminContainer, accountStats);
+
+    const data = [
+        { label: 'Total Users', value: stats.totalUsers },
+        { label: 'Total Photos', value: stats.totalPhotos },
+        { label: 'Total Comments', value: stats.totalComments },
+        { label: 'Photos Google', value: stats.totalPhotosGoogle },
+        { label: 'Photos Instagram', value: stats.totalPhotosInstagram },
+        { label: 'Total Likes', value: stats.totalLikes }
+    ];
+
+    const maxValue = Math.max(...data.map(item => item.value));
+
+    data.forEach(item => {
+        const column = document.createElement('div');
+        column.classList.add('column');
+
+        const columnBar = document.createElement('div');
+        columnBar.classList.add('column-bar');
+
+        const columnLabel = document.createElement('div');
+        columnLabel.classList.add('column-label');
+        columnLabel.textContent = item.label;
+
+        const columnValue = document.createElement('div');
+        columnValue.classList.add('column-value');
+        columnValue.textContent = '0';
+
+        columnBar.appendChild(columnValue);
+        column.appendChild(columnBar);
+        column.appendChild(columnLabel);
+        chartContainer.appendChild(column);
+
+        // Animate bar and values
+        setTimeout(() => {
+            const startValue = 0;
+            const endValue = item.value;
+            const duration = 2000; // here's the duration
+            const startTime = performance.now();
+
+            const animate = (currentTime) => {
+                const elapsedTime = currentTime - startTime;
+                const progress = Math.min(elapsedTime / duration, 1);
+                const currentHeight = progress * (endValue / maxValue) * 100;
+                const currentValue = Math.floor(progress * endValue);
+
+                columnBar.style.height = `${currentHeight}%`;
+                columnValue.textContent = currentValue;
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    columnValue.textContent = endValue;
+                }
+            };
+
+            requestAnimationFrame(animate);
+        }, 100);
+    });
+};
 
 const fetchUserStats = async () => {
     const userId = localStorage.getItem("uid");

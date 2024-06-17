@@ -66,3 +66,55 @@
     transform: translateX(-50%);
     border-radius: 1em;
 }
+
+
+/* 
+CHART
+*/
+
+.admin-container {
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.chart-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    height: auto;
+    width: 100%;
+    padding: 30px;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+    height: 100%;
+    margin-bottom: 20px;
+}
+
+.column-bar {
+    position: relative;
+    width: 50px;
+    background-color: #4caf50;
+    margin: 10px;
+    height: 0;
+}
+
+.column-label {
+    text-align: center;
+}
+
+.column-value {
+    position: absolute;
+    top: -2em;
+    width: 100%;
+    text-align: center;
+}
