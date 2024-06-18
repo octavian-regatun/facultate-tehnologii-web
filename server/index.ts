@@ -1,6 +1,10 @@
 import http from "http";
 import { Router } from "./router";
-import { isAuthenticated, signInMiddleware, signUpMiddleware } from "./routes/Auth/auth";
+import {
+  isAuthenticated,
+  signInMiddleware,
+  signUpMiddleware,
+} from "./routes/Auth/auth";
 import { emailOAuth2Middleware } from "./routes/Auth/emailOAuth2";
 import { forgotPasswordMiddleware, resetPasswordMiddleware } from "./routes/Auth/forgotPwd";
 import { uploadImageMiddleware, getPhotosMiddleware, deletePhotosMiddleware } from "./routes/images";
@@ -8,16 +12,21 @@ import { getCommentsMiddleware, uploadCommentMiddleware } from "./routes/comment
 import { isAdmin, getStatsMiddleware, getAllStatsMiddleware } from "./routes/stats";
 import { getYoutubeThumbnail } from './routes/images';
 import { deleteConfirmationMiddleware, deleteAccountMiddleware } from "./routes/deleteAccount";
-
-//console.log(await getYoutubeThumbnail("REt5yDh8eGg"));
+import { getPhotos, googleOAuth, googleOAuthCallback } from "./routes/google";
 
 const server = http.createServer((req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,Authorization');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type,Authorization"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", "true");
 
-  if (req.method === 'OPTIONS') {
+  if (req.method?.toLowerCase() === "options") {
     res.writeHead(204);
     res.end();
     return;
@@ -32,19 +41,23 @@ const server = http.createServer((req, res) => {
 
   router.post("/delete-account", isAuthenticated, deleteConfirmationMiddleware);
   router.delete("/account", isAuthenticated, deleteAccountMiddleware);
-  // router.get("/images/youtube", isAuthenticated, fn);
 
   router.post("/photos", isAuthenticated, uploadImageMiddleware);
   router.post("/comments", isAuthenticated, uploadCommentMiddleware);
 
+  if (req.url?.startsWith("/photos/google") && req.method === "GET") {
+    getPhotos(req, res, () => {});
+    return;
+  }
+
   if (req.url?.startsWith("/photos/") && req.method === "GET") {
-    getPhotosMiddleware(req, res, () => { });
+    getPhotosMiddleware(req, res, () => {});
   }
   if (req.url?.startsWith("/photos/") && req.method === "DELETE") {
-    deletePhotosMiddleware(req, res, () => { });
+    deletePhotosMiddleware(req, res, () => {});
   }
   if (req.url?.startsWith("/comments/") && req.method === "GET") {
-    getCommentsMiddleware(req, res, () => { });
+    getCommentsMiddleware(req, res, () => {});
   }
   if (req.url?.startsWith("/stats/") && req.method === "GET") {
     getStatsMiddleware(req, res, () => { });
@@ -53,7 +66,13 @@ const server = http.createServer((req, res) => {
 
   // Used only by getToken.js
   if (req.url?.startsWith("/oauth2callback") && req.method === "GET") {
-    emailOAuth2Middleware(req, res, () => { });
+    emailOAuth2Middleware(req, res, () => {});
+  }
+
+  router.get("/auth/google", googleOAuth);
+
+  if (req.url?.startsWith("/auth/google/callback") && req.method === "GET") {
+    googleOAuthCallback(req, res, () => {});
   }
 });
 
