@@ -16,29 +16,36 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  firstName String
-  lastName  String
-  password  String
-  resetPasswordToken  String?
+  id                   Int       @id @default(autoincrement())
+  email                String    @unique
+  firstName            String
+  lastName             String
+  password             String
+  admin                Boolean   @default(false)
+  resetPasswordToken   String?
   resetPasswordExpires DateTime?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  deleteAccountToken   String?
+  deleteAccountExpires DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  photos               Photo[]   @relation("UserPhotos")
+  comments             Comment[] @relation("UserComments")
 }
 
 model Photo {
-  id           Int      @id @default(autoincrement())
+  id           Int        @id @default(autoincrement())
   userId       Int
-  url          String?  @unique
+  url          String?    @unique
   binaryString String?
   source       SourceType
-  description  String?
-  likes        Int?
-  commentCount Int?
-  createdAt    DateTime @default(now())
+  description  String     @default("No description provided")
+  likes        Int        @default(0)
+  commentCount Int        @default(0)
+  createdAt    DateTime   @default(now())
   aspectRatio  Float?
   size         Int?
+  user         User       @relation("UserPhotos", fields: [userId], references: [id], onDelete: Cascade)
+  comments     Comment[]
 }
 
 enum SourceType {
@@ -48,9 +55,12 @@ enum SourceType {
 }
 
 model Comment {
-  id           Int      @id @default(autoincrement())
-  photoId      Int
-  author       String
-  content      String
-  timestamp    DateTime?
+  id        Int       @id @default(autoincrement())
+  photoId   Int
+  author    String
+  content   String
+  timestamp DateTime?
+  photo     Photo     @relation(fields: [photoId], references: [id], onDelete: Cascade)
+  userId    Int?      // optional just because there are old comments that are not associated with any user
+  user      User?     @relation("UserComments", fields: [userId], references: [id], onDelete: Cascade)
 }

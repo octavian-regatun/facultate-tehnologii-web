@@ -1,6 +1,4 @@
 import nodemailer from 'nodemailer';
-import SMTPTransport from 'nodemailer/lib/smtp-transport';
-import { google } from 'googleapis';
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import type { Middleware } from "../../router";

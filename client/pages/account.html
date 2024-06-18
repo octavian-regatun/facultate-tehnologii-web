@@ -9,16 +9,16 @@
   <link rel="stylesheet" href="../styles/navbar.css">
   <link rel="stylesheet" href="../styles/platforms.css" />
   <link rel="stylesheet" href="../styles/footer.css">
-  <link rel="stylesheet" href="../styles/terms.css">
+  <link rel="stylesheet" href="../styles/account.css">
   <link rel="icon" type="image/png" href="../imgs/favicon.png">
-  <title>Terms of Use</title>
+  <title>Account</title>
 </head>
 
 <body>
   <nav class="navbar">
     <div class="navbar-left-side">
       <img class="navbar-logo" src="../imgs/logo.webp" alt="Logo" />
-      <p class="navbar-page">Terms of Use</p>
+      <p class="navbar-page">Account</p>
     </div>
     <div class="navbar-right-side">
       <a href="../pages/account.html"><img src="../svgs/user-circle.svg" alt="Account" /></a>
@@ -33,61 +33,42 @@
   </aside>
 
   <main class="container">
-    <section class="terms-section">
-      <h2>Introduction</h2>
-      <ul>
-        <li>Welcome to our website. By accessing and using this website, you agree to comply with the terms and
-          conditions outlined below.</li>
-        <li>If you do not agree with these terms, please do not use this website.</li>
-      </ul>
-    </section>
-
-    <section class="terms-section">
-      <h2>User Accounts</h2>
-      <ul>
-        <li>Users must log in using their Google or Instagram accounts to fetch or upload photos.</li>
-        <li>Your account information will be used solely for authentication purposes and to personalize your experience.
-        </li>
-      </ul>
-    </section>
-
-    <section class="terms-section">
-      <h2>Photo Uploads and Fetching</h2>
-      <ul>
-        <li>Users can upload and fetch photos from their Google Photos or Instagram accounts.</li>
-        <li>Each user has a limit of 100 photo uploads per day.</li>
-        <li>Fetching photos is limited to 500 requests per day.</li>
-      </ul>
-    </section>
-
-    <section class="terms-section">
-      <h2>Content Usage</h2>
-      <ul>
-        <li>All content uploaded must comply with our content guidelines and must not infringe on the rights of others.
-        </li>
-        <li>We reserve the right to remove any content that violates these guidelines without prior notice.</li>
-      </ul>
-    </section>
-
-    <section class="terms-section">
-      <h2>Privacy Policy</h2>
-      <ul>
-        <li>We are committed to protecting your privacy and ensuring the security of your personal information.</li>
-        <li>Please review our Privacy Policy (which unfortunately doesn't exist) for detailed information on how we
-          collect, use, and protect your data.
-        </li>
-      </ul>
-    </section>
-
-    <section class="terms-section">
-      <h2>Changes to Terms</h2>
-      <ul>
-        <li>We may update these terms from time to time. Any changes will be posted on this page.</li>
-        <li>It is your responsibility to review these terms periodically for any updates or changes.</li>
-      </ul>
-    </section>
+    <div class="account-stats">
+      <h2>User Statistics</h2>
+      <div>
+        <div>
+          <p><strong>Date Created:</strong> <span id="date-created"></span></p>
+        </div>
+        <div>
+          <p><strong>Admin:</strong> <span id="admin-status"></span></p>
+        </div>
+      </div>
+      <h2>Photos</h2>
+      <div>
+        <div>
+          <p><strong>Google:</strong> <span id="photos-google"></span></p>
+        </div>
+        <div>
+          <p><strong>Instagram:</strong> <span id="photos-instagram"></span></p>
+        </div>
+        <div>
+          <p><strong>M-PIC:</strong> <span id="photos-mpic"></span></p>
+        </div>
+      </div>
+      <div>
+        <div>
+          <p><strong>Total Likes:</strong> <span id="total-likes"></span></p>
+        </div>
+        <div>
+          <p><strong>Total Comments:</strong> <span id="total-comments"></span></p>
+        </div>
+      </div>
+      <div>
+        <button class="btn" id="delete-acc">Delete account</button>
+      </div>
+    </div>
   </main>
-
+  <!-- Footer -->
   <footer>
     <div class="wave"></div>
     <div class="footer-container">
@@ -119,5 +100,6 @@
 <script src="../js/Authentication/redirect.js"></script>
 <script src="../js/Authentication/logout.js"></script>
 <script src="../js/savePhoto.js" type="module" defer></script>
+<script src="../js/account.js" type="module" defer></script>
 
 </html>

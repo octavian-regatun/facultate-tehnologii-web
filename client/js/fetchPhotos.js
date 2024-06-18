@@ -7,8 +7,39 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
+    const currentUrl = new URL(window.location.href);
+    const searchParams = currentUrl.searchParams;
+
+    // Using default values for the query
+    let search = searchParams.get('search') || '';
+    let platform = 'All';
+    let aspectRatio = 'Any';
+    let size = 'Any';
+    let order = 'Date ascending';
+
+    // platform to fetch from
+    if (currentUrl.href.includes("platforms-google")) {
+        platform = 'GOOGLE PHOTOS';
+    } else if (currentUrl.href.includes("instagram")) {
+        platform = 'INSTAGRAM';
+    } else {
+        // if on search, use the query
+        platform = searchParams.get('platform') || platform;
+        aspectRatio = searchParams.get('aspect-ratio') || aspectRatio;
+        size = searchParams.get('size') || size;
+        order = searchParams.get('order') || order;
+    }
+
+    // create the req
+    const url = new URL(`http://localhost:8081/photos/${userId}`, window.location.origin);
+    url.searchParams.append('search', search);
+    url.searchParams.append('platform', platform);
+    url.searchParams.append('aspect-ratio', aspectRatio);
+    url.searchParams.append('size', size);
+    url.searchParams.append('order', order);
+
     try {
-        const response = await fetch(`http://localhost:8081/photos/${userId}`, {
+        const response = await fetch(url.toString(), {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -19,9 +50,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (response.ok) {
             const photos = await response.json();
             displayPhotos(photos);
-            await displayModalPhotos(photos, token);
+            await displayModalPhotos(photos);
 
-            // Dispatch custom event after photos are displayed
             document.dispatchEvent(new Event('photosLoaded'));
         } else {
             const error = await response.text();
@@ -34,9 +64,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-function displayNoPhotosMessage(msg) {
-    const container = document.querySelector('.container');
+
+const displayNoPhotosMessage = (msg) => {
+    const container = document.querySelector('.container-grid');
     const div = document.createElement('div');
+    div.classList.add("no-images");
     const p = document.createElement('p');
     p.textContent = msg;
     const img = document.createElement('img');
@@ -50,6 +82,7 @@ function displayNoPhotosMessage(msg) {
 function displayPhotos(photos) {
     const containerGrid = document.querySelector(".container-grid");
     containerGrid.innerHTML = ""; // I don't think there will be anything here, but just to be sure
+    // LE: There is: loading photo
 
     if (photos.length === 0) {
         displayNoPhotosMessage("Oops..Looks like you don't have any photos. Try fetching some first!");
@@ -89,7 +122,7 @@ function displayPhotos(photos) {
     });
 }
 
-async function displayModalPhotos(photos, token) {
+async function displayModalPhotos(photos) {
     const modalContent = document.querySelector(".modal");
     modalContent.innerHTML = ""; // Clear existing content
 
@@ -101,7 +134,7 @@ async function displayModalPhotos(photos, token) {
     modalContent.appendChild(previousButton);
 
     // Fetch comments for all photos
-    const commentsPromises = photos.map(photo => getCommentsFromDB(photo.id, token));
+    const commentsPromises = photos.map(photo => getCommentsFromDB(photo.id));
     const allComments = await Promise.all(commentsPromises);
 
     photos.forEach((photo, index) => {
@@ -134,9 +167,18 @@ async function displayModalPhotos(photos, token) {
             document.querySelector(".modal").close();
         });
 
+        const imageContainer = document.createElement("div");
+        imageContainer.classList.add("photo-editor");
+
         const cardImage = document.createElement("img");
         cardImage.classList.add("card-image");
         cardImage.src = `data:image/png;base64,${photo.binaryString}`;
+        cardImage.setAttribute("photo-id", photo.id);
+
+        const canvas = document.createElement("canvas");
+
+        imageContainer.appendChild(cardImage);
+        imageContainer.appendChild(canvas);
 
         const cardContent = document.createElement("div");
         cardContent.classList.add("card-content");
@@ -205,11 +247,27 @@ async function displayModalPhotos(photos, token) {
             });
         } else {
             const commentDiv = document.createElement("div");
+            commentDiv.classList.add("no-comms-msg");
             const commentText = document.createElement("p");
             commentText.textContent = "There are no comments";
             commentDiv.appendChild(commentText);
             commentsSection.appendChild(commentDiv);
         }
+
+        const importExportContainer = document.createElement("div");
+        importExportContainer.classList.add("filter-btn-container");
+
+        const importButton = document.createElement("button");
+        importButton.classList.add("import-button");
+        importButton.textContent = "Import";
+
+        const exportButton = document.createElement("button");
+        exportButton.classList.add("export-button");
+        exportButton.textContent = "Export";
+
+        importExportContainer.appendChild(importButton);
+        importExportContainer.appendChild(exportButton);
+        commentsSection.appendChild(importExportContainer);
 
         const editSection = document.createElement("div");
         editSection.classList.add("card-content-edit");
@@ -264,7 +322,7 @@ async function displayModalPhotos(photos, token) {
         cardContent.appendChild(editSection);
 
         card.appendChild(closeButton);
-        card.appendChild(cardImage);
+        card.appendChild(imageContainer);
         card.appendChild(cardContent);
         modalContent.appendChild(card);
     });
@@ -277,9 +335,16 @@ async function displayModalPhotos(photos, token) {
     modalContent.appendChild(nextButton);
 }
 
-const getCommentsFromDB = async (id, token) => {
+const getCommentsFromDB = async (id, refresh = 0) => {
+    const token = localStorage.getItem("token");
+    const url = new URL(`http://localhost:8081/comments/${id}`);
+
+    if (refresh === 1) {
+        url.searchParams.append('refresh', 'true');
+    }
+
     try {
-        const response = await fetch(`http://localhost:8081/comments/${id}`, {
+        const response = await fetch(url.toString(), {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,

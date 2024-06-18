@@ -1,0 +1,120 @@
+.container {
+    display: block;
+}
+
+.account-stats {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin: 20px;
+    color: var(--secondary);
+}
+
+/* .account-stats h2::before
+.account-stats h2::after {
+    content: '';
+    position: absolute;
+    background-image: url(../imgs/aggregation.png);
+    width: 100%;
+    height: 100%;
+} */
+
+.account-stats div {
+    background-color: var(--primary-light);
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-wrap: wrap;
+}
+
+.account-stats div:last-child {
+    background-color: transparent;
+}
+
+.account-stats h2 {
+    text-align: center;
+}
+
+
+#email-sent-confirmation {
+    position: fixed;
+    bottom: 3em;
+    padding: .5em 1em;
+    background-color: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 1em;
+}
+
+.error-message {
+    position: fixed;
+    bottom: 3em;
+    padding: .5em 1em;
+    background-color: var(--secondary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 1em;
+}
+
+
+/* 
+CHART
+*/
+
+.admin-container {
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.chart-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    height: auto;
+    width: 100%;
+    padding: 30px;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+    height: 100%;
+    margin-bottom: 20px;
+}
+
+.column-bar {
+    position: relative;
+    width: 50px;
+    background-color: #4caf50;
+    margin: 10px;
+    height: 0;
+}
+
+.column-label {
+    text-align: center;
+}
+
+.column-value {
+    position: absolute;
+    top: -2em;
+    width: 100%;
+    text-align: center;
+}

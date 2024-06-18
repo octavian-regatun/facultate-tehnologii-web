@@ -5,7 +5,9 @@ import { emailOAuth2Middleware } from "./routes/Auth/emailOAuth2";
 import { forgotPasswordMiddleware, resetPasswordMiddleware } from "./routes/Auth/forgotPwd";
 import { uploadImageMiddleware, getPhotosMiddleware, deletePhotosMiddleware } from "./routes/images";
 import { getCommentsMiddleware, uploadCommentMiddleware } from "./routes/comments";
+import { isAdmin, getStatsMiddleware, getAllStatsMiddleware } from "./routes/stats";
 import { getYoutubeThumbnail } from './routes/images';
+import { deleteConfirmationMiddleware, deleteAccountMiddleware } from "./routes/deleteAccount";
 
 //console.log(await getYoutubeThumbnail("REt5yDh8eGg"));
 
@@ -27,6 +29,9 @@ const server = http.createServer((req, res) => {
   router.post("/auth/signin", signInMiddleware);
   router.post("/auth/forgot-password", forgotPasswordMiddleware);
   router.post("/auth/reset-password", resetPasswordMiddleware);
+
+  router.post("/delete-account", isAuthenticated, deleteConfirmationMiddleware);
+  router.delete("/account", isAuthenticated, deleteAccountMiddleware);
   // router.get("/images/youtube", isAuthenticated, fn);
 
   router.post("/photos", isAuthenticated, uploadImageMiddleware);
@@ -41,6 +46,10 @@ const server = http.createServer((req, res) => {
   if (req.url?.startsWith("/comments/") && req.method === "GET") {
     getCommentsMiddleware(req, res, () => { });
   }
+  if (req.url?.startsWith("/stats/") && req.method === "GET") {
+    getStatsMiddleware(req, res, () => { });
+  }
+  router.get("/stats", isAuthenticated, isAdmin, getAllStatsMiddleware);
 
   // Used only by getToken.js
   if (req.url?.startsWith("/oauth2callback") && req.method === "GET") {

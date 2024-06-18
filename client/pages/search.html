@@ -5,39 +5,96 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>M-PIC - Platforms - Search</title>
+  <link rel="stylesheet" href="../styles/filter.css">
   <link rel="stylesheet" href="../styles/cards.css" />
   <link rel="stylesheet" href="../styles/global.css">
+  <link rel="stylesheet" href="../styles/collage.css">
 </head>
 
 <body>
   <nav class="navbar">
     <div class="navbar-left-side">
-      <img class="navbar-logo" src="../imgs/logo.webp" />
-      <p class="navbar-page">Platforms / Search</p>
+      <img class="navbar-logo" src="../imgs/logo.webp" alt="Logo"/>
+      <p class="navbar-page">Account</p>
     </div>
     <div class="navbar-right-side">
-      <button class="navbar-profile button-icon"
-        onclick="alert('Urmeaza sa adaugăm pagina de profil cu funcționalitățile aferente')">
-        <img class="navbar-profile-image" src="../svgs/user-circle.svg" alt="profile" />
-      </button>
+        <a href="../pages/account.html"><img src="../svgs/user-circle.svg" alt="Account"/></a>
       <button class="btn log-out-btn">Log out</button>
     </div>
   </nav>
 
   <aside class="sidebar">
-    <a href="../pages/search.html"><img src="../svgs/search.svg" /></a>
-    <a href="../pages/platforms.html"><img src="../svgs/dashboard.svg" /></a>
-    <button class="upload-btn"><img src="../svgs/upload.svg" /></button>
+    <a href="../pages/search.html"><img src="../svgs/search.svg" alt="Search"/></a>
+    <a href="../pages/platforms.html"><img src="../svgs/dashboard.svg" alt="Platforms"/></a>
+    <button class="upload-btn"><img src="../svgs/upload.svg" alt="Upload"/></button>
   </aside>
+
+  <section class="card-header">
+    <form>
+      <div class="form-container">
+      <label for="form-search-field">Search</label>
+      <input type="text" name="search" id="form-search-field" placeholder="Description keyword...">
+    </div>
+
+      <div class="form-container">
+        <label for="form-platform">Platform</label>
+        <select name="platform" id="form-platform">
+          <option value="All">All</option>
+          <option value="GOOGLE PHOTOS">Google Photos</option>
+          <option value="INSTAGRAM">Instagram</option>
+          <option value="M-PIC">M-PIC</option>
+        </select>
+      </div>
+
+      <div class="form-container">
+        <label for="form-aspect-ratio">Aspect ratio</label>
+        <select name="aspect-ratio" id="form-aspect-ratio">
+          <option value="Any">Any</option>
+          <option value="16/9">16/9</option>
+          <option value="4/3">4/3</option>
+          <option value="1/1">1/1</option>
+          <option value="3/4">3/4</option>
+          <option value="9/16">9/16</option>
+        </select>
+      </div>
+
+      <div class="form-container">
+        <label for="form-size">Size</label>
+        <select name="size" id="form-size">
+          <option value="Any">Any</option>
+          <option value="&lt;500">&lt;500</option>
+          <option value="500-1000">500-1000</option>
+          <option value="&gt;1000">&gt;1000</option>
+        </select>
+      </div>
+      <div class="form-container">
+        <label for="form-order">Order by</label>
+        <select name="order" id="form-order">
+          <option value="Date ascending">Date ascending</option>
+          <option value="Date descending">Date descending</option>
+          <option value="Likes ascending">Likes ascending</option>
+          <option value="Likes descending">Likes descending</option>
+          <option value="Comments ascending">Comments ascending</option>
+          <option value="Comments descending">Comments descending</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn">Search</button>
+    </form>
+  </section>
 
   <main class="container">
     <div class="container-grid">
       <!--Photos will be dynamically loaded here-->
+      <img src="../imgs/loading.png" alt="Loading" class="loading">
     </div>
 
     <div class="collage-btn-container">
-      <button class="collage-btn">Create Collage</button>
-      <button class="collage-btn">Cancel</button>
+      <button class="btn">Create Collage</button>
+      <button class="btn">Cancel</button>
+    </div>
+    <div class="collage-limit">
+      The maximum number of photos is 6. Please deselect a photo first!
     </div>
   </main>
 
@@ -47,9 +104,14 @@
 </body>
 <script src="../js/Authentication/redirect.js"></script>
 <script src="../js/Authentication/logout.js"></script>
+<script src="../js/filter.js" defer></script>
 <script src="../js/fetchPhotos.js"></script>
 <script src="../js/deletePhoto.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<script src="../js/updateComments.js"></script>
 <script src="../js/savePhoto.js" type="module" defer></script>
+<script src="../js/collage.js" type="module" defer></script>
 <script src="../js/carousel.js" type="module" defer></script>
-<script src="../js/updatPhotoData.js" type="module" defer></script>
+
 </html>

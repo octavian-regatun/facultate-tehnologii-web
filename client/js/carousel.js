@@ -1,5 +1,8 @@
 import savePhoto from "./savePhoto.js";
-import updatePhotoData from './updatPhotoData.js';
+import updatePhotoData from "./updatePhotoData.js";
+import exportComments from "./export.js";
+import importComments from "./import.js";
+import createCollage from "./collage.js";
 
 document.addEventListener('photosLoaded', () => {
 	// Remove all event listeners
@@ -23,18 +26,28 @@ document.addEventListener('photosLoaded', () => {
 	const modalPreviousButton = document.querySelector('.modal-previous-button');
 	const modalNextButton = document.querySelector('.modal-next-button');
 
+	if (cards.length) {
+		const noImages = document.querySelector('.no-images');
+		if (noImages) {
+			noImages.remove();
+		}
+	}
+
 	if (!modal) {
 		console.error('Modal not found');
 		return;
 	}
 
-	let modalClose, modalCards, editButton, refreshButton, image, opacitySlider, hueSlider, saturationSlider, lightnessSlider, resetButton, saveButton, publishButtons;
+	let modalClose, modalCards, editButton, refreshButton, image, opacitySlider, hueSlider, saturationSlider, lightnessSlider, resetButton, saveButton, importButton, exportButton, publishButtons;
 	let currentIndex = 0;
+	let drawing = false, canvas = null, ctx = null;
+	let clickedCards = [];
 
 	// Initialize (needed if the modal is closed and reopened)
 	const initializeModalElements = () => {
 		modalCards = modal.querySelectorAll('.card');
 		if (modalCards.length === 0) {
+			displayNoPhotosMessage("Oops..Looks like you don't have any photos. Try fetching some first!");
 			return false;
 		}
 
@@ -61,7 +74,7 @@ document.addEventListener('photosLoaded', () => {
 
 	let clickedCard;
 
-	// Close modal
+	// Modal event listeners
 	modal.addEventListener('click', (event) => {
 		let isCard = false;
 		modalCards.forEach((card) => {
@@ -115,13 +128,33 @@ document.addEventListener('photosLoaded', () => {
 			const saturation = saturationSlider.value + '%';
 			const lightness = lightnessSlider.value + '%';
 			const filters = `opacity(${opacity}) hue-rotate(${hue}deg) saturate(${saturation}) brightness(${lightness})`;
-			savePhoto(image, filters);
+			savePhoto(image, undefined, undefined, undefined, true, filters);
 			publishButtons[0].style.display = 'block';
 			publishButtons[1].style.display = 'none';
 			publishButtons[2].style.display = 'none';
 			modal.close();
 		}
 
+		// import comments
+		if (importButton && importButton.contains(event.target)) {
+			const card = event.target.closest('.card');
+			const id = card.querySelector('.card-image').getAttribute("photo-id");
+			importComments(card, id);
+
+			// These buttons are deleted, so reinitialize them
+			// importButton = modalCards[currentIndex].querySelector('.import-button');
+			// exportButton = modalCards[currentIndex].querySelector('.export-button');
+			// console.log(importButton);
+		}
+
+		// export comments in a .zip with .json & .csv
+		if (exportButton && exportButton.contains(event.target)) {
+			const card = event.target.closest('.card');
+			const id = card.querySelector('.card-image').getAttribute("photo-id");
+			exportComments(id);
+		}
+
+		// top buttons
 		if (publishButtons && publishButtons[0].contains(event.target)) {
 			publishButtons[0].style.display = 'none';
 			publishButtons[1].style.display = 'block';
@@ -150,16 +183,27 @@ document.addEventListener('photosLoaded', () => {
 		if (hasCheckmark) {
 			clickedCard.querySelector('.card-checkmark').remove();
 			clickedCard.classList.remove('zoomed');
+			clickedCards = clickedCards.filter(card => card !== clickedCard);
 		} else {
-			const checkmark = document.createElement('img');
-			checkmark.src = '../svgs/checkmark.svg';
-			checkmark.className = 'card-checkmark';
-			clickedCard.prepend(checkmark);
-			clickedCard.classList.add('zoomed');
+			// A new card is being selected. Check if there are already 6
+			if (document.querySelectorAll('.card-checkmark').length >= 6) {
+				const collageLimit = document.querySelector('.collage-limit');
+				collageLimit.style.display = 'block';
+				setTimeout(function () {
+					collageLimit.style.display = 'none';
+				}, 3000);
+			} else {
+				const checkmark = document.createElement('img');
+				checkmark.src = '../svgs/checkmark.svg';
+				checkmark.className = 'card-checkmark';
+				clickedCard.prepend(checkmark);
+				clickedCard.classList.add('zoomed');
+				clickedCards.push(clickedCard);
+			}
 		}
 
 		const collageButtonContainer = document.querySelector('.collage-btn-container');
-		if (document.querySelectorAll('.card-checkmark').length >= 1) {
+		if (document.querySelectorAll('.card-checkmark').length >= 2) {
 			collageButtonContainer.style.display = 'flex';
 		} else {
 			collageButtonContainer.style.display = 'none';
@@ -195,6 +239,7 @@ document.addEventListener('photosLoaded', () => {
 		// Display only the selected cards + neighbours
 		modalCards[index].style.display = 'flex';
 		modalCards[index].style.pointerEvents = 'auto';
+		modalCards[index].classList.add("current");
 		let previousCard, nextCard;
 
 		// Special case: 2 cards
@@ -241,11 +286,23 @@ document.addEventListener('photosLoaded', () => {
 				card.classList.remove('zoomed');
 			}
 		});
+		clickedCards = [];
 		const collageButtonContainer = document.querySelector('.collage-btn-container');
 		collageButtonContainer.style.display = 'none';
 	}
 
-	collageButtons[0].addEventListener('click', () => { alert("not ready") });
+	collageButtons[0].addEventListener('click', () => {
+		const navbar = document.querySelector('.navbar');
+		const sidebar = document.querySelector('.sidebar');
+		const container = document.querySelector('.container');
+		const header = document.querySelector('.card-header');
+		navbar.classList.add("blur-background");
+		sidebar.classList.add("blur-background");
+		container.classList.add("blur-background");
+		header.classList.add("blur-background");
+		createCollage(clickedCards);
+		removeSelectedCollage();
+	});
 	collageButtons[1].addEventListener('click', removeSelectedCollage);
 
 	// Normal click on a card (modal opens up)
@@ -344,6 +401,10 @@ document.addEventListener('photosLoaded', () => {
 		newCard.style.display = 'flex';
 		oppositeCard.style.display = 'none';
 		oppositeCard.style.pointerEvents = 'none';
+
+		const oldCurrent = document.querySelector('.current');
+		oldCurrent.classList.remove('current');
+		nextCard.classList.add("current");
 	}
 
 	// < btn
@@ -365,10 +426,32 @@ document.addEventListener('photosLoaded', () => {
 			comments.style.display = 'block';
 			modalCards[currentIndex].querySelector('.card-content-edit').style.display = 'none';
 			editButton.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+			const canvas = modalCards[currentIndex].querySelector('canvas');
+			canvas.removeEventListener('mousedown', startDrawing, true);
+			canvas.removeEventListener('mousemove', draw, true);
+			canvas.removeEventListener('mouseup', stopDrawing, true);
+			canvas.removeEventListener('mouseout', stopDrawing, true);
+
+			drawing = false;
+			ctx = null;
 		} else {
 			comments.style.display = 'none';
 			modalCards[currentIndex].querySelector('.card-content-edit').style.display = 'block';
 			editButton.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+
+			canvas = modalCards[currentIndex].querySelector('canvas');
+			const photo = modalCards[currentIndex].querySelector('img');
+			ctx = canvas.getContext('2d');
+
+			canvas.width = photo.width;
+			canvas.height = photo.height;
+
+			drawing = false;
+
+			canvas.addEventListener('mousedown', startDrawing);
+			canvas.addEventListener('mousemove', draw);
+			canvas.addEventListener('mouseup', stopDrawing);
+			canvas.addEventListener('mouseout', stopDrawing);
 		}
 	};
 
@@ -378,6 +461,8 @@ document.addEventListener('photosLoaded', () => {
 		refreshButton = modalCards[index].querySelector('.card-content-refresh-button') || null;
 		resetButton = modalCards[index].querySelector('.card-content-edit-reset-button');
 		saveButton = modalCards[index].querySelector('.card-content-edit-save-button');
+		importButton = modalCards[index].querySelector('.import-button');
+		exportButton = modalCards[index].querySelector('.export-button');
 		publishButtons = modalCards[index].querySelectorAll('.publish-btn');
 		image = modalCards[index].querySelector('img');
 		const inputs = modalCards[index].querySelectorAll('input');
@@ -387,4 +472,29 @@ document.addEventListener('photosLoaded', () => {
 		saturationSlider = inputs[2];
 		lightnessSlider = inputs[3];
 	}
+
+	const startDrawing = (e) => {
+		drawing = true;
+		if (ctx) {
+			draw(e);
+		}
+	};
+
+	const draw = (e) => {
+		if (!drawing) return;
+		ctx.lineWidth = 5;
+		ctx.lineCap = 'round';
+		ctx.strokeStyle = 'black';
+
+		const rect = canvas.getBoundingClientRect();
+		ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+		ctx.stroke();
+		ctx.beginPath();
+		ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+	};
+
+	const stopDrawing = () => {
+		drawing = false;
+		ctx.beginPath();
+	};
 });

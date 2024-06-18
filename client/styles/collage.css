@@ -1,0 +1,92 @@
+.collage-btn-container {
+    display: none;
+    position: fixed;
+    bottom: 3em;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary);
+    padding: 1em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 1em;
+    z-index: 9;
+}
+
+.collage-limit {
+    position: fixed;
+    bottom: 1em;
+    display: none;
+    background-color: var(--secondary);
+    color: white;
+    padding: 0.5em 1em;
+    border-radius: 10px;
+    z-index: 11;
+}
+
+
+
+/* container */
+
+.collage-container {
+    position: fixed;
+    background-color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-height: 70dvh;
+    max-width: 90vw;
+    height: 70dvh;
+    /* aspect-ratio: 9 / 16; */
+    display: grid;
+    /* grid-template-columns: repeat(3, 1fr); */
+    overflow: hidden;
+    border: 5px solid var(--secondary);
+}
+
+.collage-container img {
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover; /* switch cover/contain? on each photo - event listener*/
+    border-radius: 0;
+    display: block;
+}
+
+
+
+
+.collage-extra-container {
+    position: fixed;
+    display: flex;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary);
+    padding: 1em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 1em;
+    z-index: 30;
+    max-width: 100vw;
+}
+
+.collage-extra-container button:first-child,
+.collage-btn-container button:first-child {
+    margin-right: 2em;
+}
+
+.collage-confirm-container {
+    bottom: 1em;
+}
+
+.collage-options-container {
+    background-color: var(--secondary);
+    color: white;
+    border: 5px outset var(--primary);
+    display: flex;
+    gap: 2em;
+    top: 1em;
+}
+
+.collage-options-container label,
+.collage-options-container select {
+    display: block;
+    width: 100%;
+    margin-bottom: 8px;
+}
