@@ -38,7 +38,7 @@ document.addEventListener('photosLoaded', () => {
 		return;
 	}
 
-	let modalClose, modalCards, editButton, refreshButton, image, opacitySlider, hueSlider, saturationSlider, lightnessSlider, resetButton, saveButton, importButton, exportButton, publishButtons;
+	let modalClose, modalCards, editButton, refreshButton, colorButton, image, opacitySlider, hueSlider, saturationSlider, lightnessSlider, resetButton, saveButton, importButton, exportButton, publishButtons;
 	let currentIndex = 0;
 	let drawing = false, canvas = null, ctx = null;
 	let clickedCards = [];
@@ -359,6 +359,7 @@ document.addEventListener('photosLoaded', () => {
 	}
 
 	function carousel(direction) {
+		handleSliders();
 		if (modalCards.length < 3) return;
 
 		publishButtons[0].style.display = 'block';
@@ -398,9 +399,11 @@ document.addEventListener('photosLoaded', () => {
 		centerCard.style.filter = 'blur(2px)';
 		centerCard.style.pointerEvents = 'none';
 
-		newCard.style.display = 'flex';
-		oppositeCard.style.display = 'none';
-		oppositeCard.style.pointerEvents = 'none';
+		if (modalCards.length !== 3) {
+			newCard.style.display = 'flex';
+			oppositeCard.style.display = 'none';
+			oppositeCard.style.pointerEvents = 'none';
+		}
 
 		const oldCurrent = document.querySelector('.current');
 		oldCurrent.classList.remove('current');
@@ -418,12 +421,18 @@ document.addEventListener('photosLoaded', () => {
 	});
 
 
+	let lastX, lastY, lastTime;
+
 	const handleSliders = () => {
 		const description = modalCards[currentIndex].querySelector('.card-content-description');
 		const comments = modalCards[currentIndex].querySelector('.card-content-comments');
 
 		if (description.style.display === 'none' || comments.style.display === 'none') {
+			if (refreshButton) {
+				refreshButton.style.display = 'block';
+			}
 			comments.style.display = 'block';
+			colorButton.style.display = 'none';
 			modalCards[currentIndex].querySelector('.card-content-edit').style.display = 'none';
 			editButton.style.backgroundColor = 'rgba(0, 0, 0, 0)';
 			const canvas = modalCards[currentIndex].querySelector('canvas');
@@ -435,9 +444,13 @@ document.addEventListener('photosLoaded', () => {
 			drawing = false;
 			ctx = null;
 		} else {
+			if (refreshButton) {
+				refreshButton.style.display = 'none';
+			}
 			comments.style.display = 'none';
+			colorButton.style.display = 'block';
 			modalCards[currentIndex].querySelector('.card-content-edit').style.display = 'block';
-			editButton.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+			editButton.style.backgroundColor = 'rgba(102, 204, 175, 1)';
 
 			canvas = modalCards[currentIndex].querySelector('canvas');
 			const photo = modalCards[currentIndex].querySelector('img');
@@ -452,12 +465,17 @@ document.addEventListener('photosLoaded', () => {
 			canvas.addEventListener('mousemove', draw);
 			canvas.addEventListener('mouseup', stopDrawing);
 			canvas.addEventListener('mouseout', stopDrawing);
+
+			colorButton.addEventListener('input', (e) => {
+				ctx.strokeStyle = e.target.value;
+			});
 		}
 	};
 
 	const updateCurrentButtons = (index) => {
 		modalClose = modalCards[index].querySelector('.modal-close');
 		editButton = modalCards[index].querySelector('.card-content-edit-button');
+		colorButton = modalCards[index].querySelector('.color-selector');
 		refreshButton = modalCards[index].querySelector('.card-content-refresh-button') || null;
 		resetButton = modalCards[index].querySelector('.card-content-edit-reset-button');
 		saveButton = modalCards[index].querySelector('.card-content-edit-save-button');
@@ -465,7 +483,7 @@ document.addEventListener('photosLoaded', () => {
 		exportButton = modalCards[index].querySelector('.export-button');
 		publishButtons = modalCards[index].querySelectorAll('.publish-btn');
 		image = modalCards[index].querySelector('img');
-		const inputs = modalCards[index].querySelectorAll('input');
+		const inputs = modalCards[index].querySelector('.card-content-edit').querySelectorAll('input');
 
 		opacitySlider = inputs[0];
 		hueSlider = inputs[1];
@@ -475,6 +493,9 @@ document.addEventListener('photosLoaded', () => {
 
 	const startDrawing = (e) => {
 		drawing = true;
+		lastX = e.clientX;
+		lastY = e.clientY;
+		lastTime = Date.now();
 		if (ctx) {
 			draw(e);
 		}
@@ -482,19 +503,33 @@ document.addEventListener('photosLoaded', () => {
 
 	const draw = (e) => {
 		if (!drawing) return;
-		ctx.lineWidth = 5;
-		ctx.lineCap = 'round';
-		ctx.strokeStyle = 'black';
 
 		const rect = canvas.getBoundingClientRect();
-		ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+		const currentX = e.clientX - rect.left;
+		const currentY = e.clientY - rect.top;
+		const currentTime = Date.now();
+
+		const distance = Math.sqrt(Math.pow(currentX - lastX, 2) + Math.pow(currentY - lastY, 2));
+		const time = currentTime - lastTime;
+		const speed = distance / time;
+
+		ctx.lineWidth = Math.max(1, 5 - speed * 2.5);
+		ctx.lineCap = 'round';
+
+		ctx.lineTo(currentX, currentY);
 		ctx.stroke();
 		ctx.beginPath();
-		ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+		ctx.moveTo(currentX, currentY);
+
+		lastX = currentX;
+		lastY = currentY;
+		lastTime = currentTime;
 	};
 
 	const stopDrawing = () => {
 		drawing = false;
-		ctx.beginPath();
+		if (ctx) {
+			ctx.beginPath();
+		}
 	};
 });

@@ -1,7 +1,7 @@
 const updateComments = async (card, comments, reset = true) => {
     const commentsSection = card.querySelector('.card-content-comments');
 
-    const noImgs = document.querySelector('.no-comms-msg');
+    const noImgs = card.querySelector('.no-comms-msg');
     if (noImgs) {
         noImgs.remove();
     }

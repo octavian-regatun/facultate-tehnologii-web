@@ -5,7 +5,8 @@
 @import 'modal.css';
 @import 'sidebar.css';
 
-.loading, .no-images {
+.loading,
+.no-images {
   position: absolute;
   margin-top: 65px;
   top: 50%;
@@ -64,7 +65,7 @@
   transition: transform 0.5s ease;
 }
 
-.card > img:not(.card-checkmark) {
+.card>img:not(.card-checkmark) {
   min-height: 10dvh;
 }
 
@@ -352,7 +353,7 @@
   padding: 4px;
   border-radius: 50%;
   background-color: transparent;
-  border: 1px solid gray;
+  border: 1px solid var(--secondary);
   cursor: pointer;
   transition: all 0.2s;
 
@@ -364,8 +365,30 @@
 
 .card-content-edit-button:hover,
 .card-content-refresh-button:hover {
-  background-color: lightgray;
+  background-color: lightgray !important;
   transition: all 0.2s;
+}
+
+/* magic to remove default css for input type="color" */
+.color-selector {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.color-selector::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.color-selector::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
 }
 
 .card-content-comments {

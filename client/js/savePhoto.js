@@ -96,14 +96,26 @@ export const addNewPhotoToModal = (photo) => {
     likeSection.appendChild(likeIcon);
     likeSection.appendChild(likeCount);
 
+    const actionsBtnContainer = document.createElement("div");
+    actionsBtnContainer.classList.add("card-actions-btn-container");
+
     const editButton = document.createElement("button");
     editButton.classList.add("card-content-edit-button");
     const editIcon = document.createElement("img");
     editIcon.src = "../svgs/edit-photo.svg";
     editButton.appendChild(editIcon);
 
+    // Color selector
+    const color = document.createElement("input");
+    color.classList.add("color-selector");
+    color.type = "color";
+    color.style.display = 'none';
+
+    actionsBtnContainer.appendChild(color);
+    actionsBtnContainer.appendChild(editButton);
+
     cardActions.appendChild(likeSection);
-    cardActions.appendChild(editButton);
+    cardActions.appendChild(actionsBtnContainer);
 
     const commentsSection = document.createElement("div");
     commentsSection.classList.add("card-content-comments");
@@ -253,7 +265,7 @@ const savePhoto = async (imageElement, collage = false, width = null, height = n
     if (response.ok) {
         const currentUrl = new URL(window.location.href);
         if (!currentUrl.pathname.includes("platforms.html") &&
-            !currentUrl.pathname.includes("account.html") && 
+            !currentUrl.pathname.includes("account.html") &&
             !currentUrl.pathname.includes("terms.html")) {
             const newPhoto = await response.json();
             addNewPhotoToGrid(newPhoto);
