@@ -359,7 +359,6 @@ document.addEventListener('photosLoaded', () => {
 	}
 
 	function carousel(direction) {
-		handleSliders();
 		if (modalCards.length < 3) return;
 
 		publishButtons[0].style.display = 'block';
@@ -408,6 +407,9 @@ document.addEventListener('photosLoaded', () => {
 		const oldCurrent = document.querySelector('.current');
 		oldCurrent.classList.remove('current');
 		nextCard.classList.add("current");
+
+		// Reset edit buttons
+		handleSliders();
 	}
 
 	// < btn
@@ -466,6 +468,7 @@ document.addEventListener('photosLoaded', () => {
 			canvas.addEventListener('mouseup', stopDrawing);
 			canvas.addEventListener('mouseout', stopDrawing);
 
+			ctx.strokeStyle = colorButton.value;
 			colorButton.addEventListener('input', (e) => {
 				ctx.strokeStyle = e.target.value;
 			});
@@ -491,6 +494,8 @@ document.addEventListener('photosLoaded', () => {
 		lightnessSlider = inputs[3];
 	}
 
+	// Draw logic
+	// (The color is found in handleSliders, on the else branch)
 	const startDrawing = (e) => {
 		drawing = true;
 		lastX = e.clientX;
@@ -532,4 +537,19 @@ document.addEventListener('photosLoaded', () => {
 			ctx.beginPath();
 		}
 	};
+
+
+	// Canvas needs to be updated on resize
+	window.addEventListener('resize', () => {
+		if (canvas && ctx) {
+			// Save
+			const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+			canvas.width = image.width;
+			canvas.height = image.height;
+
+			// Restore
+			ctx.putImageData(imageData, 0, 0);
+		}
+	});
 });
