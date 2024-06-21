@@ -98,6 +98,8 @@ document.addEventListener('photosLoaded', () => {
 			publishButtons[0].style.display = 'block';
 			publishButtons[1].style.display = 'none';
 			publishButtons[2].style.display = 'none';
+			const oldCurrent = document.querySelector('.current');
+			oldCurrent.classList.remove('current');
 			modal.close();
 			event.stopPropagation();
 		}
@@ -435,6 +437,7 @@ document.addEventListener('photosLoaded', () => {
 			}
 			comments.style.display = 'block';
 			colorButton.style.display = 'none';
+			modalClose.style.display = 'block';
 			modalCards[currentIndex].querySelector('.card-content-edit').style.display = 'none';
 			editButton.style.backgroundColor = 'rgba(0, 0, 0, 0)';
 			const canvas = modalCards[currentIndex].querySelector('canvas');
@@ -451,6 +454,7 @@ document.addEventListener('photosLoaded', () => {
 			}
 			comments.style.display = 'none';
 			colorButton.style.display = 'block';
+			modalClose.style.display = 'none';
 			modalCards[currentIndex].querySelector('.card-content-edit').style.display = 'block';
 			editButton.style.backgroundColor = 'rgba(102, 204, 175, 1)';
 
@@ -507,7 +511,7 @@ document.addEventListener('photosLoaded', () => {
 	};
 
 	const draw = (e) => {
-		if (!drawing) return;
+		if (!drawing || !ctx) return;
 
 		const rect = canvas.getBoundingClientRect();
 		const currentX = e.clientX - rect.left;
