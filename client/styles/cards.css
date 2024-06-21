@@ -242,6 +242,15 @@
   position: relative;
 }
 
+.clip-path-point {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: hsla(140, 100%, 75%, 0.267);
+  border-radius: 50%;
+  border: 3px solid hsla(0, 0%, 0%, 0.329);
+}
+
 .modal .card img {
   display: block;
   border-radius: 0;

@@ -42,6 +42,7 @@ document.addEventListener('photosLoaded', () => {
 	let currentIndex = 0;
 	let drawing = false, canvas = null, ctx = null;
 	let clickedCards = [];
+	let clipPathPoints = [];
 
 	// Initialize (needed if the modal is closed and reopened)
 	const initializeModalElements = () => {
@@ -121,6 +122,7 @@ document.addEventListener('photosLoaded', () => {
 			saturationSlider.value = 100;
 			lightnessSlider.value = 100;
 			updateFilters();
+			resetClipPath();
 		}
 
 		// save photo btn
@@ -134,6 +136,7 @@ document.addEventListener('photosLoaded', () => {
 			publishButtons[0].style.display = 'block';
 			publishButtons[1].style.display = 'none';
 			publishButtons[2].style.display = 'none';
+			resetClipPath();
 			modal.close();
 		}
 
@@ -361,6 +364,7 @@ document.addEventListener('photosLoaded', () => {
 	}
 
 	function carousel(direction) {
+		resetClipPath();
 		if (modalCards.length < 3) return;
 
 		publishButtons[0].style.display = 'block';
@@ -501,6 +505,13 @@ document.addEventListener('photosLoaded', () => {
 	// Draw logic
 	// (The color is found in handleSliders, on the else branch)
 	const startDrawing = (e) => {
+		if (modalCards[currentIndex].querySelector('.card-content-comments').style.display === 'block') {
+			return;
+		}
+		if (e.ctrlKey) {
+			addClipPathPoint(e);
+			return;
+		}
 		drawing = true;
 		lastX = e.clientX;
 		lastY = e.clientY;
@@ -511,7 +522,7 @@ document.addEventListener('photosLoaded', () => {
 	};
 
 	const draw = (e) => {
-		if (!drawing || !ctx) return;
+		if (!drawing || !ctx || e.ctrlKey) return;
 
 		const rect = canvas.getBoundingClientRect();
 		const currentX = e.clientX - rect.left;
@@ -535,7 +546,8 @@ document.addEventListener('photosLoaded', () => {
 		lastTime = currentTime;
 	};
 
-	const stopDrawing = () => {
+	const stopDrawing = (e) => {
+		if (e.ctrlKey) return;
 		drawing = false;
 		if (ctx) {
 			ctx.beginPath();
@@ -556,4 +568,36 @@ document.addEventListener('photosLoaded', () => {
 			ctx.putImageData(imageData, 0, 0);
 		}
 	});
+
+	const addClipPathPoint = (e) => {
+		const rect = canvas.getBoundingClientRect();
+		const x = ((e.clientX - rect.left) / rect.width) * 100;
+		const y = ((e.clientY - rect.top) / rect.height) * 100;
+		clipPathPoints.push(`${x}% ${y}%`);
+		if (clipPathPoints.length > 2) {
+			updateClipPath();
+		}
+		addClipPathDiv(x, y);
+	};
+
+	const addClipPathDiv = (x, y) => {
+		const div = document.createElement('div');
+		div.classList.add('clip-path-point');
+		div.style.left = `calc(${x}% - 6px)`;
+		div.style.top = `calc(${y}% - 6px)`;
+		const editor = modalCards[currentIndex].querySelector('.photo-editor');
+		editor.appendChild(div);
+	};
+
+	const updateClipPath = () => {
+		const clipPath = `polygon(${clipPathPoints.join(', ')})`;
+		image.style.clipPath = clipPath;
+	};
+
+	const resetClipPath = () => {
+		clipPathPoints = [];
+		image.style.clipPath = '';
+		const pointDivs = modalCards[currentIndex].querySelectorAll('.clip-path-point');
+		pointDivs.forEach(div => div.remove());
+	};
 });

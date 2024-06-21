@@ -222,6 +222,31 @@ const getFilteredImageAsBase64 = (image, hasCanvas, filters) => {
     if (filters) {
         context.filter = filters;
     }
+
+    // Clip path - no easy way to apply it, compute it manually
+    const clipPath = getComputedStyle(image).clipPath;
+    if (clipPath && clipPath.startsWith('polygon')) {
+        // Parse with a random regex
+        const polygonPoints = clipPath.match(/polygon\(([^)]+)\)/)[1].trim().split(',').map(point => {
+            const [x, y] = point.trim().split(' ');
+            return { x: parseFloat(x) / 100, y: parseFloat(y) / 100 };
+        });
+        
+        // Compute each point individually
+        context.beginPath();
+        polygonPoints.forEach((point, index) => {
+            const x = point.x * filteredCanvas.width;
+            const y = point.y * filteredCanvas.height;
+            if (index === 0) {
+                context.moveTo(x, y);
+            } else {
+                context.lineTo(x, y);
+            }
+        });
+        context.closePath();
+        context.clip();
+    }
+
     context.drawImage(image, 0, 0, filteredCanvas.width, filteredCanvas.height);
 
     if (hasCanvas) {
