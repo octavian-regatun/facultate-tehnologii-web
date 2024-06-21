@@ -165,12 +165,12 @@
 
 .publish-btn::before {
   left: calc(-1 * var(--size));
-  rotate: -180deg;
+  transform: rotate(-180deg);
 }
 
 .publish-btn::after {
   right: calc(-1 * var(--size));
-  rotate: -90deg;
+  transform: rotate(-90deg);
 }
 
 .publish-btn-google {
@@ -235,7 +235,7 @@
   cursor: auto;
   position: absolute;
   z-index: 1;
-  transform: all 200ms;
+  transform: 200ms;
 }
 
 .photo-editor {

@@ -14,23 +14,23 @@
 <body>
   <nav class="navbar">
     <div class="navbar-left-side">
-      <img class="navbar-logo" src="../imgs/logo.webp" alt="Logo"/>
+      <img class="navbar-logo" src="../imgs/logo.webp" alt="Logo" />
       <p class="navbar-page">Plaftorms / Google Photos</p>
     </div>
     <div class="navbar-right-side">
-        <a href="../pages/account.html"><img src="../svgs/user-circle.svg" alt="Account"/></a>
+      <a href="../pages/account.html"><img src="../svgs/user-circle.svg" alt="Account" /></a>
       <button class="btn log-out-btn">Log out</button>
     </div>
   </nav>
 
   <aside class="sidebar">
-    <a href="../pages/search.html"><img src="../svgs/search.svg" alt="Search"/></a>
-    <a href="../pages/platforms.html"><img src="../svgs/dashboard.svg" alt="Platforms"/></a>
-    <button class="upload-btn"><img src="../svgs/upload.svg" alt="Upload"/></button>
+    <a href="../pages/search.html"><img src="../svgs/search.svg" alt="Search" /></a>
+    <a href="../pages/platforms.html"><img src="../svgs/dashboard.svg" alt="Platforms" /></a>
+    <button class="upload-btn"><img src="../svgs/upload.svg" alt="Upload" /></button>
   </aside>
 
   <section class="card-header">
-    
+
   </section>
 
   <main class="container">
@@ -51,16 +51,18 @@
   <dialog class="modal">
     <!-- Dynamic content will be inserted here -->
   </dialog>
+
+  <script src="../js/Authentication/redirect.js"></script>
+  <script src="../js/Authentication/logout.js"></script>
+  <script src="../js/filter.js" defer></script>
+  <script src="../js/fetchPhotos.js"></script>
+  <script src="../js/deletePhoto.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+  <script src="../js/updateComments.js"></script>
+  <script src="../js/savePhoto.js" type="module"></script>
+  <script src="../js/collage.js" type="module"></script>
+  <script src="../js/carousel.js" type="module"></script>
+  <script src="../js/platformsGoogle.js" defer></script>
 </body>
-<script src="../js/Authentication/redirect.js"></script>
-<script src="../js/Authentication/logout.js"></script>
-<script src="../js/filter.js" defer></script>
-<script src="../js/fetchPhotos.js"></script>
-<script src="../js/deletePhoto.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
-<script src="../js/updateComments.js"></script>
-<script src="../js/savePhoto.js" type="module" defer></script>
-<script src="../js/collage.js" type="module" defer></script>
-<script src="../js/carousel.js" type="module" defer></script>
-<script src="../js/platformsGoogle.js" defer></script>
+
 </html>

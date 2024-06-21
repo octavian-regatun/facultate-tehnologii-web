@@ -226,6 +226,7 @@ document.addEventListener('photosLoaded', () => {
 		// Special case: 1 card
 		if (modalCards.length === 1) {
 			modalCards[0].style.display = 'flex';
+			modalCards[0].classList.add("current");
 			updateCurrentButtons(0);
 			modalPreviousButton.style.display = 'none';
 			modalNextButton.style.display = 'none';
