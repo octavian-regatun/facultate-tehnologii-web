@@ -349,7 +349,10 @@
 
 .card-actions-btn-container {
   display: flex;
-  gap: .5em;
+  flex-grow: 1;
+  max-width: 70%;
+  justify-content: flex-end;
+  gap: 19%;
 }
 
 .card-content-edit-button,

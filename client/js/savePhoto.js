@@ -120,8 +120,8 @@ export const addNewPhotoToModal = (photo) => {
     redirectIcon.src = "../svgs/redirect.svg";
     redirectButton.appendChild(redirectIcon);
 
-    actionsBtnContainer.appendChild(redirectButton);
     actionsBtnContainer.appendChild(color);
+    actionsBtnContainer.appendChild(redirectButton);
     actionsBtnContainer.appendChild(editButton);
 
     cardActions.appendChild(likeSection);

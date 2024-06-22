@@ -230,7 +230,6 @@ async function displayModalPhotos(photos) {
         const redirectIcon = document.createElement("img");
         redirectIcon.src = "../svgs/redirect.svg";
         redirectButton.appendChild(redirectIcon);
-        actionsBtnContainer.appendChild(redirectButton);
 
         // Refresh button appears only for posts uploaded on Instagram
         if (photo.source == "INSTAGRAM") {
@@ -245,6 +244,7 @@ async function displayModalPhotos(photos) {
         }
 
         actionsBtnContainer.appendChild(color);
+        actionsBtnContainer.appendChild(redirectButton);
         actionsBtnContainer.appendChild(editButton);
 
         cardActions.appendChild(likeSection);
