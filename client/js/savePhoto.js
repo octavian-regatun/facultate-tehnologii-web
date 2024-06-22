@@ -266,6 +266,13 @@ const savePhoto = async (imageElement, collage = false, width = null, height = n
         base64Image = getFilteredImageAsBase64(imageElement, hasCanvas, filters);
     }
 
+    const exifData = await new Promise((resolve, reject) => {
+        EXIF.getData(imageElement, function () {
+            const allMetaData = EXIF.getAllTags(this);
+            resolve(allMetaData);
+        });
+    });
+
     const aspectRatio = collage ? width / height : imageElement.width / imageElement.height;
     const size = collage ? `${width}x${height}` : `${imageElement.width}x${imageElement.height}`;
 
@@ -283,7 +290,8 @@ const savePhoto = async (imageElement, collage = false, width = null, height = n
             likes: 0,
             commentCount: 0,
             aspectRatio: aspectRatio,
-            size: parseInt(size)
+            size: parseInt(size),
+            exif: JSON.stringify(exifData) || null
         }),
     });
 

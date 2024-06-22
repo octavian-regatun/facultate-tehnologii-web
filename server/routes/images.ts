@@ -70,6 +70,7 @@ export const savePhotoToDb = async (data: Photo) => {
         createdAt: data.createdAt,
         aspectRatio: data.aspectRatio || null,
         size: data.size || null,
+        exif: data.exif || null
       },
     });
 

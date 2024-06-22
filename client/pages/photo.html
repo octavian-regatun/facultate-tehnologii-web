@@ -9,16 +9,16 @@
   <link rel="stylesheet" href="../styles/navbar.css">
   <link rel="stylesheet" href="../styles/platforms.css" />
   <link rel="stylesheet" href="../styles/footer.css">
-  <link rel="stylesheet" href="../styles/account.css">
+  <link rel="stylesheet" href="../styles/terms.css">
   <link rel="icon" type="image/png" href="../imgs/favicon.png">
-  <title>Account</title>
+  <title>Photo</title>
 </head>
 
 <body>
   <nav class="navbar">
     <div class="navbar-left-side">
       <img class="navbar-logo" src="../imgs/logo.webp" alt="Logo" />
-      <p class="navbar-page">Account</p>
+      <p class="navbar-page">Photo</p>
     </div>
     <div class="navbar-right-side">
       <a href="../pages/account.html"><img src="../svgs/user-circle.svg" alt="Account" /></a>
@@ -33,42 +33,9 @@
   </aside>
 
   <main class="container">
-    <div class="account-stats">
-      <h2>User Statistics</h2>
-      <div>
-        <div>
-          <p><strong>Date Created:</strong> <span id="date-created"></span></p>
-        </div>
-        <div>
-          <p><strong>Admin:</strong> <span id="admin-status"></span></p>
-        </div>
-      </div>
-      <h2>Photos</h2>
-      <div>
-        <div>
-          <p><strong>Google:</strong> <span id="photos-google"></span></p>
-        </div>
-        <div>
-          <p><strong>Instagram:</strong> <span id="photos-instagram"></span></p>
-        </div>
-        <div>
-          <p><strong>M-PIC:</strong> <span id="photos-mpic"></span></p>
-        </div>
-      </div>
-      <div>
-        <div>
-          <p><strong>Total Likes:</strong> <span id="total-likes"></span></p>
-        </div>
-        <div>
-          <p><strong>Total Comments:</strong> <span id="total-comments"></span></p>
-        </div>
-      </div>
-      <div>
-        <button class="btn" id="delete-acc">Delete account</button>
-      </div>
-    </div>
+    tagadam
   </main>
-  <!-- Footer -->
+
   <footer>
     <div class="wave"></div>
     <div class="footer-container">
@@ -97,10 +64,10 @@
     </div>
   </footer>
   <script src="../js/Authentication/redirect.js"></script>
-<script src="../js/Authentication/logout.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
-<script src="../js/savePhoto.js" type="module"></script>
-<script src="../js/account.js" type="module"></script>
+  <script src="../js/Authentication/logout.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
+  <script src="../js/savePhoto.js" type="module"></script>
+  <script src="../js/photo.js" defer></script>
 </body>
 
 </html>
