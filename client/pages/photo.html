@@ -2,98 +2,102 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="../styles/normalize.css">
-  <link rel="stylesheet" href="../styles/global.css">
-  <link rel="stylesheet" href="../styles/navbar.css">
-  <link rel="stylesheet" href="../styles/platforms.css" />
-  <link rel="stylesheet" href="../styles/footer.css">
-  <link rel="stylesheet" href="../styles/photo.css">
-  <link rel="icon" type="image/png" href="../imgs/favicon.png">
-  <title>Photo</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles/normalize.css">
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/platforms.css" />
+    <link rel="stylesheet" href="../styles/footer.css">
+    <link rel="stylesheet" href="../styles/filter.css">
+    <link rel="stylesheet" href="../styles/photo.css">
+    <link rel="icon" type="image/png" href="../imgs/favicon.png">
+    <title>Photo</title>
 </head>
 
 <body>
-  <nav class="navbar">
-    <div class="navbar-left-side">
-      <img class="navbar-logo" src="../imgs/logo.webp" alt="Logo" />
-      <p class="navbar-page">Photo</p>
-    </div>
-    <div class="navbar-right-side">
-      <a href="../pages/account.html"><img src="../svgs/user-circle.svg" alt="Account" /></a>
-      <button class="btn log-out-btn">Log out</button>
-    </div>
-  </nav>
-
-  <aside class="sidebar">
-    <a href="../pages/search.html"><img src="../svgs/search.svg" alt="Search" /></a>
-    <a href="../pages/platforms.html"><img src="../svgs/dashboard.svg" alt="Platforms" /></a>
-    <button class="upload-btn"><img src="../svgs/upload.svg" alt="Upload" /></button>
-  </aside>
-
-  <main class="container">
-    <div class="img">
-        
-    </div>
-    <div class="utils">
-        <div class="anim">
-            <label for="animation-select">Select animation:</label>
-            <select id="animation-select">
-                <option value="none">None</option>
-                <option value="scale">Scale</option>
-                <option value="rotate">Rotate</option>
-                <option value="translate">Translate in a circle</option>
-            </select>
-
-            <label for="duration-select">Select duration (seconds):</label>
-            <select id="duration-select">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
+    <nav class="navbar">
+        <div class="navbar-left-side">
+            <img class="navbar-logo" src="../imgs/logo.webp" alt="Logo" />
+            <p class="navbar-page">Photo</p>
         </div>
-        <div class="exif">
-            <h3>EXIF Data</h3>
-            <pre id="exif-data"></pre>
+        <div class="navbar-right-side">
+            <a href="../pages/account.html"><img src="../svgs/user-circle.svg" alt="Account" /></a>
+            <button class="btn log-out-btn">Log out</button>
         </div>
-    </div>
-  </main>
+    </nav>
 
-  <footer>
-    <div class="wave"></div>
-    <div class="footer-container">
-      <div class="footer-child">
-        <p>Relevant links</p>
-        <a href="./scholarly.html">Documentation</a>
-        <a href="./terms.html">Terms of use</a>
-        <a href="https://en.wikipedia.org/wiki/Security">Security</a>
-        <a href="https://edu.info.uaic.ro/web-technologies/web-projects.html">Project</a>
-      </div>
-      <div class="footer-child">
-        <p>Get in touch</p>
-        <a href="#">Regatun</a>
-        <a href="#">Ciprian</a>
-        <a href="#">Regacip</a>
-      </div>
-      <div class="footer-child">
-        <p>Platforms</p>
-        <a href="https://photos.google.com/?pli=1"><img src="../svgs/google-photos.svg" alt="Google Photos"></a>
-        <a href="https://www.instagram.com/"><img src="../svgs/instagram.svg" alt="Instragram"></a>
-      </div>
-      <div class="footer-child">
-        <p>Important</p>
-        <a href="https://fii-itist.asii.ro/">Check this: FII IT-ist</a>
-      </div>
-    </div>
-  </footer>
-  <script src="../js/Authentication/redirect.js"></script>
-  <script src="../js/Authentication/logout.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
-  <script src="../js/savePhoto.js" type="module"></script>
-  <script src="../js/photo.js" defer></script>
+    <aside class="sidebar">
+        <a href="../pages/search.html"><img src="../svgs/search.svg" alt="Search" /></a>
+        <a href="../pages/platforms.html"><img src="../svgs/dashboard.svg" alt="Platforms" /></a>
+        <button class="upload-btn"><img src="../svgs/upload.svg" alt="Upload" /></button>
+    </aside>
+
+    <main class="container">
+        <div class="img">
+
+        </div>
+        <div class="utils">
+            <div class="anim">
+                <form>
+                    <label for="animation-select">Select animation:</label>
+                    <select id="animation-select">
+                        <option value="none">None</option>
+                        <option value="scale">Scale</option>
+                        <option value="rotate">Rotate</option>
+                        <option value="translate">Translate</option>
+                        <option value="flip">Flip</option>
+                    </select>
+
+                    <label for="duration-select">Select duration (seconds):</label>
+                    <select id="duration-select">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </form>
+            </div>
+            <div class="exif">
+                <h3>EXIF Data</h3>
+                <pre id="exif-data"></pre>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="wave"></div>
+        <div class="footer-container">
+            <div class="footer-child">
+                <p>Relevant links</p>
+                <a href="./scholarly.html">Documentation</a>
+                <a href="./terms.html">Terms of use</a>
+                <a href="https://en.wikipedia.org/wiki/Security">Security</a>
+                <a href="https://edu.info.uaic.ro/web-technologies/web-projects.html">Project</a>
+            </div>
+            <div class="footer-child">
+                <p>Get in touch</p>
+                <a href="#">Regatun</a>
+                <a href="#">Ciprian</a>
+                <a href="#">Regacip</a>
+            </div>
+            <div class="footer-child">
+                <p>Platforms</p>
+                <a href="https://photos.google.com/?pli=1"><img src="../svgs/google-photos.svg" alt="Google Photos"></a>
+                <a href="https://www.instagram.com/"><img src="../svgs/instagram.svg" alt="Instragram"></a>
+            </div>
+            <div class="footer-child">
+                <p>Important</p>
+                <a href="https://fii-itist.asii.ro/">Check this: FII IT-ist</a>
+            </div>
+        </div>
+    </footer>
+    <script src="../js/Authentication/redirect.js"></script>
+    <script src="../js/Authentication/logout.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
+    <script src="../js/savePhoto.js" type="module"></script>
+    <script src="../js/photo.js" defer></script>
 </body>
 
 </html>

@@ -47,7 +47,6 @@ if (userId) {
     console.error("photo ID not found in the URL");
 }
 
-
 function displayExif(exif) {
     const exifContainer = document.getElementById("exif-data");
     exifContainer.innerHTML = '';
@@ -55,20 +54,19 @@ function displayExif(exif) {
     if (exif) {
         const parsedExif = JSON.parse(exif);
         if (Object.keys(parsedExif).length > 0) {
-            const table = document.createElement("table");
+            const grid = document.createElement("div");
+            grid.classList.add("exif-grid");
             for (const [key, value] of Object.entries(parsedExif)) {
-                const row = document.createElement("tr");
-                const keyCell = document.createElement("td");
-                const valueCell = document.createElement("td");
+                const keyCell = document.createElement("div");
+                const valueCell = document.createElement("div");
 
                 keyCell.textContent = key;
                 valueCell.textContent = value;
 
-                row.appendChild(keyCell);
-                row.appendChild(valueCell);
-                table.appendChild(row);
+                grid.appendChild(keyCell);
+                grid.appendChild(valueCell);
             }
-            exifContainer.appendChild(table);
+            exifContainer.appendChild(grid);
         } else {
             exifContainer.textContent = "No EXIF data found.";
         }
