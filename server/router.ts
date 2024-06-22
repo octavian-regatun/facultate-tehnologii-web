@@ -16,62 +16,42 @@ export class Router {
 
   get(path: string, ...middlewares: Middleware[]) {
     if (this.req.url === path && this.req.method === "GET") {
-      const execute = (index: number) => {
-        if (index < middlewares.length) {
-          middlewares[index](this.req, this.res, () => execute(index + 1));
-        }
-      };
-
-      execute(0);
+      this.executeMiddlewares(middlewares);
     }
   }
 
   post(path: string, ...middlewares: Middleware[]) {
     if (this.req.url === path && this.req.method === "POST") {
-      const execute = (index: number) => {
-        if (index < middlewares.length) {
-          middlewares[index](this.req, this.res, () => execute(index + 1));
-        }
-      };
-
-      execute(0);
+      this.executeMiddlewares(middlewares);
     }
   }
 
   delete(path: string, ...middlewares: Middleware[]) {
     if (this.req.url === path && this.req.method === "DELETE") {
-      const execute = (index: number) => {
-        if (index < middlewares.length) {
-          middlewares[index](this.req, this.res, () => execute(index + 1));
-        }
-      };
-
-      execute(0);
+      this.executeMiddlewares(middlewares);
     }
   }
 
   // Prefix p = route has parameters
   pget(path: string, ...middlewares: Middleware[]) {
     if (this.req.url?.startsWith(path) && this.req.method === "GET") {
-      const execute = (index: number) => {
-        if (index < middlewares.length) {
-          middlewares[index](this.req, this.res, () => execute(index + 1));
-        }
-      };
-
-      execute(0);
+      this.executeMiddlewares(middlewares);
     }
   }
 
   pdelete(path: string, ...middlewares: Middleware[]) {
     if (this.req.url?.startsWith(path) && this.req.method === "DELETE") {
-      const execute = (index: number) => {
-        if (index < middlewares.length) {
-          middlewares[index](this.req, this.res, () => execute(index + 1));
-        }
-      };
-
-      execute(0);
+      this.executeMiddlewares(middlewares);
     }
+  }
+
+
+  private executeMiddlewares(middlewares: Middleware[]) {
+    const execute = (index: number) => {
+      if (index < middlewares.length) {
+        middlewares[index](this.req, this.res, () => execute(index + 1));
+      }
+    };
+    execute(0);
   }
 }
