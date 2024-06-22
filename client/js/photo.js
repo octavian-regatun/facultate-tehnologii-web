@@ -1,6 +1,15 @@
+const displayErrorMsg = (error) => {
+    console.log(error);
+    const container = document.querySelector(".container");
+    if (parseInt(error.message) == 404) {
+        container.innerHTML = "Photo not found or unauthorized";
+    } else {
+        container.innerHTML = error;
+    }
+}
+
 const urlParams = new URLSearchParams(window.location.search);
 const userId = urlParams.get('id');
-
 
 if (userId) {
     fetch(`http://localhost:8081/photo/${userId}`, {
@@ -11,7 +20,7 @@ if (userId) {
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                throw new Error(response.status);
             }
             return response.json();
         })
@@ -50,7 +59,7 @@ if (userId) {
             displayErrorMsg(error);
         });
 } else {
-    console.error("photo ID not found in the URL");
+    displayErrorMsg("Photo ID not found in the URL");
 }
 
 function displayExif(exif) {
@@ -79,10 +88,4 @@ function displayExif(exif) {
     } else {
         exifContainer.textContent = "No EXIF data found.";
     }
-}
-
-
-const displayErrorMsg = (error) => {
-    const container = document.querySelector(".container");
-    container.innerHTML = "Photo not found or unauthorized";
 }
