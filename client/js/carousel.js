@@ -38,10 +38,11 @@ document.addEventListener('photosLoaded', () => {
 		return;
 	}
 
-	let modalClose, modalCards, editButton, refreshButton, image, opacitySlider, hueSlider, saturationSlider, lightnessSlider, resetButton, saveButton, importButton, exportButton, publishButtons;
+	let modalClose, modalCards, editButton, refreshButton, colorButton, image, opacitySlider, hueSlider, saturationSlider, lightnessSlider, resetButton, saveButton, importButton, exportButton, publishButtons;
 	let currentIndex = 0;
 	let drawing = false, canvas = null, ctx = null;
 	let clickedCards = [];
+	let clipPathPoints = [];
 
 	// Initialize (needed if the modal is closed and reopened)
 	const initializeModalElements = () => {
@@ -98,6 +99,8 @@ document.addEventListener('photosLoaded', () => {
 			publishButtons[0].style.display = 'block';
 			publishButtons[1].style.display = 'none';
 			publishButtons[2].style.display = 'none';
+			const oldCurrent = document.querySelector('.current');
+			oldCurrent.classList.remove('current');
 			modal.close();
 			event.stopPropagation();
 		}
@@ -119,6 +122,7 @@ document.addEventListener('photosLoaded', () => {
 			saturationSlider.value = 100;
 			lightnessSlider.value = 100;
 			updateFilters();
+			resetClipPath();
 		}
 
 		// save photo btn
@@ -132,6 +136,7 @@ document.addEventListener('photosLoaded', () => {
 			publishButtons[0].style.display = 'block';
 			publishButtons[1].style.display = 'none';
 			publishButtons[2].style.display = 'none';
+			resetClipPath();
 			modal.close();
 		}
 
@@ -221,6 +226,7 @@ document.addEventListener('photosLoaded', () => {
 		// Special case: 1 card
 		if (modalCards.length === 1) {
 			modalCards[0].style.display = 'flex';
+			modalCards[0].classList.add("current");
 			updateCurrentButtons(0);
 			modalPreviousButton.style.display = 'none';
 			modalNextButton.style.display = 'none';
@@ -359,6 +365,7 @@ document.addEventListener('photosLoaded', () => {
 	}
 
 	function carousel(direction) {
+		resetClipPath();
 		if (modalCards.length < 3) return;
 
 		publishButtons[0].style.display = 'block';
@@ -398,13 +405,18 @@ document.addEventListener('photosLoaded', () => {
 		centerCard.style.filter = 'blur(2px)';
 		centerCard.style.pointerEvents = 'none';
 
-		newCard.style.display = 'flex';
-		oppositeCard.style.display = 'none';
-		oppositeCard.style.pointerEvents = 'none';
+		if (modalCards.length !== 3) {
+			newCard.style.display = 'flex';
+			oppositeCard.style.display = 'none';
+			oppositeCard.style.pointerEvents = 'none';
+		}
 
 		const oldCurrent = document.querySelector('.current');
 		oldCurrent.classList.remove('current');
 		nextCard.classList.add("current");
+
+		// Reset edit buttons
+		handleSliders();
 	}
 
 	// < btn
@@ -418,12 +430,19 @@ document.addEventListener('photosLoaded', () => {
 	});
 
 
+	let lastX, lastY, lastTime;
+
 	const handleSliders = () => {
 		const description = modalCards[currentIndex].querySelector('.card-content-description');
 		const comments = modalCards[currentIndex].querySelector('.card-content-comments');
 
 		if (description.style.display === 'none' || comments.style.display === 'none') {
+			if (refreshButton) {
+				refreshButton.style.display = 'block';
+			}
 			comments.style.display = 'block';
+			colorButton.style.display = 'none';
+			modalClose.style.display = 'block';
 			modalCards[currentIndex].querySelector('.card-content-edit').style.display = 'none';
 			editButton.style.backgroundColor = 'rgba(0, 0, 0, 0)';
 			const canvas = modalCards[currentIndex].querySelector('canvas');
@@ -435,9 +454,14 @@ document.addEventListener('photosLoaded', () => {
 			drawing = false;
 			ctx = null;
 		} else {
+			if (refreshButton) {
+				refreshButton.style.display = 'none';
+			}
 			comments.style.display = 'none';
+			colorButton.style.display = 'block';
+			modalClose.style.display = 'none';
 			modalCards[currentIndex].querySelector('.card-content-edit').style.display = 'block';
-			editButton.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+			editButton.style.backgroundColor = 'rgba(102, 204, 175, 1)';
 
 			canvas = modalCards[currentIndex].querySelector('canvas');
 			const photo = modalCards[currentIndex].querySelector('img');
@@ -452,12 +476,18 @@ document.addEventListener('photosLoaded', () => {
 			canvas.addEventListener('mousemove', draw);
 			canvas.addEventListener('mouseup', stopDrawing);
 			canvas.addEventListener('mouseout', stopDrawing);
+
+			ctx.strokeStyle = colorButton.value;
+			colorButton.addEventListener('input', (e) => {
+				ctx.strokeStyle = e.target.value;
+			});
 		}
 	};
 
 	const updateCurrentButtons = (index) => {
 		modalClose = modalCards[index].querySelector('.modal-close');
 		editButton = modalCards[index].querySelector('.card-content-edit-button');
+		colorButton = modalCards[index].querySelector('.color-selector');
 		refreshButton = modalCards[index].querySelector('.card-content-refresh-button') || null;
 		resetButton = modalCards[index].querySelector('.card-content-edit-reset-button');
 		saveButton = modalCards[index].querySelector('.card-content-edit-save-button');
@@ -465,7 +495,7 @@ document.addEventListener('photosLoaded', () => {
 		exportButton = modalCards[index].querySelector('.export-button');
 		publishButtons = modalCards[index].querySelectorAll('.publish-btn');
 		image = modalCards[index].querySelector('img');
-		const inputs = modalCards[index].querySelectorAll('input');
+		const inputs = modalCards[index].querySelector('.card-content-edit').querySelectorAll('input');
 
 		opacitySlider = inputs[0];
 		hueSlider = inputs[1];
@@ -473,28 +503,102 @@ document.addEventListener('photosLoaded', () => {
 		lightnessSlider = inputs[3];
 	}
 
+	// Draw logic
+	// (The color is found in handleSliders, on the else branch)
 	const startDrawing = (e) => {
+		if (modalCards[currentIndex].querySelector('.card-content-comments').style.display === 'block') {
+			return;
+		}
+		if (e.ctrlKey) {
+			addClipPathPoint(e);
+			return;
+		}
 		drawing = true;
+		lastX = e.clientX;
+		lastY = e.clientY;
+		lastTime = Date.now();
 		if (ctx) {
 			draw(e);
 		}
 	};
 
 	const draw = (e) => {
-		if (!drawing) return;
-		ctx.lineWidth = 5;
-		ctx.lineCap = 'round';
-		ctx.strokeStyle = 'black';
+		if (!drawing || !ctx || e.ctrlKey) return;
 
 		const rect = canvas.getBoundingClientRect();
-		ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+		const currentX = e.clientX - rect.left;
+		const currentY = e.clientY - rect.top;
+		const currentTime = Date.now();
+
+		const distance = Math.sqrt(Math.pow(currentX - lastX, 2) + Math.pow(currentY - lastY, 2));
+		const time = currentTime - lastTime;
+		const speed = distance / time;
+
+		ctx.lineWidth = Math.max(1, 5 - speed * 2.5);
+		ctx.lineCap = 'round';
+
+		ctx.lineTo(currentX, currentY);
 		ctx.stroke();
 		ctx.beginPath();
-		ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+		ctx.moveTo(currentX, currentY);
+
+		lastX = currentX;
+		lastY = currentY;
+		lastTime = currentTime;
 	};
 
-	const stopDrawing = () => {
+	const stopDrawing = (e) => {
+		if (e.ctrlKey) return;
 		drawing = false;
-		ctx.beginPath();
+		if (ctx) {
+			ctx.beginPath();
+		}
+	};
+
+
+	// Canvas needs to be updated on resize
+	window.addEventListener('resize', () => {
+		if (canvas && ctx) {
+			// Save
+			const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+			canvas.width = image.width;
+			canvas.height = image.height;
+
+			// Restore
+			ctx.putImageData(imageData, 0, 0);
+		}
+	});
+
+	const addClipPathPoint = (e) => {
+		const rect = canvas.getBoundingClientRect();
+		const x = ((e.clientX - rect.left) / rect.width) * 100;
+		const y = ((e.clientY - rect.top) / rect.height) * 100;
+		clipPathPoints.push(`${x}% ${y}%`);
+		if (clipPathPoints.length > 2) {
+			updateClipPath();
+		}
+		addClipPathDiv(x, y);
+	};
+
+	const addClipPathDiv = (x, y) => {
+		const div = document.createElement('div');
+		div.classList.add('clip-path-point');
+		div.style.left = `calc(${x}% - 6px)`;
+		div.style.top = `calc(${y}% - 6px)`;
+		const editor = modalCards[currentIndex].querySelector('.photo-editor');
+		editor.appendChild(div);
+	};
+
+	const updateClipPath = () => {
+		const clipPath = `polygon(${clipPathPoints.join(', ')})`;
+		image.style.clipPath = clipPath;
+	};
+
+	const resetClipPath = () => {
+		clipPathPoints = [];
+		image.style.clipPath = '';
+		const pointDivs = modalCards[currentIndex].querySelectorAll('.clip-path-point');
+		pointDivs.forEach(div => div.remove());
 	};
 });

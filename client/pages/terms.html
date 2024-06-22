@@ -48,6 +48,8 @@
         <li>Users must log in using their Google or Instagram accounts to fetch or upload photos.</li>
         <li>Your account information will be used solely for authentication purposes and to personalize your experience.
         </li>
+        <li>Our website supports a total limit of 10.000 calls per day at Google Photos API and a total of 200
+          calls/hour for Instagram.</li>
       </ul>
     </section>
 
@@ -115,9 +117,10 @@
       </div>
     </div>
   </footer>
+  <script src="../js/Authentication/redirect.js"></script>
+  <script src="../js/Authentication/logout.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
+  <script src="../js/savePhoto.js" type="module"></script>
 </body>
-<script src="../js/Authentication/redirect.js"></script>
-<script src="../js/Authentication/logout.js"></script>
-<script src="../js/savePhoto.js" type="module" defer></script>
 
 </html>

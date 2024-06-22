@@ -44,6 +44,7 @@ model Photo {
   createdAt    DateTime   @default(now())
   aspectRatio  Float?
   size         Int?
+  exif         String?    // optional because there are old photos without exif
   user         User       @relation("UserPhotos", fields: [userId], references: [id], onDelete: Cascade)
   comments     Comment[]
 }
@@ -61,6 +62,6 @@ model Comment {
   content   String
   timestamp DateTime?
   photo     Photo     @relation(fields: [photoId], references: [id], onDelete: Cascade)
-  userId    Int?      // optional just because there are old comments that are not associated with any user
+  userId    Int?
   user      User?     @relation("UserComments", fields: [userId], references: [id], onDelete: Cascade)
 }

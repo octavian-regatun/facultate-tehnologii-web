@@ -27,7 +27,8 @@
     transition: background-color 0.2s;
   }
 
-  button:hover, a:hover {
+  button:hover,
+  a:hover {
     background-color: var(--primary-darkest);
     transition: all 0.2s;
   }
@@ -50,11 +51,5 @@
     text-decoration: none;
     outline: none;
     user-select: none;
-}
-
-/* not needed */
-/* @media screen and (max-width: 768px) {
-  .sidebar {
-    width: 32px;
   }
-} */
+}

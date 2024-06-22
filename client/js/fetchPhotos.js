@@ -126,6 +126,7 @@ async function displayModalPhotos(photos) {
     const modalContent = document.querySelector(".modal");
     modalContent.innerHTML = ""; // Clear existing content
 
+    // Previous button < (the next button is at the end of this function)
     const previousButton = document.createElement("button");
     previousButton.classList.add("modal-previous-button");
     const previousButtonIcon = document.createElement("img");
@@ -137,10 +138,12 @@ async function displayModalPhotos(photos) {
     const commentsPromises = photos.map(photo => getCommentsFromDB(photo.id));
     const allComments = await Promise.all(commentsPromises);
 
+    // Each individual card
     photos.forEach((photo, index) => {
         const card = document.createElement("div");
         card.classList.add("card");
 
+        // Publish button on top
         const publishBtn = document.createElement("button");
         publishBtn.classList.add("publish-btn", "publish-btn-general");
         publishBtn.textContent = "Publish";
@@ -160,6 +163,7 @@ async function displayModalPhotos(photos) {
         publishBtnInstagram.appendChild(publishBtnInstagramText);
         card.appendChild(publishBtnInstagram);
 
+        // Close button
         const closeButton = document.createElement("button");
         closeButton.classList.add("modal-close");
         closeButton.textContent = "X";
@@ -167,6 +171,7 @@ async function displayModalPhotos(photos) {
             document.querySelector(".modal").close();
         });
 
+        // Image itself
         const imageContainer = document.createElement("div");
         imageContainer.classList.add("photo-editor");
 
@@ -175,6 +180,7 @@ async function displayModalPhotos(photos) {
         cardImage.src = `data:image/png;base64,${photo.binaryString}`;
         cardImage.setAttribute("photo-id", photo.id);
 
+        // Canvas on top of the img (needed for edit)
         const canvas = document.createElement("canvas");
 
         imageContainer.appendChild(cardImage);
@@ -183,6 +189,7 @@ async function displayModalPhotos(photos) {
         const cardContent = document.createElement("div");
         cardContent.classList.add("card-content");
 
+        // Description
         const cardDescription = document.createElement("p");
         cardDescription.classList.add("card-content-description");
         cardDescription.textContent = photo.description;
@@ -209,6 +216,20 @@ async function displayModalPhotos(photos) {
         editIcon.src = "../svgs/edit-photo.svg";
         editButton.appendChild(editIcon);
 
+        // Color selector
+        const color = document.createElement("input");
+        color.classList.add("color-selector");
+        color.type = "color";
+        color.style.display = 'none';
+
+        // Redirect button
+        const redirectButton = document.createElement("a");
+        redirectButton.href = `http://127.0.0.1:5500/client/pages/photo.html?id=${photo.id}`;
+        redirectButton.target = '_blank';
+        redirectButton.classList.add("card-content-redirect-button");
+        const redirectIcon = document.createElement("img");
+        redirectIcon.src = "../svgs/redirect.svg";
+        redirectButton.appendChild(redirectIcon);
 
         // Refresh button appears only for posts uploaded on Instagram
         if (photo.source == "INSTAGRAM") {
@@ -221,11 +242,15 @@ async function displayModalPhotos(photos) {
 
             actionsBtnContainer.appendChild(refreshButton);
         }
+
+        actionsBtnContainer.appendChild(color);
+        actionsBtnContainer.appendChild(redirectButton);
         actionsBtnContainer.appendChild(editButton);
 
         cardActions.appendChild(likeSection);
         cardActions.appendChild(actionsBtnContainer);
 
+        // Comments
         const commentsSection = document.createElement("div");
         commentsSection.classList.add("card-content-comments");
         const commentsTitle = document.createElement("p");
@@ -254,6 +279,7 @@ async function displayModalPhotos(photos) {
             commentsSection.appendChild(commentDiv);
         }
 
+        // Import / export buttons
         const importExportContainer = document.createElement("div");
         importExportContainer.classList.add("filter-btn-container");
 
@@ -269,9 +295,11 @@ async function displayModalPhotos(photos) {
         importExportContainer.appendChild(exportButton);
         commentsSection.appendChild(importExportContainer);
 
+        // Edit photo section
         const editSection = document.createElement("div");
         editSection.classList.add("card-content-edit");
 
+        // Filters (sliders)
         const createSlider = (labelText, min, max, def) => {
             const sliderContainer = document.createElement("div");
             sliderContainer.classList.add("card-content-edit-slider");
@@ -327,6 +355,7 @@ async function displayModalPhotos(photos) {
         modalContent.appendChild(card);
     });
 
+    // Next button >
     const nextButton = document.createElement("button");
     nextButton.classList.add("modal-next-button");
     const nextButtonIcon = document.createElement("img");

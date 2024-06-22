@@ -96,14 +96,36 @@ export const addNewPhotoToModal = (photo) => {
     likeSection.appendChild(likeIcon);
     likeSection.appendChild(likeCount);
 
+    const actionsBtnContainer = document.createElement("div");
+    actionsBtnContainer.classList.add("card-actions-btn-container");
+
     const editButton = document.createElement("button");
     editButton.classList.add("card-content-edit-button");
     const editIcon = document.createElement("img");
     editIcon.src = "../svgs/edit-photo.svg";
     editButton.appendChild(editIcon);
 
+    // Color selector
+    const color = document.createElement("input");
+    color.classList.add("color-selector");
+    color.type = "color";
+    color.style.display = 'none';
+
+    // Redirect button
+    const redirectButton = document.createElement("a");
+    redirectButton.href = `http://127.0.0.1:5500/client/pages/photo.html?id=${photo.id}`;
+    redirectButton.target = '_blank';
+    redirectButton.classList.add("card-content-redirect-button");
+    const redirectIcon = document.createElement("img");
+    redirectIcon.src = "../svgs/redirect.svg";
+    redirectButton.appendChild(redirectIcon);
+
+    actionsBtnContainer.appendChild(color);
+    actionsBtnContainer.appendChild(redirectButton);
+    actionsBtnContainer.appendChild(editButton);
+
     cardActions.appendChild(likeSection);
-    cardActions.appendChild(editButton);
+    cardActions.appendChild(actionsBtnContainer);
 
     const commentsSection = document.createElement("div");
     commentsSection.classList.add("card-content-comments");
@@ -210,6 +232,31 @@ const getFilteredImageAsBase64 = (image, hasCanvas, filters) => {
     if (filters) {
         context.filter = filters;
     }
+
+    // Clip path - no easy way to apply it, compute it manually
+    const clipPath = getComputedStyle(image).clipPath;
+    if (clipPath && clipPath.startsWith('polygon')) {
+        // Parse with a random regex
+        const polygonPoints = clipPath.match(/polygon\(([^)]+)\)/)[1].trim().split(',').map(point => {
+            const [x, y] = point.trim().split(' ');
+            return { x: parseFloat(x) / 100, y: parseFloat(y) / 100 };
+        });
+
+        // Compute each point individually
+        context.beginPath();
+        polygonPoints.forEach((point, index) => {
+            const x = point.x * filteredCanvas.width;
+            const y = point.y * filteredCanvas.height;
+            if (index === 0) {
+                context.moveTo(x, y);
+            } else {
+                context.lineTo(x, y);
+            }
+        });
+        context.closePath();
+        context.clip();
+    }
+
     context.drawImage(image, 0, 0, filteredCanvas.width, filteredCanvas.height);
 
     if (hasCanvas) {
@@ -229,6 +276,13 @@ const savePhoto = async (imageElement, collage = false, width = null, height = n
         base64Image = getFilteredImageAsBase64(imageElement, hasCanvas, filters);
     }
 
+    const exifData = await new Promise((resolve, reject) => {
+        EXIF.getData(imageElement, function () {
+            const allMetaData = EXIF.getAllTags(this);
+            resolve(allMetaData);
+        });
+    });
+
     const aspectRatio = collage ? width / height : imageElement.width / imageElement.height;
     const size = collage ? `${width}x${height}` : `${imageElement.width}x${imageElement.height}`;
 
@@ -246,15 +300,18 @@ const savePhoto = async (imageElement, collage = false, width = null, height = n
             likes: 0,
             commentCount: 0,
             aspectRatio: aspectRatio,
-            size: parseInt(size)
+            size: parseInt(size),
+            exif: JSON.stringify(exifData) || null
         }),
     });
 
     if (response.ok) {
+        // Could be done the other way around - check if the page is one that interests us but..
         const currentUrl = new URL(window.location.href);
         if (!currentUrl.pathname.includes("platforms.html") &&
-            !currentUrl.pathname.includes("account.html") && 
-            !currentUrl.pathname.includes("terms.html")) {
+            !currentUrl.pathname.includes("account.html") &&
+            !currentUrl.pathname.includes("terms.html") &&
+            !currentUrl.pathname.includes("photo.html")) {
             const newPhoto = await response.json();
             addNewPhotoToGrid(newPhoto);
             addNewPhotoToModal(newPhoto);
