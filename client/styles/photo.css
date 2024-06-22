@@ -5,8 +5,14 @@
 }
 
 .img {
-    max-width: 80%;
+    max-width: 80vw;
     max-height: 100vh;
+    overflow: hidden;
+}
+
+.no-photos {
+    max-width: 60vw;
+    max-height: 60vh;
     overflow: hidden;
 }
 

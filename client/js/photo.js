@@ -1,11 +1,20 @@
 const displayErrorMsg = (error) => {
-    console.log(error);
-    const container = document.querySelector(".container");
+    const container = document.querySelector('.container');
+    container.innerHTML = "";
+
+    let p = document.createElement('p');
     if (parseInt(error.message) == 404) {
-        container.innerHTML = "Photo not found or unauthorized";
+        p.textContent = "Photo not found or unauthorized";
     } else {
-        container.innerHTML = error;
+        p.textContent = error;
     }
+
+    const img = document.createElement('img');
+    img.classList.add("no-photos");
+    img.src = '../svgs/no-imgs.svg';
+
+    container.appendChild(p);
+    container.appendChild(img);
 }
 
 const urlParams = new URLSearchParams(window.location.search);
