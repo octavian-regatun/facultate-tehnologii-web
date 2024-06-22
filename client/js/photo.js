@@ -9,7 +9,12 @@ if (userId) {
             "Authorization": `Bearer ${localStorage.getItem("token")}`,
         },
     })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(photo => {
             const cardImage = document.createElement("img");
             cardImage.classList.add("card-image");
@@ -42,6 +47,7 @@ if (userId) {
         })
         .catch(error => {
             console.error("Error fetching photo:", error);
+            displayErrorMsg(error);
         });
 } else {
     console.error("photo ID not found in the URL");
@@ -73,4 +79,10 @@ function displayExif(exif) {
     } else {
         exifContainer.textContent = "No EXIF data found.";
     }
+}
+
+
+const displayErrorMsg = (error) => {
+    const container = document.querySelector(".container");
+    container.innerHTML = "Photo not found or unauthorized";
 }
