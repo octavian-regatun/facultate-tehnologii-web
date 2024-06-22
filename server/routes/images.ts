@@ -235,8 +235,6 @@ export const getPhotosMiddleware: Middleware = async (req, res) => {
 
 
 
-
-
 export const deletePhotosMiddleware: Middleware = async (req, res) => {
   const urlParts = req.url?.split('/');
   const imageId = urlParts ? parseInt(urlParts[urlParts.length - 1], 10) : NaN;
@@ -258,6 +256,32 @@ export const deletePhotosMiddleware: Middleware = async (req, res) => {
     res.end(JSON.stringify(photo));
   } catch (error) {
     console.error('Failed to delete photo:', error);
+    res.writeHead(500, { "Content-Type": "text/plain" });
+    res.end("Internal Server Error");
+  }
+};
+
+
+
+export const getPhotoMiddleware: Middleware = async (req, res) => {
+  const urlParts = req.url?.split('/');
+  const photoId = urlParts ? parseInt(urlParts[urlParts.length - 1], 10) : NaN;
+
+  if (isNaN(photoId)) {
+    res.writeHead(400, { "Content-Type": "text/plain" });
+    res.end("Invalid photo ID");
+    return;
+  }
+
+  try {
+    const photo = await db.photo.findUnique({
+      where: { id: photoId }
+    });
+
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify(photo));
+  } catch (error) {
+    console.error('Failed to retrieve photos:', error);
     res.writeHead(500, { "Content-Type": "text/plain" });
     res.end("Internal Server Error");
   }

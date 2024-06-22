@@ -216,6 +216,21 @@ async function displayModalPhotos(photos) {
         editIcon.src = "../svgs/edit-photo.svg";
         editButton.appendChild(editIcon);
 
+        // Color selector
+        const color = document.createElement("input");
+        color.classList.add("color-selector");
+        color.type = "color";
+        color.style.display = 'none';
+
+        // Redirect button
+        const redirectButton = document.createElement("a");
+        redirectButton.href = `http://127.0.0.1:5500/client/pages/photo.html?id=${photo.id}`;
+        redirectButton.target = '_blank';
+        redirectButton.classList.add("card-content-redirect-button");
+        const redirectIcon = document.createElement("img");
+        redirectIcon.src = "../svgs/redirect.svg";
+        redirectButton.appendChild(redirectIcon);
+        actionsBtnContainer.appendChild(redirectButton);
 
         // Refresh button appears only for posts uploaded on Instagram
         if (photo.source == "INSTAGRAM") {
@@ -228,12 +243,6 @@ async function displayModalPhotos(photos) {
 
             actionsBtnContainer.appendChild(refreshButton);
         }
-
-        // Color selector
-        const color = document.createElement("input");
-        color.classList.add("color-selector");
-        color.type = "color";
-        color.style.display = 'none';
 
         actionsBtnContainer.appendChild(color);
         actionsBtnContainer.appendChild(editButton);

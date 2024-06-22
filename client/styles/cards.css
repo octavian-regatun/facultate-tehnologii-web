@@ -353,7 +353,8 @@
 }
 
 .card-content-edit-button,
-.card-content-refresh-button {
+.card-content-refresh-button,
+.card-content-redirect-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -371,7 +372,8 @@
 }
 
 .card-content-edit-button:hover,
-.card-content-refresh-button:hover {
+.card-content-refresh-button:hover,
+.card-content-redirect-button:hover {
   background-color: lightgray !important;
   transition: all 0.2s;
 }

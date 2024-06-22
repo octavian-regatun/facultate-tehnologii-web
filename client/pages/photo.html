@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="../styles/navbar.css">
   <link rel="stylesheet" href="../styles/platforms.css" />
   <link rel="stylesheet" href="../styles/footer.css">
-  <link rel="stylesheet" href="../styles/terms.css">
+  <link rel="stylesheet" href="../styles/photo.css">
   <link rel="icon" type="image/png" href="../imgs/favicon.png">
   <title>Photo</title>
 </head>
@@ -33,7 +33,33 @@
   </aside>
 
   <main class="container">
-    tagadam
+    <div class="img">
+        
+    </div>
+    <div class="utils">
+        <div class="anim">
+            <label for="animation-select">Select animation:</label>
+            <select id="animation-select">
+                <option value="none">None</option>
+                <option value="scale">Scale</option>
+                <option value="rotate">Rotate</option>
+                <option value="translate">Translate in a circle</option>
+            </select>
+
+            <label for="duration-select">Select duration (seconds):</label>
+            <select id="duration-select">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+        <div class="exif">
+            <h3>EXIF Data</h3>
+            <pre id="exif-data"></pre>
+        </div>
+    </div>
   </main>
 
   <footer>

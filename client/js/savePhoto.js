@@ -111,6 +111,16 @@ export const addNewPhotoToModal = (photo) => {
     color.type = "color";
     color.style.display = 'none';
 
+    // Redirect button
+    const redirectButton = document.createElement("a");
+    redirectButton.href = `http://127.0.0.1:5500/client/pages/photo.html?id=${photo.id}`;
+    redirectButton.target = '_blank';
+    redirectButton.classList.add("card-content-redirect-button");
+    const redirectIcon = document.createElement("img");
+    redirectIcon.src = "../svgs/redirect.svg";
+    redirectButton.appendChild(redirectIcon);
+
+    actionsBtnContainer.appendChild(redirectButton);
     actionsBtnContainer.appendChild(color);
     actionsBtnContainer.appendChild(editButton);
 
@@ -231,7 +241,7 @@ const getFilteredImageAsBase64 = (image, hasCanvas, filters) => {
             const [x, y] = point.trim().split(' ');
             return { x: parseFloat(x) / 100, y: parseFloat(y) / 100 };
         });
-        
+
         // Compute each point individually
         context.beginPath();
         polygonPoints.forEach((point, index) => {
@@ -296,10 +306,12 @@ const savePhoto = async (imageElement, collage = false, width = null, height = n
     });
 
     if (response.ok) {
+        // Could be done the other way around - check if the page is one that interests us but..
         const currentUrl = new URL(window.location.href);
         if (!currentUrl.pathname.includes("platforms.html") &&
             !currentUrl.pathname.includes("account.html") &&
-            !currentUrl.pathname.includes("terms.html")) {
+            !currentUrl.pathname.includes("terms.html") &&
+            !currentUrl.pathname.includes("photo.html")) {
             const newPhoto = await response.json();
             addNewPhotoToGrid(newPhoto);
             addNewPhotoToModal(newPhoto);
