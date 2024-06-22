@@ -45,38 +45,20 @@ const server = http.createServer((req, res) => {
   router.post("/photos", isAuthenticated, uploadImageMiddleware);
   router.post("/comments", isAuthenticated, uploadCommentMiddleware);
 
-  if (req.url?.startsWith("/photos/google") && req.method === "GET") {
-    getPhotos(req, res, () => {});
-    return;
-  }
+  router.pget("/photos/google", getPhotos); // isAuthenticated?
 
-  if (req.url?.startsWith("/photos/") && req.method === "GET") {
-    getPhotosMiddleware(req, res, () => {});
-  }
-  if (req.url?.startsWith("/photos/") && req.method === "DELETE") {
-    deletePhotosMiddleware(req, res, () => {});
-  }
-  if (req.url?.startsWith("/photo/") && req.method === "GET") {
-    getPhotoMiddleware(req, res, () => {});
-  }
-  if (req.url?.startsWith("/comments/") && req.method === "GET") {
-    getCommentsMiddleware(req, res, () => {});
-  }
-  if (req.url?.startsWith("/stats/") && req.method === "GET") {
-    getStatsMiddleware(req, res, () => { });
-  }
+  router.pget("/photos/", isAuthenticated, getPhotosMiddleware);
+  router.pdelete("/photos/", isAuthenticated, deletePhotosMiddleware);
+  router.pget("/photo/", isAuthenticated, getPhotoMiddleware);
+  router.pget("/comments/", isAuthenticated, getCommentsMiddleware);
+  router.pget("/stats/", isAuthenticated, getStatsMiddleware);
   router.get("/stats", isAuthenticated, isAdmin, getAllStatsMiddleware);
 
   // Used only by getToken.js
-  if (req.url?.startsWith("/oauth2callback") && req.method === "GET") {
-    emailOAuth2Middleware(req, res, () => {});
-  }
+  router.pget("/oauth2callback/", emailOAuth2Middleware);
 
-  router.get("/auth/google", googleOAuth);
-
-  if (req.url?.startsWith("/auth/google/callback") && req.method === "GET") {
-    googleOAuthCallback(req, res, () => {});
-  }
+  router.get("/auth/google", googleOAuth); // isAuthenticated?
+  router.pget("/auth/google/callback", googleOAuthCallback); // isAuthenticated?
 });
 
 server.listen(8081).on("listening", () => {

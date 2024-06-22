@@ -49,4 +49,29 @@ export class Router {
       execute(0);
     }
   }
+
+  // Prefix p = route has parameters
+  pget(path: string, ...middlewares: Middleware[]) {
+    if (this.req.url?.startsWith(path) && this.req.method === "GET") {
+      const execute = (index: number) => {
+        if (index < middlewares.length) {
+          middlewares[index](this.req, this.res, () => execute(index + 1));
+        }
+      };
+
+      execute(0);
+    }
+  }
+
+  pdelete(path: string, ...middlewares: Middleware[]) {
+    if (this.req.url?.startsWith(path) && this.req.method === "DELETE") {
+      const execute = (index: number) => {
+        if (index < middlewares.length) {
+          middlewares[index](this.req, this.res, () => execute(index + 1));
+        }
+      };
+
+      execute(0);
+    }
+  }
 }
