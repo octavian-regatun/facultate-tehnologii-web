@@ -63,10 +63,11 @@ type GetGooglePhotos = {
 export const refreshGooglePhotosMiddleware: Middleware = async (req, res) => {
   const request = new Req(req);
   const response = new Res(res);
+  const userId = (req as any).userId;
 
   const { access_token } = request.query;
 
-  await deleteAllGooglePhotos();
+  await deleteAllGooglePhotos(userId);
   const googlePhotos = (await getGooglePhotos(access_token)) as GetGooglePhotos;
 
   const createPhotosPromises = googlePhotos.mediaItems.map(async (mediaItem) =>
@@ -113,6 +114,6 @@ const getGooglePhotos = async (access_token: string) => {
   return data;
 };
 
-const deleteAllGooglePhotos = async () => {
-  await db.photo.deleteMany({ where: { source: "GOOGLE_PHOTOS" } });
+const deleteAllGooglePhotos = async (userId: number) => {
+  await db.photo.deleteMany({ where: { source: "GOOGLE_PHOTOS", userId: userId } });
 };
