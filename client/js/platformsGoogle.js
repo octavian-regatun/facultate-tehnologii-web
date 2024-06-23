@@ -1,15 +1,23 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  updateAccessToken();
+
+  if (!(await checkValidGoogleToken())) {
+    await authenticateWithGoogle();
+  }
+});
+
+const refreshButtonOnClick = async () => {
+  await refreshGooglePhotos();
+};
+
+const updateAccessToken = async () => {
   const urlSP = new URLSearchParams(window.location.search);
-
   const accessTokenSP = urlSP.get("access_token");
-
   if (accessTokenSP) localStorage.setItem("accessToken", accessTokenSP);
+};
 
+const checkValidGoogleToken = async () => {
   const accessToken = localStorage.getItem("accessToken");
-
-  if (!accessToken) return;
-
-  localStorage.setItem("accessToken", accessTokenSP);
 
   const photos = await fetch(
     "https://photoslibrary.googleapis.com/v1/mediaItems",
@@ -25,5 +33,35 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.error("Error:", error);
     });
 
-  console.log({photos});
-});
+  return photos?.error?.code !== 401;
+};
+
+const getGoogleOAuthUrl = async () => {
+  const response = await fetch("http://localhost:8081/auth/google");
+  const data = await response.json();
+  return data.authUrl;
+};
+
+const authenticateWithGoogle = async () => {
+  const googleOAuthUrl = await getGoogleOAuthUrl();
+  window.location.href = googleOAuthUrl;
+};
+
+const refreshGooglePhotos = async () => {
+  const jwt = localStorage.getItem("token");
+  const accessToken = localStorage.getItem("accessToken");
+
+  const response = await fetch(
+    `http://localhost:8081/photos/google/refresh?access_token=${accessToken}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    }
+  );
+
+  const photos = await response.json();
+
+  console.log(photos);
+};

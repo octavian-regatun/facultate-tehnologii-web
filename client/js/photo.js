@@ -36,7 +36,8 @@ if (userId) {
         .then(photo => {
             const cardImage = document.createElement("img");
             cardImage.classList.add("card-image");
-            cardImage.src = `data:image/png;base64,${photo.binaryString}`;
+            if (photo.source === "GOOGLE_PHOTOS") cardImage.src = photo.binaryString;
+            else cardImage.src = `data:image/png;base64,${photo.binaryString}`;
             cardImage.setAttribute("photo-id", photo.id);
 
             const imgContainer = document.querySelector(".img");
