@@ -1,11 +1,11 @@
 @import 'normalize.css';
 @import 'global.css';
 @import 'navbar.css';
-@import 'components.css';
 @import 'modal.css';
 @import 'sidebar.css';
 
-.loading, .no-images {
+.loading,
+.no-images {
   position: absolute;
   margin-top: 65px;
   top: 50%;
@@ -64,7 +64,7 @@
   transition: transform 0.5s ease;
 }
 
-.card > img:not(.card-checkmark) {
+.card>img:not(.card-checkmark) {
   min-height: 10dvh;
 }
 
@@ -164,12 +164,12 @@
 
 .publish-btn::before {
   left: calc(-1 * var(--size));
-  rotate: -180deg;
+  transform: rotate(-180deg);
 }
 
 .publish-btn::after {
   right: calc(-1 * var(--size));
-  rotate: -90deg;
+  transform: rotate(-90deg);
 }
 
 .publish-btn-google {
@@ -222,7 +222,6 @@
 }
 
 .card-content-description {
-  color: darken(white, 75%);
   margin-bottom: 16px;
 }
 
@@ -234,11 +233,20 @@
   cursor: auto;
   position: absolute;
   z-index: 1;
-  transform: all 200ms;
+  transform: 200ms;
 }
 
 .photo-editor {
   position: relative;
+}
+
+.clip-path-point {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: hsla(140, 100%, 75%, 0.267);
+  border-radius: 50%;
+  border: 3px solid hsla(0, 0%, 0%, 0.329);
 }
 
 .modal .card img {
@@ -341,18 +349,22 @@
 
 .card-actions-btn-container {
   display: flex;
-  gap: .5em;
+  flex-grow: 1;
+  max-width: 70%;
+  justify-content: flex-end;
+  gap: 19%;
 }
 
 .card-content-edit-button,
-.card-content-refresh-button {
+.card-content-refresh-button,
+.card-content-redirect-button {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 4px;
   border-radius: 50%;
   background-color: transparent;
-  border: 1px solid gray;
+  border: 1px solid var(--secondary);
   cursor: pointer;
   transition: all 0.2s;
 
@@ -363,9 +375,32 @@
 }
 
 .card-content-edit-button:hover,
-.card-content-refresh-button:hover {
-  background-color: lightgray;
+.card-content-refresh-button:hover,
+.card-content-redirect-button:hover {
+  background-color: lightgray !important;
   transition: all 0.2s;
+}
+
+/* magic to remove default css for input type="color" */
+.color-selector {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.color-selector::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.color-selector::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
 }
 
 .card-content-comments {

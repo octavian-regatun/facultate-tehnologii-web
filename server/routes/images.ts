@@ -64,12 +64,13 @@ export const savePhotoToDb = async (data: Photo) => {
         url: data.url || null,
         binaryString: data.binaryString || null,
         source: data.source,
-        description: data.description || null,
-        likes: data.likes || null,
-        commentCount: data.commentCount || null,
+        description: data.description,
+        likes: data.likes,
+        commentCount: data.commentCount,
         createdAt: data.createdAt,
         aspectRatio: data.aspectRatio || null,
         size: data.size || null,
+        exif: data.exif || null
       },
     });
 
@@ -234,8 +235,6 @@ export const getPhotosMiddleware: Middleware = async (req, res) => {
 
 
 
-
-
 export const deletePhotosMiddleware: Middleware = async (req, res) => {
   const urlParts = req.url?.split('/');
   const imageId = urlParts ? parseInt(urlParts[urlParts.length - 1], 10) : NaN;
@@ -257,6 +256,39 @@ export const deletePhotosMiddleware: Middleware = async (req, res) => {
     res.end(JSON.stringify(photo));
   } catch (error) {
     console.error('Failed to delete photo:', error);
+    res.writeHead(500, { "Content-Type": "text/plain" });
+    res.end("Internal Server Error");
+  }
+};
+
+
+
+export const getPhotoMiddleware: Middleware = async (req, res) => {
+  const urlParts = req.url?.split('/');
+  const photoId = urlParts ? parseInt(urlParts[urlParts.length - 1], 10) : NaN;
+  const userId = (req as any).userId;
+
+  if (isNaN(photoId)) {
+    res.writeHead(400, { "Content-Type": "text/plain" });
+    res.end("Invalid photo ID");
+    return;
+  }
+
+  try {
+    const photo = await db.photo.findUnique({
+      where: { id: photoId, userId: userId }
+    });
+
+    if (!photo) {
+      res.writeHead(404, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ error: "Photo not found or unauthorized" }));
+      return;
+    }
+
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify(photo));
+  } catch (error) {
+    console.error('Failed to retrieve photo:', error);
     res.writeHead(500, { "Content-Type": "text/plain" });
     res.end("Internal Server Error");
   }

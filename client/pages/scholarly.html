@@ -79,6 +79,8 @@
                 <li><a href="#filters"><span>5.4 </span>Apply filters</a></li>
                 <li><a href="#collage"><span>5.5 </span>Create collage</a></li>
                 <li><a href="#upload"><span>5.6 </span>Media upload</a></li>
+                <li><a href="#import"><span>5.7 </span>Import/export</a></li>
+                <li><a href="#account"><span>5.8 </span>Account page</a></li>
             </ol>
 
             <!--6-->
@@ -227,10 +229,10 @@
                 The software being specified is a web application aggregator designed to facilitate the management of
                 photographs across multiple platforms. Its purpose is to allow users to retrieve personal images from
                 the two mentioned platforms, along with associated comments, ratings, and other relevant
-                metadata such as tags, share counts, and dimensions. If necessary, additional supported platforms will
-                be added. The application will also provide advanced search capabilities and enable users to upload new
+                metadata such as likes and dimensions. The application will also provide advanced search capabilities
+                and enable users to upload new
                 photographs to these platforms. Additionally, users will have the ability to edit graphical content
-                within the application using CSS filters and masks.
+                within the application using CSS filters and masks. They can also create collages of maximum 6 photos.
             </p>
         </section>
     </section>
@@ -308,13 +310,23 @@
                 aggregate photos from the choosen platforms. In our research, we inquired about several social media
                 applications, focusing on their guidelines and limitations imposed in the APIs
                 (such as rate limits, data usage restrictions, authentication requirements, and compliance with platform
-                policies). For example, we found out that Instagram limits the usage of aggregation to 150 photos per
-                hour.</p>
+                policies).</p>
 
-            <p>With the information presented above, we can conclude that we will not face any timing or memory
-                limitations, as the APIs restrictions are the main concern of our product.</p>
+            <p>The exact limits can be found here:
+            <ul>
+                <li>Google Photos: maximum of 100 OAuth users</li>
+                <li>Google Photos: maximum of 10.000 OAuth calls/24h</li>
+                <li>Google Photos: maximum of 10.000 API calls/24h</li>
+                <li>Instagram: maximum of 200 API calls/h</li>
+            </ul>
+            With the information presented above, we can conclude that we will not face any timing or memory
+            limitations, as the APIs restrictions are the main concern of our product. The only exception to this rule
+            are Instagram's comments. In order to not fetch too many photos we have chosen to save the comments in our
+            database. This way, they won't be refreshed by calling the Instagram API each time the user reloads the
+            page. Instead, an user has the ability to synchronize the comments using a special button.</p>
 
-            <p>As for the database, we will use PostgreSQL. This database will store all of our users' data, including
+            <p>As for the database, we will use PostgreSQL alongside Prisma ORM. This database will store all of our
+                users' data, including
                 their
                 passwords which will be hashed before saving in order to maintain the bare minimum of security.
                 Regarding the security, the users inputs will be treated as normal text in order to avoid code
@@ -382,13 +394,20 @@
                         <br>
                         <p>If the user wants to continue navigating the site, he needs to log in. The same page will be
                             used both for signing up and logging in, therefore the user will switch between these two
-                            options. These forms will be in a standard one, requiring the minimum information in order
+                            options. Also, an user has the ability to request an email to reset the password. These
+                            forms will be in a standard one, requiring the minimum information in order
                             to be able to log in and proceed to the site. There will be 3 versions of this form,
                             depending on the screen size. A primitive concept can be found below.
                         </p>
                         <figure typeof="sa:image">
                             <img src="../imgs/connect.png" alt="Log in form">
                             <figcaption>Log In concept</figcaption>
+                        </figure>
+                        <p>As said before, users have the ability to request an email to reset their passwords. In the
+                            same manner, an user can delete its account.</p>
+                        <figure typeof="sa:image">
+                            <img src="../imgs/forgot-pass-email.jfif" alt="Forgot password email">
+                            <figcaption>Forgot password email</figcaption>
                         </figure>
                     </li>
                     <li>Link a platform
@@ -444,7 +463,8 @@
             <p>
                 The website interact with hardware components to receive user input (e.g. mouse clicks, touch events for
                 phones/tablets, swipes, keyboard inputs) and transmit data to and from the server. The photos will be
-                transmited to the server among with their metadata, using Hypertext Transfer Protocol Secure
+                transmited to the server among with their metadata, in a base64 format, using Hypertext Transfer
+                Protocol Secure
                 (HTTPS).
             </p>
         </section>
@@ -488,9 +508,9 @@
             <p>
                 The design for this component was presented in the previous chapter. However, unlike the log in system,
                 there are still things to be covered. In order to access this page, the user needs to connect to an
-                external social media platform (Instagram or Youtube). After a successful login, the user can select the
-                number of aggregated photos. The default value will be 10 and they will be sorted by the post date, the
-                newest ones coming first. If the user wants to retrieve a specific photo, it will be choosen via an ID.
+                external social media platform (Instagram or Google). After a successful login, the user can refresh the
+                aggregated photos by clicking a button. This action will sync the photos of the external platform to our
+                website, M-PIC, having the same photos.
             </p>
         </section>
         <section id="viewPost">
@@ -500,7 +520,7 @@
                 will show up, bluring the rest of the screen. Under the selected pop-up card, there will be two
                 neighbour cards - slightly rotated and blured. The buttons on these side cards won't work. These cards
                 will contain relevant info about the post
-                (like comments, number of likes, a share button etc). There will also be two
+                (like comments, number of likes, a publish button etc). There will also be two
                 arrows (left and right) that will allow the user to iterate through his aggregated media files. This
                 action will move the cards to left or right, simulating a caroussel. This feature will be available on
                 phones too, the only difference being that there won't be an animation, the two neighbour cards being
@@ -509,7 +529,7 @@
             </p>
             <p>
                 The structure of the card is as follows (from top to bottom): photo, description, number of likes &
-                utility buttons (share, edit), comments (will have an invisible
+                utility buttons (refresh/color, edit), comments (will have an invisible
                 scrollbar if there is too much text).
             </p>
             <figure typeof="sa:image">
@@ -524,8 +544,8 @@
                 likes, comments, dimensions etc. Therefore, an user will have the ability to search between his
                 photos/videos using more than one keyword. Also, the results can be filtered based on the platform, a
                 data range etc. The search bar will be visible at all times on the Desktop version as well as on the
-                phone version. However, the top <code>navbar</code> will suffer a loss on the phone version - the
-                current page name won't be displayed anymore to let room for the search bar.
+                phone version. The left <code>navbar</code> contains the search icon. When clicked, all of the photos
+                will be fetched from the server. This button also acts like a reset button for the applied filters.
             </p>
             <figure typeof="sa:image">
                 <img src="../imgs/search.png" alt="Search input">
@@ -537,10 +557,12 @@
             <p>
                 On the pop-up cards that appear when selecting a photo, next to the share button there will be an edit
                 icon. When clicked, a <code>div</code> will appear with some sliders. These sliders will control
-                different properties of the photo, such as brightness, blur, contrast etc. The user will also have the
-                option to save the edited image in his personal device. When this option is active, the edit icon will
-                have the color slightly changed to let the user know it is pressed. Hopefully, the design is intuitive
-                enough to let the user know to press again when he wants to exit the editor.
+                different properties of the photo, such as brightness, blur, contrast etc. When this option is active,
+                the edit icon will
+                have the background color changed to let the user know it is pressed. Hopefully, the design is intuitive
+                enough to let the user know to press again when he wants to exit the editor. An user has the ability to
+                draw on the image, choosing whatever RGB color he wants. The stroke width is determined by the speed of
+                the mouse drag. All of these features are implemented using an HTML <code>canvas</code> element.
             </p>
             <figure typeof="sa:image">
                 <img src="../imgs/edit.png" alt="Photo edit concept">
@@ -554,24 +576,69 @@
                 this, the desired photos must be selected using the keyboard shortcut <code>Ctrl+LMB</code>. When a
                 photo is selected, it will be zoomed in, a checkmark will apear on a top corner of the card. The photo
                 can be deselected by following the same shortcut. If the user accidentally clicks on a photo without
-                using the Control key, he can exit from the pop-up modal and continue from where he left.
+                using the Control key, he can exit from the pop-up modal and continue by reselecting the photos.
             </p>
             <p>
                 Also, a button will appear at the bottom of the screen allowing the user to create a collage and save it
-                afterwards.
+                afterwards. This button appears only if at least 2 photos are selected.
             </p>
             <figure typeof="sa:image">
                 <img src="../imgs/collage.png" alt="Photo collage select menu">
                 <figcaption>Photo collage select menu concept</figcaption>
             </figure>
+            <p>
+                After selecting the desired photos, the user can select the aspect ratio and the number of columns to
+                use. When a photo is clicked it chages its state: cover of contain.
+            </p>
+            <figure typeof="sa:image">
+                <img src="../imgs/collage-edit.png" alt="Photo collage">
+                <figcaption>Photo collage</figcaption>
+            </figure>
         </section>
         <section id="upload">
             <h3><span>5.6 </span>Media upload</h3>
             <p>
-                On the left navbar, there will (eventually) be a button that allows the user to upload a photo to a
-                linked social media account. The user needs to complete a form, uploading the desired photo, writing a
-                description if necessary and other relevant information.
+                On the left navbar, there is a button that allows users to upload a photo to M-PIC. This new photo will
+                have a default description and stats. In order to publish a photo, on the pop-up cards, there is a
+                publish button. After pressing it, the user can select on which page to upload the current photo -
+                Google Photos or Instagram. If the photo has a width too small to fit the buttons, the text will be cut
+                and three dots will appear at the end of the word.
             </p>
+            <figure typeof="sa:image">
+                <img src="../imgs/publish.png" alt="Publish buttons">
+                <figcaption>Publish buttons</figcaption>
+            </figure>
+        </section>
+        <section id="import">
+            <h3><span>5.7 </span>Import/export</h3>
+            <p>
+                The pop-up cards, under the comment section will have 2 buttons: import and export. These buttons serve
+                the porpose of allowind the user to obtain or import files of .csv and .json extension. The import
+                button will import comments on the current photo, while the export will create an archive file
+                containing both file formats. These files will maintain the corresponding photo ID.
+            </p>
+        </section>
+        <section id="account">
+            <h3><span>5.8 </span>Account page</h3>
+            <p>
+                Each user has the ability to view its stats. From the date of creating the M-PIC account to the number
+                of fetched photos or total comments. Additionally, admins will have the ability to view the stats of the
+                website (all of the users stats commulated). The chart will have an animation - the bars and numbers
+                adapting in 200ms.
+            </p>
+            <figure typeof="sa:image">
+                <img src="../imgs/stats.png" alt="Account stats">
+                <figcaption>Account stats</figcaption>
+            </figure>
+            <p>
+                Additionally, an user has the ability to delete the account. A button is present at the end of the
+                stats. When clicked, a confirmation email will be sent. This will redirect the user to a confirmation
+                page or an error page, allowing the user to know the status of his request.
+            </p>
+            <figure typeof="sa:image">
+                <img src="../imgs/delete.jfif" alt="Delete account email">
+                <figcaption>Delete account email</figcaption>
+            </figure>
         </section>
     </section>
 
@@ -603,7 +670,7 @@
                 As our site works with media from other associated platforms, there are risks on aggregating their
                 content, such as data breaches, API misuse or platform policy violations. However, these risks should be
                 taken care of by the used APIs (they should prevent unauthorized access to user data, rate limits,
-                etc.).
+                etc.). We will offer an access token/refresh token as required by the API.
             </p>
             <p>
                 M-PIC must comply with regulations such as GDPR to ensure protection of user data (secure
@@ -611,6 +678,8 @@
                 M-PIC is only an intermediary application, therefore the linked social media applications will have
                 control over the distributed photos. M-PIC won't allow the user to edit photos in order to impersonate,
                 allowind the user only to make minor changes to his photos (such as modifying the contrast, hue, blur).
+                If any inappropiate drawings are published, the
+                photos will be taken down by the corresponding platform where the photo is being shared.
             </p>
             <p>
                 This web application won't have access to sensitive data from the linked social media accounts, as the
