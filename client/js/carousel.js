@@ -3,6 +3,8 @@ import updatePhotoData from "./updatePhotoData.js";
 import exportComments from "./export.js";
 import importComments from "./import.js";
 import createCollage from "./collage.js";
+import google from "./uploadGoogle.js";
+import instagram from "./uploadInstagram.js";
 
 document.addEventListener('photosLoaded', () => {
 	// Remove all event listeners
@@ -164,6 +166,18 @@ document.addEventListener('photosLoaded', () => {
 			publishButtons[0].style.display = 'none';
 			publishButtons[1].style.display = 'block';
 			publishButtons[2].style.display = 'block';
+		}
+
+		if (publishButtons && publishButtons[1].contains(event.target)) {
+			const card = event.target.closest('.card');
+			const img = card.querySelector('.card-image');
+			google(img);
+		}
+
+		if (publishButtons && publishButtons[2].contains(event.target)) {
+			const card = event.target.closest('.card');
+			const img = card.querySelector('.card-image');
+			instagram(img);
 		}
 	});
 
