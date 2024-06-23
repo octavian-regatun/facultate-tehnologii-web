@@ -72,8 +72,8 @@ const server = http.createServer((req, res) => {
     );
     return;
   }
-  router.pget("/photos/google", getGooglePhotosMiddleware); // isAuthenticated?
 
+  router.pget("/photos/google", isAuthenticated, getGooglePhotosMiddleware); // isAuthenticated?
   router.post("/photos", isAuthenticated, uploadImageMiddleware);
   router.post("/comments", isAuthenticated, uploadCommentMiddleware);
 

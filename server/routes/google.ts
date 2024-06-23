@@ -89,11 +89,11 @@ export const refreshGooglePhotosMiddleware: Middleware = async (req, res) => {
   await deleteAllGooglePhotos();
   const googlePhotos = (await getGooglePhotos(access_token)) as GetGooglePhotos;
 
-  const createPhotosPromises = googlePhotos.mediaItems.map((mediaItem) =>
+  const createPhotosPromises = googlePhotos.mediaItems.map(async (mediaItem) =>
     db.photo.create({
       data: {
         source: "GOOGLE_PHOTOS",
-        binaryString: mediaItem.baseUrl,
+        binaryString: await convertImageToBase64(mediaItem.baseUrl),
         description: "Image imported from Google Photos",
         likes: 0,
         commentCount: 0,
@@ -109,6 +109,13 @@ export const refreshGooglePhotosMiddleware: Middleware = async (req, res) => {
   await Promise.all(createPhotosPromises);
 
   response.json(googlePhotos.mediaItems);
+};
+
+const convertImageToBase64 = async (imageUrl: string) => {
+  const response = await fetch(imageUrl);
+  const buffer = await response.arrayBuffer();
+  const base64String = Buffer.from(buffer).toString("base64");
+  return base64String;
 };
 
 const getGooglePhotos = async (access_token: string) => {

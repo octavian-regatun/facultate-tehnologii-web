@@ -5,8 +5,7 @@ export const addNewPhotoToGrid = (photo) => {
 
     const cardImage = document.createElement("img");
     cardImage.classList.add("card-image");
-    if (photo.source === "GOOGLE_PHOTOS") cardImage.src = photo.binaryString;
-    else cardImage.src = `data:image/png;base64,${photo.binaryString}`;
+    cardImage.src = `data:image/png;base64,${photo.binaryString}`;
     cardImage.setAttribute("photo-id", photo.id);
 
     const cardContent = document.createElement("div");
@@ -69,8 +68,7 @@ export const addNewPhotoToModal = (photo) => {
 
     const cardImage = document.createElement("img");
     cardImage.classList.add("card-image");
-    if (photo.source === "GOOGLE_PHOTOS") cardImage.src = photo.binaryString;
-    else cardImage.src = `data:image/png;base64,${photo.binaryString}`;
+     cardImage.src = `data:image/png;base64,${photo.binaryString}`;
     cardImage.setAttribute("photo-id", photo.id);
 
     const canvas = document.createElement("canvas");
@@ -115,7 +113,7 @@ export const addNewPhotoToModal = (photo) => {
 
     // Redirect button
     const redirectButton = document.createElement("a");
-    redirectButton.href = `http://127.0.0.1:5500/client/pages/photo.html?id=${photo.id}`;
+    redirectButton.href = `/client/pages/photo.html?id=${photo.id}`;
     redirectButton.target = '_blank';
     redirectButton.classList.add("card-content-redirect-button");
     const redirectIcon = document.createElement("img");
