@@ -3,6 +3,7 @@ import type { Middleware } from "../router";
 import { Res } from "../utilities/response";
 import { Req } from "../utilities/request";
 import { db } from "../db";
+import exifReader from "exifreader";
 
 const oAuth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
@@ -37,27 +38,6 @@ export const googleOAuthCallback: Middleware = async (req, res) => {
   url.searchParams.append("refresh_token", tokens?.refresh_token || "");
 
   response.redirect(url.toString());
-};
-
-export const getGooglePhotosMiddleware: Middleware = async (req, res) => {
-  const request = new Req(req);
-  const response = new Res(res);
-
-  const { access_token } = request.query;
-
-  fetch("https://photoslibrary.googleapis.com/v1/mediaItems", {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${access_token}`,
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      response.json(data);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
 };
 
 type MediaMetadata = {
@@ -105,7 +85,7 @@ export const refreshGooglePhotosMiddleware: Middleware = async (req, res) => {
       },
     })
   );
-  console.log({ createPhotosPromises });
+
   await Promise.all(createPhotosPromises);
 
   response.json(googlePhotos.mediaItems);

@@ -19,7 +19,6 @@ import {
   deleteConfirmationMiddleware,
 } from "./routes/deleteAccount";
 import {
-  getGooglePhotosMiddleware,
   googleOAuth,
   googleOAuthCallback,
   refreshGooglePhotosMiddleware,
@@ -73,7 +72,6 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  router.pget("/photos/google", isAuthenticated, getGooglePhotosMiddleware); // isAuthenticated?
   router.post("/photos", isAuthenticated, uploadImageMiddleware);
   router.post("/comments", isAuthenticated, uploadCommentMiddleware);
 
