@@ -2,11 +2,13 @@ import http from "http";
 
 export class Req {
   private req: http.IncomingMessage;
+  public userId: number | null = null;
   public body: unknown | null = null;
   public query: Record<string, string> = {};
 
   public constructor(req: http.IncomingMessage) {
     this.req = req;
+    this.userId = (req as any).userId || null;
 
     this.initializeBody();
     this.initializeQuery();

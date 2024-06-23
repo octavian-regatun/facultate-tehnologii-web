@@ -6,13 +6,35 @@ import {
   signUpMiddleware,
 } from "./routes/Auth/auth";
 import { emailOAuth2Middleware } from "./routes/Auth/emailOAuth2";
-import { forgotPasswordMiddleware, resetPasswordMiddleware } from "./routes/Auth/forgotPwd";
-import { uploadImageMiddleware, getPhotosMiddleware, deletePhotosMiddleware, getPhotoMiddleware } from "./routes/images";
-import { getCommentsMiddleware, uploadCommentMiddleware } from "./routes/comments";
-import { isAdmin, getStatsMiddleware, getAllStatsMiddleware } from "./routes/stats";
-import { getYoutubeThumbnail } from './routes/images';
-import { deleteConfirmationMiddleware, deleteAccountMiddleware } from "./routes/deleteAccount";
-import { getPhotos, googleOAuth, googleOAuthCallback } from "./routes/google";
+import {
+  forgotPasswordMiddleware,
+  resetPasswordMiddleware,
+} from "./routes/Auth/forgotPwd";
+import {
+  getCommentsMiddleware,
+  uploadCommentMiddleware,
+} from "./routes/comments";
+import {
+  deleteAccountMiddleware,
+  deleteConfirmationMiddleware,
+} from "./routes/deleteAccount";
+import {
+  getGooglePhotosMiddleware,
+  googleOAuth,
+  googleOAuthCallback,
+  refreshGooglePhotosMiddleware,
+} from "./routes/google";
+import {
+  deletePhotosMiddleware,
+  getPhotoMiddleware,
+  getPhotosMiddleware,
+  uploadImageMiddleware,
+} from "./routes/images";
+import {
+  getAllStatsMiddleware,
+  getStatsMiddleware,
+  isAdmin,
+} from "./routes/stats";
 
 const server = http.createServer((req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -42,10 +64,18 @@ const server = http.createServer((req, res) => {
   router.post("/delete-account", isAuthenticated, deleteConfirmationMiddleware);
   router.delete("/account", isAuthenticated, deleteAccountMiddleware);
 
+  if (req.url?.startsWith("/photos/google/refresh")) {
+    router.pget(
+      "/photos/google/refresh",
+      isAuthenticated,
+      refreshGooglePhotosMiddleware
+    );
+    return;
+  }
+  router.pget("/photos/google", getGooglePhotosMiddleware); // isAuthenticated?
+
   router.post("/photos", isAuthenticated, uploadImageMiddleware);
   router.post("/comments", isAuthenticated, uploadCommentMiddleware);
-
-  router.pget("/photos/google", getPhotos); // isAuthenticated?
 
   router.pget("/photos/", isAuthenticated, getPhotosMiddleware);
   router.pdelete("/photos/", isAuthenticated, deletePhotosMiddleware);
