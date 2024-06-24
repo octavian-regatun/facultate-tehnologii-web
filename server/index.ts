@@ -39,6 +39,11 @@ import {
   instagramOAuthCallback,
   refreshInstagramPhotosMiddleware,
 } from "./routes/instagram";
+import {
+  imgurOAuth,
+  imgurOAuthCallback,
+  refreshImgurPhotosMiddleware,
+} from "./routes/imgur";
 
 const options = {
   key: fs.readFileSync("../https/decrypted-localhost.key", "utf8"),
@@ -92,6 +97,21 @@ const server = https.createServer(options, (req, res) => {
       isAuthenticated,
       refreshInstagramPhotosMiddleware
     );
+    return;
+  }
+
+  if (req.url?.startsWith("/auth/imgur/callback")) {
+    router.pget("/auth/imgur/callback", imgurOAuthCallback);
+    return;
+  }
+
+  if(req.url?.startsWith("/auth/imgur")) {
+    router.get("/auth/imgur", imgurOAuth);
+    return;
+  }
+
+  if(req.url?.startsWith("/photos/imgur/refresh")) {
+    router.pget("/photos/imgur/refresh", isAuthenticated, refreshImgurPhotosMiddleware);
     return;
   }
 

@@ -249,8 +249,8 @@ async function displayModalPhotos(photos) {
     redirectIcon.src = "../svgs/redirect.svg";
     redirectButton.appendChild(redirectIcon);
 
-    // Refresh button appears only for posts uploaded on Instagram
-    if (photo.source == "INSTAGRAM") {
+    // Refresh button appears only for posts uploaded on Imgur
+    if (photo.source == "IMGUR") {
       const refreshButton = document.createElement("button");
       refreshButton.classList.add("card-content-refresh-button");
       refreshButton.setAttribute("photo-id", photo.id);
@@ -388,6 +388,7 @@ const getCommentsFromDB = async (id, refresh = 0) => {
 
   if (refresh === 1) {
     url.searchParams.append("refresh", "true");
+    url.searchParams.append("accessToken", localStorage.getItem("imgurAccessToken"));
   }
 
   try {
