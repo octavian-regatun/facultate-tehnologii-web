@@ -4,6 +4,8 @@ import type { Middleware } from "../router";
 import { Req } from "../utilities/request";
 import { Res } from "../utilities/response";
 
+
+// OAuth logic
 export const imgurOAuth: Middleware = async (req, res) => {
     const response = new Res(res);
     const clientID = process.env.IMGUR_CLIENT_ID;
@@ -15,9 +17,6 @@ export const imgurOAuth: Middleware = async (req, res) => {
 export const imgurOAuthCallback: Middleware = async (req, res) => {
     const response = new Res(res);
     const request = new Req(req);
-
-    //   const fragment = new URLSearchParams(request.url.split('#')[1]);
-    //   const accessToken = fragment.get('access_token');
     const { accessToken } = request.query;
 
     if (accessToken) {
@@ -42,6 +41,8 @@ type GetImgurPhotos = {
     size: number;
 };
 
+// Refresh button (deletes all images and fetched them again)
+// Gallery ID & no. of likes are not received
 export const refreshImgurPhotosMiddleware: Middleware = async (req, res) => {
     const request = new Req(req);
     const response = new Res(res);
@@ -54,7 +55,6 @@ export const refreshImgurPhotosMiddleware: Middleware = async (req, res) => {
         access_token as string
     )) as GetImgurPhotos[];
 
-    console.log(imgurPhotos);
     const createPhotosPromises = imgurPhotos.map(async (imgurPhoto) =>
         db.photo.create({
             data: {

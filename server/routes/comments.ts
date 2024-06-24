@@ -2,6 +2,7 @@ import { db } from "../db";
 import type { Middleware } from "../router";
 import type { Comment } from "@prisma/client";
 
+// Submissions by an user - returns [] ??
 const fetchGallerySubmissions = async (username: string, clientId: string): Promise<any[]> => {
   const response = await fetch(`https://api.imgur.com/3/account/${username}/submissions`, {
     headers: {
@@ -29,13 +30,14 @@ const getGalleryHashByPhotoId = async (photoId: string, username: string, client
     console.log('Submissions:', submissions);
 
     const submission = submissions.find(sub => sub.link === `https://i.imgur.com/${photoId}.jpg`);
-    return submission ? submission.id : null; // Assuming the gallery hash is the submission ID
+    return submission ? submission.id : null;
   } catch (error) {
     console.error('Failed to get gallery hash:', error);
     return null;
   }
 };
 
+// Fetch comments from a post (use gallery ID)
 const fetchCommentsFromImgur = async (galleryHash: string, clientId: string | undefined): Promise<ImgurComment[]> => {
   try {
     const response = await fetch(`https://api.imgur.com/3/gallery/bUPEXVg/comments/best`, {
@@ -74,7 +76,7 @@ const updateComments = async (photoId: number, username: string | null, clientId
   //   console.error('Gallery hash not found');
   //   return;
   // }
-  const galleryHash = 'a';
+  const galleryHash = 'a'; // placeholder
 
   try {
     const comments: ImgurComment[] = await fetchCommentsFromImgur(galleryHash, clientId);
