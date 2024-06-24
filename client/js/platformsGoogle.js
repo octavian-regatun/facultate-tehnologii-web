@@ -43,7 +43,7 @@ const getInstagramOAuthUrl = async () => {
 };
 
 const authenticateWithGoogle = async () => {
-  const googleOAuthUrl = await getInstagramOAuthUrl();
+  const googleOAuthUrl = await authenticateWithInstagram();
   window.location.href = googleOAuthUrl;
 };
 

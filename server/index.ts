@@ -35,6 +35,7 @@ import {
   getStatsMiddleware,
   isAdmin,
 } from "./routes/stats";
+import { instagramOAuthCallback } from "./routes/instagram";
 
 const options = {
   key: fs.readFileSync("../https/decrypted-localhost.key", "utf8"),
@@ -61,6 +62,11 @@ const server = https.createServer(options, (req, res) => {
 
   const router = new Router(req, res);
 
+  if (req.url?.startsWith("/auth/instagram/callback")) {
+    router.pget("/auth/instagram/callback", instagramOAuthCallback);
+    return;
+  }
+
   router.post("/auth/signup", signUpMiddleware);
   router.post("/auth/signin", signInMiddleware);
   router.post("/auth/forgot-password", forgotPasswordMiddleware);
@@ -72,6 +78,14 @@ const server = https.createServer(options, (req, res) => {
   if (req.url?.startsWith("/photos/google/refresh")) {
     router.pget(
       "/photos/google/refresh",
+      isAuthenticated,
+      refreshGooglePhotosMiddleware
+    );
+    return;
+  }
+  if (req.url?.startsWith("/photos/instagram/refresh")) {
+    router.pget(
+      "/photos/instagram/refresh",
       isAuthenticated,
       refreshGooglePhotosMiddleware
     );
