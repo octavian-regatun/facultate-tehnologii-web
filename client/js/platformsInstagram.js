@@ -41,30 +41,3 @@ const checkValidInstagramToken = async () => {
     return false;
   }
 };
-
-async function fetchAllUserMedia() {
-  const accessToken = localStorage.getItem("accessTokenInstagram");
-  
-  let media = [];
-  let nextPageUrl = `https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,timestamp&access_token=${accessToken}`;
-
-  while (nextPageUrl) {
-    try {
-      const response = await fetch(nextPageUrl);
-      const data = await response.json();
-
-      if (response.ok) {
-        media = media.concat(data.data);
-        nextPageUrl = data.paging ? data.paging.next : null;
-      } else {
-        console.error("Error fetching user media:", data.error.message);
-        break;
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      break;
-    }
-  }
-
-  return media;
-}

@@ -35,7 +35,10 @@ import {
   getStatsMiddleware,
   isAdmin,
 } from "./routes/stats";
-import { instagramOAuthCallback } from "./routes/instagram";
+import {
+  instagramOAuthCallback,
+  refreshInstagramPhotosMiddleware,
+} from "./routes/instagram";
 
 const options = {
   key: fs.readFileSync("../https/decrypted-localhost.key", "utf8"),
@@ -87,7 +90,7 @@ const server = https.createServer(options, (req, res) => {
     router.pget(
       "/photos/instagram/refresh",
       isAuthenticated,
-      refreshGooglePhotosMiddleware
+      refreshInstagramPhotosMiddleware
     );
     return;
   }
