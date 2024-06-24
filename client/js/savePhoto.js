@@ -268,20 +268,19 @@ const getFilteredImageAsBase64 = (image, hasCanvas, filters) => {
 };
 
 const savePhoto = async (imageElement, collage = false, width = null, height = null, hasCanvas = true, filters = null) => {
-    let base64Image;
+    let base64Image, exifData;
 
     if (collage) {
         base64Image = imageElement;
     } else {
         base64Image = getFilteredImageAsBase64(imageElement, hasCanvas, filters);
-    }
-
-    const exifData = await new Promise((resolve, reject) => {
-        EXIF.getData(imageElement, function () {
-            const allMetaData = EXIF.getAllTags(this);
-            resolve(allMetaData);
+        exifData = await new Promise((resolve, reject) => {
+            EXIF.getData(imageElement, function () {
+                const allMetaData = EXIF.getAllTags(this);
+                resolve(allMetaData);
+            });
         });
-    });
+    }
 
     const aspectRatio = collage ? width / height : imageElement.width / imageElement.height;
     const size = collage ? `${width}x${height}` : `${imageElement.width}x${imageElement.height}`;
@@ -304,6 +303,7 @@ const savePhoto = async (imageElement, collage = false, width = null, height = n
             exif: JSON.stringify(exifData) || null
         }),
     });
+    console.log(response.status);
 
     if (response.ok) {
         // Could be done the other way around - check if the page is one that interests us but..

@@ -122,9 +122,10 @@
   --size: calc(var(--br) * 2);
   position: absolute;
   max-width: 50%;
-  top: calc(-2.4em + 1px);
+  top: calc(-2.4em);
   /* padding + font-size - ik, hard coded*/
-  left: 50%;
+  /* left: 50%; */
+  padding: 0 0.5em;
   transform: translateX(-50%);
   background-color: var(--primary-light);
   border: none;
@@ -139,6 +140,7 @@
 
 .publish-btn:first-of-type {
   top: calc(-2.2em + 1px);
+  left: 50%;
 }
 
 .publish-btn>span {

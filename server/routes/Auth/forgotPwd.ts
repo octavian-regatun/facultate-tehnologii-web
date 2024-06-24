@@ -152,7 +152,7 @@ export const forgotPasswordMiddleware: Middleware = async (req, res) => {
                         <h2>Password Reset</h2>
                         <br>
                         <p>You requested a password reset. Kindly use the link below to reset your password:</p>
-                        <p><a href="https://127.0.0.1:5500/client/pages/reset-pwd.html?token=${resetToken}&email=${user.email}" style="background-color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Reset Password</a></p>
+                        <p><a href="https://localhost:5500/client/pages/reset-pwd.html?token=${resetToken}&email=${user.email}" style="background-color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Reset Password</a></p>
                         <p>If you did not request this, please ignore this email.</p>
                         <br>
                         <img src="https://i.pinimg.com/736x/ca/69/bf/ca69bf6fc66dd0bedd6c3a7fef82fffb.jpg" alt="Reset Password Image" style="margin-top: 20px; width:100%; max-width:600px; border-radius: 10px;">

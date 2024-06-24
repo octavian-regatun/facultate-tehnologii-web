@@ -151,6 +151,7 @@ const removeBackgroundBlur = () => {
 
 // Total hours wasted here: anywhere between 4 and 8
 const saveCollage = async (container) => {
+    console.log("aici e apelat");
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
 

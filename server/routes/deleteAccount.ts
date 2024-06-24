@@ -55,7 +55,7 @@ export const deleteConfirmationMiddleware: Middleware = async (req, res) => {
                         <h2>Account removal</h2>
                         <br>
                         <p>You requested to delete your personal account from M-PIC. Kindly use the link below to do so:</p>
-                        <p><a href="https://127.0.0.1:5500/client/pages/delete-account.html?token=${deleteToken}&id=${user.id}" style="background-color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Confirm delete</a></p>
+                        <p><a href="https://localhost:5500/client/pages/delete-account.html?token=${deleteToken}&id=${user.id}" style="background-color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Confirm delete</a></p>
                         <p>If you did not request this, please ignore this email.</p>
                         <br>
                         <img src="https://s.abcnews.com/images/US/minions-3-ht-er-220630_1656610344347_hpMain_2_16x9_1600.jpg" alt="Delete account Image" style="margin-top: 20px; width:100%; max-width:600px; border-radius: 10px;">

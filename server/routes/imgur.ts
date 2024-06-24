@@ -21,11 +21,11 @@ export const imgurOAuthCallback: Middleware = async (req, res) => {
 
     if (accessToken) {
         response.redirect(
-            `http://192.168.0.107:5500/client/pages/platforms-imgur.html#access_token=${accessToken}`
+            `http://localhost:5500/client/pages/platforms-imgur.html#access_token=${accessToken}`
         );
     } else {
         response.redirect(
-            `http://192.168.0.107:5500/client/pages/platforms-imgur.html?error=Authorization%20failed`
+            `http://localhost:5500/client/pages/platforms-imgur.html?error=Authorization%20failed`
         );
     }
 };

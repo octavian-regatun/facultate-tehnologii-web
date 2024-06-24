@@ -318,7 +318,15 @@
                 <li>Google Photos: maximum of 10.000 OAuth calls/24h</li>
                 <li>Google Photos: maximum of 10.000 API calls/24h</li>
                 <li>Instagram: maximum of 200 API calls/h</li>
+                <li>Imgur: maximum 1.250 API calls/24h</li>
             </ul>
+
+            Additional limitations/contraints are the following:
+            <ul>
+                <li>Instagram requires us to make requests to their API using only https protocol</li>
+                <li>Imgur requires us to make requests to their API using anything but localhost (IPs/top level domains)</li>
+            </ul>
+
             With the information presented above, we can conclude that we will not face any timing or memory
             limitations, as the APIs restrictions are the main concern of our product. The only exception to this rule
             are Instagram's comments. In order to not fetch too many photos we have chosen to save the comments in our
@@ -593,6 +601,17 @@
             <figure typeof="sa:image">
                 <img src="../imgs/collage-edit.png" alt="Photo collage">
                 <figcaption>Photo collage</figcaption>
+            </figure>
+
+            <p> In addition, the user has the ability to press <code>LMB + Ctrl</code> in order to clip the photo. This
+                action will show some dots on the clicked locations to let the user know where the photo will be
+                clipped. The clipping is made in real time, when there are at least 3 selected points. To reset, the
+                user can click the corresponding button.
+            </p>
+
+            <figure typeof="sa:image">
+                <img src="../imgs/clip.png" alt="Photo clipping">
+                <figcaption>Photo clipping</figcaption>
             </figure>
         </section>
         <section id="upload">
