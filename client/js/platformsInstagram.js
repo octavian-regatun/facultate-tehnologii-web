@@ -1,13 +1,15 @@
 document.addEventListener("DOMContentLoaded", async () => {
   updateAccessToken();
 
-  if (!(await checkValidInstagramToken())) {
-    await authenticateWithInstagram();
-  }
-
-  const media = await fetchAllUserMedia();
-  console.log(media);
+  // if (!(await checkValidInstagramToken())) {
+  //   await authenticateWithInstagram();
+  // }
 });
+
+const refreshButtonOnClick = async () => {
+  await refreshInstagramPhotos();
+  window.location.reload();
+};
 
 const authenticateWithInstagram = async () => {
   const url =
@@ -40,4 +42,23 @@ const checkValidInstagramToken = async () => {
     console.error("Error:", error);
     return false;
   }
+};
+
+const refreshInstagramPhotos = async () => {
+  const jwt = localStorage.getItem("token");
+  const accessToken = localStorage.getItem("accessTokenInstagram");
+
+  const response = await fetch(
+    `https://localhost:8081/photos/instagram/refresh?access_token=${accessToken}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    }
+  );
+
+  const photos = await response.json();
+
+  console.log(photos);
 };
