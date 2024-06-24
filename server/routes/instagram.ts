@@ -4,8 +4,6 @@ import { Req } from "../utilities/request";
 import { Res } from "../utilities/response";
 
 export const instagramOAuthCallback: Middleware = async (req, res) => {
-  console.log("instagramOAuthCallback");
-
   const response = new Res(res);
   const request = new Req(req);
 
@@ -62,31 +60,25 @@ export const refreshInstagramPhotosMiddleware: Middleware = async (
     request.query.access_token as string
   )) as GetInstagramPhotos[];
 
-  // const createPhotosPromises = instagramPhotos.map(async (instagramPhoto) =>
-  //   db.photo.create({
-  //     data: {
-  //       source: "INSTAGRAM",
-  //       binaryString: await convertImageToBase64(instagramPhoto.media_url),
-  //       description: instagramPhoto.caption,
-  //       likes: 0,
-  //       commentCount: 0,
-  //       aspectRatio:
-  //         parseFloat(instagramPhoto.mediaMetadata.width) /
-  //         parseFloat(instagramPhoto.mediaMetadata.height),
-  //       size: parseFloat(instagramPhoto.mediaMetadata.width),
-  //       userId: request.userId!,
-  //     },
-  //   })
-  // );
-
-  // await Promise.all(createPhotosPromises);
-
-  response.json(
-    await getInstagramPhotoDetails(
-      request.query.access_token as string,
-      instagramPhotos[0].id
-    )
+  const createPhotosPromises = instagramPhotos.map(async (instagramPhoto) =>
+    db.photo.create({
+      data: {
+        source: "INSTAGRAM",
+        binaryString: await convertImageToBase64(instagramPhoto.media_url),
+        description: instagramPhoto.caption,
+        likes: 0,
+        commentCount: 0,
+        aspectRatio: 1,
+        size: -1,
+        userId: request.userId!,
+      },
+    })
   );
+
+  await deleteAllInstagramPhotos(request.userId!);
+  await Promise.all(createPhotosPromises);
+
+  response.json(instagramPhotos);
 };
 
 const getInstagramPhotos = async (accessToken: string) => {
@@ -120,26 +112,9 @@ const getInstagramPhotos = async (accessToken: string) => {
   return media;
 };
 
-async function getInstagramPhotoDetails(accessToken: string, mediaId: string) {
-  const mediaDetailUrl = `https://graph.instagram.com/${mediaId}/comments?fields=id,media_type,media_url,username,timestamp,caption,like_count,comments_count&access_token=${accessToken}`;
-
-  try {
-    const response = await fetch(mediaDetailUrl);
-    const data = await response.json();
-
-    if (response.ok) {
-      return data;
-    } else {
-      console.error("Error fetching media details:", data.error.message);
-    }
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
-
-const deleteAllGooglePhotos = async (userId: number) => {
+const deleteAllInstagramPhotos = async (userId: number) => {
   await db.photo.deleteMany({
-    where: { source: "GOOGLE_PHOTOS", userId: userId },
+    where: { source: "INSTAGRAM", userId: userId },
   });
 };
 
