@@ -1,0 +1,1 @@
+// https://api.imgur.com/oauth2/authorize?client_id=877e292f535ec23&response_type=token
