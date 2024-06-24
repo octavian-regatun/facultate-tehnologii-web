@@ -49,12 +49,12 @@ export const addNewPhotoToModal = (photo) => {
     publishBtnGoogle.appendChild(publishBtnGoogleText);
     card.appendChild(publishBtnGoogle);
 
-    const publishBtnInstagram = document.createElement("button");
-    publishBtnInstagram.classList.add("publish-btn", "publish-btn-instagram", "publish-btn-platform");
-    const publishBtnInstagramText = document.createElement("span");
-    publishBtnInstagramText.textContent = "Instragram";
-    publishBtnInstagram.appendChild(publishBtnInstagramText);
-    card.appendChild(publishBtnInstagram);
+    const publishBtnImgur = document.createElement("button");
+    publishBtnImgur.classList.add("publish-btn", "publish-btn-imgur", "publish-btn-platform");
+    const publishBtnImgurText = document.createElement("span");
+    publishBtnImgurText.textContent = "Imgur";
+    publishBtnImgur.appendChild(publishBtnImgurText);
+    card.appendChild(publishBtnImgur);
 
     const closeButton = document.createElement("button");
     closeButton.classList.add("modal-close");

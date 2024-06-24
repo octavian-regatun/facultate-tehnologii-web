@@ -19,6 +19,7 @@ const showAllUserStats = (stats) => {
         { label: 'Total Comments', value: stats.totalComments },
         { label: 'Photos Google', value: stats.totalPhotosGoogle },
         { label: 'Photos Instagram', value: stats.totalPhotosInstagram },
+        { label: 'Photos Imgur', value: stats.totalPhotosImgur },
         { label: 'Total Likes', value: stats.totalLikes }
     ];
 
@@ -94,7 +95,8 @@ const fetchUserStats = async () => {
             document.getElementById("admin-status").textContent = stats.admin ? "Yes" : "No";
             document.getElementById("photos-google").textContent = stats.totalPhotosGoogle;
             document.getElementById("photos-instagram").textContent = stats.totalPhotosInstagram;
-            document.getElementById("photos-mpic").textContent = stats.totalPhotos - stats.totalPhotosGoogle - stats.totalPhotosInstagram;
+            document.getElementById("photos-imgur").textContent = stats.totalPhotosImgur;
+            document.getElementById("photos-mpic").textContent = stats.totalPhotos - stats.totalPhotosGoogle - stats.totalPhotosInstagram - stats.totalPhotosImgur;
             document.getElementById("total-likes").textContent = stats.totalLikes;
             document.getElementById("total-comments").textContent = stats.totalComments;
         } else {

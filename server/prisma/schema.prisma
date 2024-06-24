@@ -52,6 +52,7 @@ model Photo {
 enum SourceType {
   GOOGLE_PHOTOS
   INSTAGRAM
+  IMGUR
   NOT_POSTED
 }
 

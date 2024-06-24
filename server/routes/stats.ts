@@ -8,6 +8,7 @@ interface UserStats {
     totalComments: number;
     totalPhotosGoogle: number;
     totalPhotosInstagram: number;
+    totalPhotosImgur: number;
     totalLikes: number;
     totalCommentCount: number;
 }
@@ -77,6 +78,7 @@ const getUserStats = async (uid: number): Promise<UserStats> => {
 
     const totalPhotosGoogle = photos.filter(photo => photo.source === 'GOOGLE_PHOTOS').length;
     const totalPhotosInstagram = photos.filter(photo => photo.source === 'INSTAGRAM').length;
+    const totalPhotosImgur = photos.filter(photo => photo.source === 'IMGUR').length;
 
     const totalLikes = photos.reduce((acc, photo) => acc + (photo.likes || 0), 0);
     const totalCommentCount = photos.reduce((acc, photo) => acc + (photo.commentCount || 0), 0);
@@ -88,6 +90,7 @@ const getUserStats = async (uid: number): Promise<UserStats> => {
         totalComments,
         totalPhotosGoogle,
         totalPhotosInstagram,
+        totalPhotosImgur,
         totalLikes,
         totalCommentCount,
     };
@@ -132,6 +135,10 @@ export const getAllStatsMiddleware: Middleware = async (req, res) => {
             where: { source: 'INSTAGRAM' },
         });
 
+        const totalPhotosImgur = await db.photo.count({
+            where: { source: 'IMGUR' },
+        });
+
         // aggregate used to not iterate through all the users
         const totalLikes = await db.photo.aggregate({
             _sum: { likes: true },
@@ -143,6 +150,7 @@ export const getAllStatsMiddleware: Middleware = async (req, res) => {
             totalComments,
             totalPhotosGoogle,
             totalPhotosInstagram,
+            totalPhotosImgur,
             totalLikes: totalLikes._sum.likes || 0,
         };
 

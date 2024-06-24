@@ -182,13 +182,13 @@
   display: none;
 }
 
-.publish-btn-instagram {
+.publish-btn-imgur {
   display: none;
   right: 0;
   transform: translateX(0);
 }
 
-.publish-btn-instagram::after {
+.publish-btn-imgur::after {
   display: none;
 }
 

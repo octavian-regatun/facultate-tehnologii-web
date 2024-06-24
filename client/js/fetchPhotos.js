@@ -22,6 +22,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     platform = "GOOGLE PHOTOS";
   } else if (currentUrl.href.includes("instagram")) {
     platform = "INSTAGRAM";
+  } else if (currentUrl.href.includes("imgur")) {
+    platform = "IMGUR";
   } else {
     // if on search, use the query
     platform = searchParams.get("platform") || platform;
@@ -168,16 +170,16 @@ async function displayModalPhotos(photos) {
     publishBtnGoogle.appendChild(publishBtnGoogleText);
     card.appendChild(publishBtnGoogle);
 
-    const publishBtnInstagram = document.createElement("button");
-    publishBtnInstagram.classList.add(
+    const publishBtnImgur = document.createElement("button");
+    publishBtnImgur.classList.add(
       "publish-btn",
-      "publish-btn-instagram",
+      "publish-btn-imgur",
       "publish-btn-platform"
     );
-    const publishBtnInstagramText = document.createElement("span");
-    publishBtnInstagramText.textContent = "Instragram";
-    publishBtnInstagram.appendChild(publishBtnInstagramText);
-    card.appendChild(publishBtnInstagram);
+    const publishBtnImgurText = document.createElement("span");
+    publishBtnImgurText.textContent = "Imgur";
+    publishBtnImgur.appendChild(publishBtnImgurText);
+    card.appendChild(publishBtnImgur);
 
     // Close button
     const closeButton = document.createElement("button");

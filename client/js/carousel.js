@@ -4,7 +4,7 @@ import exportComments from "./export.js";
 import importComments from "./import.js";
 import createCollage from "./collage.js";
 import google from "./uploadGoogle.js";
-import instagram from "./uploadInstagram.js";
+import imgur from "./uploadImgur.js";
 
 document.addEventListener('photosLoaded', () => {
 	// Remove all event listeners
@@ -177,7 +177,7 @@ document.addEventListener('photosLoaded', () => {
 		if (publishButtons && publishButtons[2].contains(event.target)) {
 			const card = event.target.closest('.card');
 			const img = card.querySelector('.card-image');
-			instagram(img);
+			imgur(img);
 		}
 	});
 

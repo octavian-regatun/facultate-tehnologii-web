@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>M-PIC - Platforms - Search</title>
+  <title>M-PIC - Platforms - Imgur</title>
   <link rel="stylesheet" href="../styles/filter.css">
   <link rel="stylesheet" href="../styles/cards.css" />
   <link rel="stylesheet" href="../styles/global.css">
@@ -15,7 +15,7 @@
   <nav class="navbar">
     <div class="navbar-left-side">
       <img class="navbar-logo" src="../imgs/logo.webp" alt="Logo" />
-      <p class="navbar-page">Search</p>
+      <p class="navbar-page">Platforms / Imgur </p>
     </div>
     <div class="navbar-right-side">
       <a href="../pages/account.html"><img src="../svgs/user-circle.svg" alt="Account" /></a>
@@ -30,58 +30,7 @@
   </aside>
 
   <section class="card-header">
-    <form>
-      <div class="form-container">
-        <label for="form-search-field">Search</label>
-        <input type="text" name="search" id="form-search-field" placeholder="Description keyword...">
-      </div>
 
-      <div class="form-container">
-        <label for="form-platform">Platform</label>
-        <select name="platform" id="form-platform">
-          <option value="All">All</option>
-          <option value="GOOGLE PHOTOS">Google Photos</option>
-          <option value="INSTAGRAM">Instagram</option>
-          <option value="IMGUR">Imgur</option>
-          <option value="NOT POSTED">M-PIC</option>
-        </select>
-      </div>
-
-      <div class="form-container">
-        <label for="form-aspect-ratio">Aspect ratio</label>
-        <select name="aspect-ratio" id="form-aspect-ratio">
-          <option value="Any">Any</option>
-          <option value="16/9">16/9</option>
-          <option value="4/3">4/3</option>
-          <option value="1/1">1/1</option>
-          <option value="3/4">3/4</option>
-          <option value="9/16">9/16</option>
-        </select>
-      </div>
-
-      <div class="form-container">
-        <label for="form-size">Size</label>
-        <select name="size" id="form-size">
-          <option value="Any">Any</option>
-          <option value="&lt;500">&lt;500</option>
-          <option value="500-1000">500-1000</option>
-          <option value="&gt;1000">&gt;1000</option>
-        </select>
-      </div>
-      <div class="form-container">
-        <label for="form-order">Order by</label>
-        <select name="order" id="form-order">
-          <option value="Date ascending">Date ascending</option>
-          <option value="Date descending">Date descending</option>
-          <option value="Likes ascending">Likes ascending</option>
-          <option value="Likes descending">Likes descending</option>
-          <option value="Comments ascending">Comments ascending</option>
-          <option value="Comments descending">Comments descending</option>
-        </select>
-      </div>
-
-      <button type="submit" class="btn">Search</button>
-    </form>
   </section>
 
   <main class="container">
@@ -97,6 +46,7 @@
     <div class="collage-limit">
       The maximum number of photos is 6. Please deselect a photo first!
     </div>
+    <button class="btn refresh-button" onclick="refreshButtonOnClick()">Refresh</button>
   </main>
 
   <dialog class="modal">
@@ -114,6 +64,7 @@
   <script src="../js/savePhoto.js" type="module"></script>
   <script src="../js/collage.js" type="module"></script>
   <script src="../js/carousel.js" type="module"></script>
+  <script src="../js/platformsImgur.js" defer></script>
 </body>
 
 </html>
