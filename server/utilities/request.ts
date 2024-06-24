@@ -30,7 +30,7 @@ export class Req {
   }
 
   private initializeQuery() {
-    const url = new URL(this.req.url || "", `http://${this.req.headers.host}`);
+    const url = new URL(this.req.url || "", `https://${this.req.headers.host}`);
     this.query = Object.fromEntries(url.searchParams.entries());
   }
 }

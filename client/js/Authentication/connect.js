@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const password = document.getElementById("log-in-pass-input").value;
 
       try {
-        const response = await fetch(`http://localhost:8081/auth/signin`, {
+        const response = await fetch(`https://localhost:8081/auth/signin`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("Signup attempt:", { firstName, lastName, email, password });
 
       try {
-        const response = await fetch(`http://localhost:8081/auth/signup`, {
+        const response = await fetch(`https://localhost:8081/auth/signup`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const email = document.getElementById("email-forgot-pwd").value;
 
       try {
-        const response = await fetch(`http://localhost:8081/auth/forgot-password`, {
+        const response = await fetch(`https://localhost:8081/auth/forgot-password`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const token = urlParams.get('token');
       const email = urlParams.get('email');
       try {
-        const response = await fetch(`http://localhost:8081/auth/reset-password`, {
+        const response = await fetch(`https://localhost:8081/auth/reset-password`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

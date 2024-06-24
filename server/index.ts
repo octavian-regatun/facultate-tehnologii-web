@@ -1,4 +1,5 @@
-import http from "http";
+import fs from "fs";
+import https from "https";
 import { Router } from "./router";
 import {
   isAuthenticated,
@@ -35,7 +36,12 @@ import {
   isAdmin,
 } from "./routes/stats";
 
-const server = http.createServer((req, res) => {
+const options = {
+  key: fs.readFileSync("../https/decrypted-localhost.key", "utf8"),
+  cert: fs.readFileSync("../https/localhost.pem", "utf8"),
+};
+
+const server = https.createServer(options, (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Methods",

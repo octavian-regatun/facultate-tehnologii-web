@@ -36,14 +36,14 @@ const checkValidGoogleToken = async () => {
   return photos?.error?.code !== 401;
 };
 
-const getGoogleOAuthUrl = async () => {
-  const response = await fetch("http://localhost:8081/auth/google");
+const getInstagramOAuthUrl = async () => {
+  const response = await fetch("https://localhost:8081/auth/google");
   const data = await response.json();
   return data.authUrl;
 };
 
 const authenticateWithGoogle = async () => {
-  const googleOAuthUrl = await getGoogleOAuthUrl();
+  const googleOAuthUrl = await getInstagramOAuthUrl();
   window.location.href = googleOAuthUrl;
 };
 
@@ -52,7 +52,7 @@ const refreshGooglePhotos = async () => {
   const accessToken = localStorage.getItem("accessToken");
 
   const response = await fetch(
-    `http://localhost:8081/photos/google/refresh?access_token=${accessToken}`,
+    `https://localhost:8081/photos/google/refresh?access_token=${accessToken}`,
     {
       method: "GET",
       headers: {

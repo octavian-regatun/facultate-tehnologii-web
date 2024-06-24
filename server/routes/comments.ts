@@ -29,7 +29,7 @@ const updateComments = async (photoId: number) => {
 export const getCommentsMiddleware: Middleware = async (req, res) => {
   const urlParts = req.url?.split('/');
   const photoId = urlParts ? parseInt(urlParts[urlParts.length - 1], 10) : NaN;
-  const url = new URL(req.url!, `http://${req.headers.host}`); // ! = it won't be undefined
+  const url = new URL(req.url!, `https://${req.headers.host}`); // ! = it won't be undefined
   const refresh = url.searchParams.get('refresh') === 'true';
 
   if (isNaN(photoId)) {

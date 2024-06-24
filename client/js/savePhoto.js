@@ -286,7 +286,7 @@ const savePhoto = async (imageElement, collage = false, width = null, height = n
     const aspectRatio = collage ? width / height : imageElement.width / imageElement.height;
     const size = collage ? `${width}x${height}` : `${imageElement.width}x${imageElement.height}`;
 
-    const response = await fetch(`http://localhost:8081/photos`, {
+    const response = await fetch(`https://localhost:8081/photos`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

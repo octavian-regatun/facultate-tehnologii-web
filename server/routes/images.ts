@@ -126,7 +126,7 @@ export const uploadImageMiddleware: Middleware = async (req, res) => {
 
 
 const applyFilters = (req: any, userId: number) => {
-  const urlString = req.url ? `http://${req.headers.host}${req.url}` : '';
+  const urlString = req.url ? `https://${req.headers.host}${req.url}` : '';
   const url = new URL(urlString);
   const search = url.searchParams.get('search') || '';
   const platform = url.searchParams.get('platform') || 'All';

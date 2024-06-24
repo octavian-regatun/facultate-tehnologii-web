@@ -40,7 +40,7 @@ const parseCSV = (content) => {
 
 const postComments = async (card, id, comments) => {
     try {
-        const response = await fetch(`http://localhost:8081/comments`, {
+        const response = await fetch(`https://localhost:8081/comments`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
