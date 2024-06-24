@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 const refreshButtonOnClick = async () => {
   await refreshGooglePhotos();
+  window.location.reload();
 };
 
 const updateAccessToken = async () => {
