@@ -34,7 +34,6 @@
     transform: translate(-50%, -50%);
     max-height: 70dvh;
     max-width: 90vw;
-    height: 70dvh;
     /* aspect-ratio: 9 / 16; */
     display: grid;
     /* grid-template-columns: repeat(3, 1fr); */
