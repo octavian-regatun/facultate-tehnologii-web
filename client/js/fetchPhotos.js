@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // create the req
   const url = new URL(
-    `http://localhost:8081/photos/${userId}`,
+    `https://localhost:8081/photos/${userId}`,
     window.location.origin
   );
   url.searchParams.append("search", search);
@@ -382,7 +382,7 @@ async function displayModalPhotos(photos) {
 
 const getCommentsFromDB = async (id, refresh = 0) => {
   const token = localStorage.getItem("token");
-  const url = new URL(`http://localhost:8081/comments/${id}`);
+  const url = new URL(`https://localhost:8081/comments/${id}`);
 
   if (refresh === 1) {
     url.searchParams.append("refresh", "true");

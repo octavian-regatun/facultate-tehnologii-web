@@ -15,7 +15,7 @@ const oAuth2Client = new google.auth.OAuth2(
 
 // Middleware for handling OAuth2 callback
 export const emailOAuth2Middleware: Middleware = async (req, res) => {
-    const reqUrl = new URL(req.url || '', `http://${req.headers.host}`);
+    const reqUrl = new URL(req.url || '', `https://${req.headers.host}`);
     const code = reqUrl.searchParams.get('code');
     console.log(code);
     if (!code) {

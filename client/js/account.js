@@ -80,7 +80,7 @@ const fetchUserStats = async () => {
     }
 
     try {
-        const response = await fetch(`http://localhost:8081/stats/${userId}`, {
+        const response = await fetch(`https://localhost:8081/stats/${userId}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem("token")}`,
@@ -108,7 +108,7 @@ const fetchUserStats = async () => {
 
 const fetchAllUserStats = async () => {
     try {
-        const response = await fetch(`http://localhost:8081/stats`, {
+        const response = await fetch(`https://localhost:8081/stats`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem("token")}`,
@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
 const deleteAccount = async () => {
     try {
         const id = parseInt(localStorage.getItem("uid"), 10);
-        const response = await fetch(`http://localhost:8081/delete-account`, {
+        const response = await fetch(`https://localhost:8081/delete-account`, {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem("token")}`,

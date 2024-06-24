@@ -3,7 +3,7 @@ const deleteAccount = async () => {
     const token = urlParams.get('token');
     const id = parseInt(urlParams.get('id'), 10);
     try {
-        const response = await fetch(`http://localhost:8081/account`, {
+        const response = await fetch(`https://localhost:8081/account`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem("token")}`,

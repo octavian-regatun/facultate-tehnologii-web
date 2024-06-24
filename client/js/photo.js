@@ -21,7 +21,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const userId = urlParams.get('id');
 
 if (userId) {
-    fetch(`http://localhost:8081/photo/${userId}`, {
+    fetch(`https://localhost:8081/photo/${userId}`, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${localStorage.getItem("token")}`,

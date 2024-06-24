@@ -98,7 +98,7 @@ const getUserStats = async (uid: number): Promise<UserStats> => {
 export const getStatsMiddleware: Middleware = async (req, res) => {
     const urlParts = req.url?.split('/');
     const uid = urlParts ? parseInt(urlParts[urlParts.length - 1], 10) : NaN;
-    const url = new URL(req.url!, `http://${req.headers.host}`); // ! = it won't be undefined
+    const url = new URL(req.url!, `https://${req.headers.host}`); // ! = it won't be undefined
 
     if (isNaN(uid)) {
         res.writeHead(400, { "Content-Type": "text/plain" });

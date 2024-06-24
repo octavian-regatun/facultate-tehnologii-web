@@ -5,7 +5,7 @@ const deletePhoto = async (card) => {
     const cards = Array.from(document.querySelectorAll('.container-grid .card'));
     const cardIndex = cards.indexOf(card);
 
-    const response = await fetch(`http://localhost:8081/photos/${id}`, {
+    const response = await fetch(`https://localhost:8081/photos/${id}`, {
         method: "DELETE",
         headers: {
             "Authorization": `Bearer ${localStorage.getItem("token")}`,

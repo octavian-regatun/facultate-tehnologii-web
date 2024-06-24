@@ -8,7 +8,7 @@ import exifReader from "exifreader";
 const oAuth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  "http://localhost:8081/auth/google/callback"
+  "https://localhost:8081/auth/google/callback"
 );
 
 export const googleOAuth: Middleware = async (req, res) => {
@@ -32,7 +32,7 @@ export const googleOAuthCallback: Middleware = async (req, res) => {
   oAuth2Client.setCredentials(tokens);
 
   const url = new URL(
-    "http://localhost:5500/client/pages/platforms-google.html"
+    "https://localhost:5500/client/pages/platforms-google.html"
   );
   url.searchParams.append("access_token", tokens?.access_token || "");
   url.searchParams.append("refresh_token", tokens?.refresh_token || "");
