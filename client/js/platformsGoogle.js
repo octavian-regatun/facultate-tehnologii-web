@@ -37,14 +37,14 @@ const checkValidGoogleToken = async () => {
   return photos?.error?.code !== 401;
 };
 
-const getInstagramOAuthUrl = async () => {
+const getGoogleOAuthUrl = async () => {
   const response = await fetch("https://localhost:8081/auth/google");
   const data = await response.json();
   return data.authUrl;
 };
 
 const authenticateWithGoogle = async () => {
-  const googleOAuthUrl = await authenticateWithInstagram();
+  const googleOAuthUrl = await getGoogleOAuthUrl();
   window.location.href = googleOAuthUrl;
 };
 
