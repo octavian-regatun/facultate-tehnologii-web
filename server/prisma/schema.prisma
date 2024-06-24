@@ -36,6 +36,7 @@ model Photo {
   id           Int        @id @default(autoincrement())
   userId       Int
   url          String?    @unique
+  imgurID      String?
   binaryString String?
   source       SourceType
   description  String     @default("No description provided")

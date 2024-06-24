@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", async () => {
   updateAccessToken();
 
-  // if (!(await checkValidInstagramToken())) {
-  //   await authenticateWithInstagram();
-  // }
+  if (!(await checkValidInstagramToken())) {
+    await authenticateWithInstagram();
+  }
 });
 
 const refreshButtonOnClick = async () => {
